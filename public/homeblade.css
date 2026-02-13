@@ -1,0 +1,108 @@
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f5f7fa;
+        }
+
+        /* ===== HEADER CARD ===== */
+        .header-card {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            max-width: 1200px;
+            background: linear-gradient(to right,
+                    rgba(150, 0, 0, 0.88),
+                    rgba(45, 35, 130, 0.88),
+                    rgba(10, 20, 80, 0.92));
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.10);
+            border-radius: 14px;
+            padding: 16px 24px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand img {
+            height: 48px;
+            width: auto;
+        }
+
+        .brand h2 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .login-btn {
+            padding: 10px 22px;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .login-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* ===== COVER ===== */
+        .cover {
+            height: 100vh;
+            width: 100%;
+            background: url("{{ asset('images/LydoCover.jpg') }}") center center no-repeat;
+            background-size: contain;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== CONTENT ===== */
+        .content-section {
+            padding: 80px 20px 100px;
+            background: #f5f7fa;
+        }
+
+        .cards {
+            max-width: 1100px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .info-card h3 {
+            margin-top: 0;
+            font-size: 22px;
+            color: #4f46e5;
+        }
+
+        .info-card p {
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        /* Spacer for fixed header */
+        .header-spacer {
+            height: 120px;
+        }
