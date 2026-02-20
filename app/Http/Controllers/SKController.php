@@ -87,4 +87,37 @@ class SKController extends Controller
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
     }
+
+          public function index()
+    {
+        if (!Auth::user()->isAdmin()) {
+            abort(403);
+        }
+
+        $sks = User::where('role', 'sk')->get();
+
+        return view('sk.manage', compact('sks'));
+    }
+
+    public function toggle(Request $request, $id)
+    {
+        $admin = Auth::user();
+
+        if (!$admin->isAdmin()) {
+            abort(403);
+        }
+
+        if (!Hash::check($request->password, $admin->password)) {
+            return back()->with('error', 'Incorrect admin password.');
+        }
+
+        $sk = User::where('role', 'sk')->findOrFail($id);
+
+        $sk->is_disabled = !$sk->is_disabled;
+        $sk->save();
+
+        return back()->with('success', 'SK account status updated.');
+    }
 }
+
+

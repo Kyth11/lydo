@@ -1,12 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\YouthController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SKController;
-use App\Http\Controllers\AccountController;
+use App\Http\Controllers\YouthController;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('home'); // resources/views/home.blade.php
@@ -38,6 +40,22 @@ Route::middleware(['auth'])->group(function () {
     // SK management (admin only)
     Route::get('/sk/create', [App\Http\Controllers\SKController::class, 'create'])->name('sk.create');
     Route::post('/sk', [App\Http\Controllers\SKController::class, 'store'])->name('sk.store');
+    Route::get('/sk/manage', [SKController::class, 'index'])->name('sk.manage');
+
+    Route::post('/sk/{id}/toggle', [SKController::class, 'toggle'])
+        ->name('sk.toggle');
+
+    Route::get(
+        '/announcements/create',
+        [AnnouncementController::class, 'create']
+    )->name('announcements.create');
+
+    Route::post(
+        '/announcements/store',
+        [AnnouncementController::class, 'store']
+    )->name('announcements.store');
+    Route::resource('announcements', \App\Http\Controllers\AnnouncementController::class);
+
 
     // Account editing
     Route::get('/account/edit', [App\Http\Controllers\AccountController::class, 'edit'])->name('account.edit');
@@ -69,7 +87,7 @@ Route::middleware(['auth'])->group(function () {
             abort(403);
         }
 
-        if (!\Hash::check($request->password, $user->password)) {
+        if (!Hash::check($request->password, $user->password)) {
             return back()->with('error', 'Incorrect password.');
         }
 

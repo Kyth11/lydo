@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Youth extends Model
 {
@@ -40,4 +41,31 @@ class Youth extends Model
         'family_members' => 'array',
         'is_archived' => 'boolean'
     ];
+
+  protected static function booted()
+{
+    // 🔹 When creating new profile
+    static::creating(function ($youth) {
+
+        if ($youth->birthday) {
+            $age = Carbon::parse($youth->birthday)->age;
+            $youth->age = $age;
+
+            // ✅ Auto archive ONLY on create if 31 and above
+            if ($age >= 31) {
+                $youth->is_archived = 1;
+            }
+        }
+    });
+
+    // 🔹 When updating profile (only recalculate age)
+    static::updating(function ($youth) {
+
+        if ($youth->birthday) {
+            $youth->age = Carbon::parse($youth->birthday)->age;
+        }
+
+        // ❌ No auto-archive here
+    });
+}
 }

@@ -141,9 +141,19 @@ class YouthController extends Controller
             abort(403);
         }
 
-        if ($user && $user->role === 'admin' && $user->action_protection) {
-            if (!$request->filled('password') ||
-                !Hash::check($request->password, $user->password)) {
+        // 🔥 Get admin protection setting
+        $adminProtection = \App\Models\User::where('role', 'admin')
+            ->value('action_protection');
+
+        // 🔥 If SK and protection enabled → require admin password
+        if ($user->role === 'sk' && $adminProtection) {
+
+            $admin = \App\Models\User::where('role', 'admin')->first();
+
+            if (
+                !$request->filled('password') ||
+                !Hash::check($request->password, $admin->password)
+            ) {
 
                 return back()->with('error', 'Incorrect admin password.');
             }
@@ -162,13 +172,24 @@ class YouthController extends Controller
         $user = Auth::user();
         $youth = Youth::findOrFail($id);
 
+        // SK can only restore within their barangay
         if ($user && $user->role === 'sk' && $youth->barangay !== $user->barangay) {
             abort(403);
         }
 
-        if ($user && $user->role === 'admin' && $user->action_protection) {
-            if (!$request->filled('password') ||
-                !Hash::check($request->password, $user->password)) {
+        // 🔥 Get admin protection setting
+        $adminProtection = \App\Models\User::where('role', 'admin')
+            ->value('action_protection');
+
+        // 🔥 If SK and protection enabled → require admin password
+        if ($user->role === 'sk' && $adminProtection) {
+
+            $admin = \App\Models\User::where('role', 'admin')->first();
+
+            if (
+                !$request->filled('password') ||
+                !Hash::check($request->password, $admin->password)
+            ) {
 
                 return back()->with('error', 'Incorrect admin password.');
             }
@@ -193,8 +214,10 @@ class YouthController extends Controller
         }
 
         if ($user->action_protection) {
-            if (!$request->filled('password') ||
-                !Hash::check($request->password, $user->password)) {
+            if (
+                !$request->filled('password') ||
+                !Hash::check($request->password, $user->password)
+            ) {
 
                 return back()->with('error', 'Incorrect admin password.');
             }

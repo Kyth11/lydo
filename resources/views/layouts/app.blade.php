@@ -2,8 +2,11 @@
 <html lang="en" x-data="{ open: false }">
 
 <head>
+
+
     <meta charset="UTF-8">
-    <title>KK Profiling System</title>
+    <link rel="icon" href="{{ asset('images/LydoLogo.png') }}">
+    <title>LYDO Opol KK Profiling System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -158,11 +161,12 @@
             color: white !important;
         }
 
-/* space between navbar and main content  */
+        /* space between navbar and main content  */
         .main-content {
             padding-top: 2em !important;
         }
     </style>
+    
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -190,6 +194,12 @@
                         <a href="{{ route('dashboard') }}" class="lydo-link">Dashboard</a>
                         <a href="/youth" class="lydo-link">Youth Profiles</a>
                         <a href="/youth/create" class="lydo-link">Add Profile</a>
+                        @if (Auth::user()->isAdmin())
+                            <a href="{{ route('announcements.index') }}" class="lydo-link bg-yellow-400 text-black">
+                                Announcements
+                            </a>
+                        @endif
+
                     </div>
                 </div>
 
@@ -210,13 +220,20 @@
 
                         <x-slot name="content">
                             <div class="lydo-dropdown space-y-1">
-                                @if(Auth::user()->isAdmin())
-                                    <a href="{{ route('sk.create') }}" class="lydo-dropdown-item">Add SK</a>
-                                    <button onclick="toggleProtection()" class="lydo-dropdown-item">
-                                        {{ Auth::user()->action_protection ? 'Disable Protection' : 'Enable Protection' }}
-                                    </button>
+                                @if (Auth::user()->isAdmin())
+                                    <a href="{{ route('sk.manage') }}" class="lydo-dropdown-item">
+                                        Manage SK Account
+                                    </a>
 
+                                    <a href="{{ route('sk.create') }}" class="lydo-dropdown-item">
+                                        Add SK
+                                    </a>
+
+                                    <button onclick="toggleProtection()" class="lydo-dropdown-item">
+                                        {{ \App\Models\User::where('role', 'admin')->value('action_protection') ? '🔐 Protection Enabled' : '🔐 Protection Disabled' }}
+                                    </button>
                                 @endif
+
                                 <a href="{{ route('account.edit') }}" class="lydo-dropdown-item">Edit Account</a>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
@@ -244,7 +261,7 @@
             <a href="/youth" class="lydo-mobile-link">Youth Profiles</a>
             <a href="/youth/create" class="lydo-mobile-link">Add Profile</a>
 
-            @if(Auth::user()->isAdmin())
+            @if (Auth::user()->isAdmin())
                 <a href="{{ route('sk.create') }}" class="lydo-mobile-link">Add SK</a>
             @endif
 
@@ -264,11 +281,11 @@
     <main class="max-w-7xl mx-auto px-6 py-8 main-content">
 
         {{-- SweetAlert Flash Messages --}}
-        @if(session('success') || session('error') || session('warning') || session('info') || $errors->any())
+        @if (session('success') || session('error') || session('warning') || session('info') || $errors->any())
             <script>
-                document.addEventListener('DOMContentLoaded', function () {
+                document.addEventListener('DOMContentLoaded', function() {
 
-                    @if(session('success'))
+                    @if (session('success'))
                         Swal.fire({
                             icon: 'success',
                             title: 'Success!',
@@ -277,7 +294,7 @@
                         });
                     @endif
 
-                    @if(session('error'))
+                    @if (session('error'))
                         Swal.fire({
                             icon: 'error',
                             title: 'Error!',
@@ -286,7 +303,7 @@
                         });
                     @endif
 
-                    @if(session('warning'))
+                    @if (session('warning'))
                         Swal.fire({
                             icon: 'warning',
                             title: 'Warning!',
@@ -295,7 +312,7 @@
                         });
                     @endif
 
-                    @if(session('info'))
+                    @if (session('info'))
                         Swal.fire({
                             icon: 'info',
                             title: 'Information',
@@ -304,7 +321,7 @@
                         });
                     @endif
 
-                    @if($errors->any())
+                    @if ($errors->any())
                         Swal.fire({
                             icon: 'error',
                             title: 'Validation Error',
@@ -328,48 +345,48 @@
         @yield('content')
     </main>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @if(Auth::user()->isAdmin())
-<script>
-function toggleProtection() {
-    Swal.fire({
-        title: 'Admin Verification Required',
-        input: 'password',
-        inputLabel: 'Enter your password',
-        inputPlaceholder: 'Password',
-        inputAttributes: {
-            autocapitalize: 'off',
-            autocorrect: 'off'
-        },
-        showCancelButton: true,
-        confirmButtonText: 'Verify',
-        confirmButtonColor: '#4f46e5'
-    }).then((result) => {
-        if (result.isConfirmed && result.value) {
+    @if (Auth::user()->isAdmin())
+        <script>
+            function toggleProtection() {
+                Swal.fire({
+                    title: 'Admin Verification Required',
+                    input: 'password',
+                    inputLabel: 'Enter your password',
+                    inputPlaceholder: 'Password',
+                    inputAttributes: {
+                        autocapitalize: 'off',
+                        autocorrect: 'off'
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: 'Verify',
+                    confirmButtonColor: '#4f46e5'
+                }).then((result) => {
+                    if (result.isConfirmed && result.value) {
 
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = "{{ route('admin.toggle.protection') }}";
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = "{{ route('admin.toggle.protection') }}";
 
-            const csrf = document.createElement('input');
-            csrf.type = 'hidden';
-            csrf.name = '_token';
-            csrf.value = "{{ csrf_token() }}";
+                        const csrf = document.createElement('input');
+                        csrf.type = 'hidden';
+                        csrf.name = '_token';
+                        csrf.value = "{{ csrf_token() }}";
 
-            const password = document.createElement('input');
-            password.type = 'hidden';
-            password.name = 'password';
-            password.value = result.value;
+                        const password = document.createElement('input');
+                        password.type = 'hidden';
+                        password.name = 'password';
+                        password.value = result.value;
 
-            form.appendChild(csrf);
-            form.appendChild(password);
+                        form.appendChild(csrf);
+                        form.appendChild(password);
 
-            document.body.appendChild(form);
-            form.submit();
-        }
-    });
-}
-</script>
-@endif
+                        document.body.appendChild(form);
+                        form.submit();
+                    }
+                });
+            }
+        </script>
+    @endif
 
 </body>
 

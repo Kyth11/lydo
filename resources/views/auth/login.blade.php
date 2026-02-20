@@ -53,13 +53,12 @@
 
             @if (Route::has('password.request'))
                 <a class="text-sm text-indigo-500 hover:underline" href="{{ route('password.request') }}">
-                    Forgot password?
+                Forgot password?
                 </a>
             @endif
         </div>
-
-        <!-- Buttons -->
-        <div class="flex justify-between items-center">
+        <!-- Register + Login -->
+        {{-- <div class="flex justify-between items-center">
             <a href="{{ route('register') }}"
                 class="inline-flex items-center px-4 py-2 bg-white/80 border border-black shadow-lg rounded-md text-sm">
                 Register
@@ -68,7 +67,15 @@
             <x-primary-button>
                 Log in
             </x-primary-button>
+        </div> --}}
+
+        <!-- Buttons -->
+        <div class="flex justify-center items-center !important">
+              <x-primary-button class="!mx-auto !block !text-center !important">
+                Log in
+            </x-primary-button>
         </div>
+
     </form>
 
     <!-- STYLES -->
@@ -207,36 +214,36 @@
         }
     </script>
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function () {
 
-        const emailInput = document.getElementById("email");
-        const rememberCheckbox = document.getElementById("remember");
+            const emailInput = document.getElementById("email");
+            const rememberCheckbox = document.getElementById("remember");
 
-        // Load saved email
-        const savedEmail = localStorage.getItem("rememberedEmail");
+            // Load saved email
+            const savedEmail = localStorage.getItem("rememberedEmail");
 
-        if (savedEmail) {
-            emailInput.value = savedEmail;
-            rememberCheckbox.checked = true;
-        }
-
-        // Save email when typing
-        emailInput.addEventListener("input", function () {
-            if (rememberCheckbox.checked) {
-                localStorage.setItem("rememberedEmail", emailInput.value);
+            if (savedEmail) {
+                emailInput.value = savedEmail;
+                rememberCheckbox.checked = true;
             }
-        });
 
-        // Remove email if unchecked
-        rememberCheckbox.addEventListener("change", function () {
-            if (!this.checked) {
-                localStorage.removeItem("rememberedEmail");
-            } else {
-                localStorage.setItem("rememberedEmail", emailInput.value);
-            }
-        });
+            // Save email when typing
+            emailInput.addEventListener("input", function () {
+                if (rememberCheckbox.checked) {
+                    localStorage.setItem("rememberedEmail", emailInput.value);
+                }
+            });
 
-    });
-</script>
+            // Remove email if unchecked
+            rememberCheckbox.addEventListener("change", function () {
+                if (!this.checked) {
+                    localStorage.removeItem("rememberedEmail");
+                } else {
+                    localStorage.setItem("rememberedEmail", emailInput.value);
+                }
+            });
+
+        });
+    </script>
 
 </x-guest-layout>

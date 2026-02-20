@@ -233,6 +233,8 @@
 
 .save-btn:hover {
     background: #4338ca !important;
+    translate: 0 -2px !important;
+    transition: all 0.50s ease !important;
 }
 
 .cancel-btn {
@@ -250,9 +252,11 @@
 }
 
 .cancel-btn:hover {
-    background: #f3f4f6 !important;
-    color: #111 !important;
+    background: rgb(154, 1, 1) !important;
+    color: #ffffff !important;
     text-decoration: none !important;
+    translate: 0 -2px !important;
+    transition: all 0.50s ease !important;
 }
 </style>
 

@@ -22,14 +22,26 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
-    {
-        $request->authenticate();
+public function store(LoginRequest $request): RedirectResponse
+{
+    $request->authenticate();
 
-        $request->session()->regenerate();
+    $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+    // 🔒 Check if account is disabled
+    if (auth()->user()->is_disabled) {
+
+        auth()->logout();
+
+        return back()->withErrors([
+            'email' => 'Your SK account has been disabled by the administrator.'
+        ]);
     }
+
+    return redirect()->intended(route('dashboard', absolute: false));
+}
+
+    
 
     /**
      * Destroy an authenticated session.

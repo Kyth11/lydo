@@ -4,6 +4,55 @@
 @section('page-desc', 'Overview of youth profiling statistics')
 
 @section('content')
+{{-- =========================
+   ANNOUNCEMENT STRIP
+========================= --}}
+@php
+    $userBarangay = auth()->user()->barangay ?? null;
+
+    $announcements = \App\Models\Announcement::where(function($query) use ($userBarangay) {
+        $query->whereNull('barangay') // For all barangays
+              ->orWhere('barangay', 'All Barangay')
+              ->orWhere('barangay', $userBarangay);
+    })
+    ->latest()
+    ->get();
+@endphp
+
+@if($announcements->count())
+
+<div class="announcement-strip">
+
+    <div class="announcement-slider">
+
+        @foreach($announcements as $index => $a)
+            <div class="announcement-slide {{ $index === 0 ? 'active' : '' }}">
+                <div class="announcement-content">
+                    <span class="announcement-icon">📢</span>
+                    <div>
+                        <strong>{{ $a->title }}</strong>
+                        <span class="announcement-text">
+                            {{ $a->description }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
+    </div>
+
+    @if($announcements->count() > 1)
+    <div class="announcement-dots">
+        @foreach($announcements as $index => $a)
+            <span class="dot {{ $index === 0 ? 'active' : '' }}"
+                  data-index="{{ $index }}"></span>
+        @endforeach
+    </div>
+    @endif
+
+</div>
+
+@endif
 
 <div class="dashboard-grid">
 
@@ -218,6 +267,74 @@
     padding-bottom: 1rem;
 }
 
+/* =========================
+   ANNOUNCEMENT STRIP
+========================= */
+
+.announcement-strip {
+    background: linear-gradient(90deg, #4f46e5, #6366f1);
+    color: white;
+    border-radius: 1rem;
+    padding: .9rem 1.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.announcement-slider {
+    position: relative;
+}
+
+.announcement-slide {
+    display: none;
+    animation: fadeIn .4s ease-in-out;
+}
+
+.announcement-slide.active {
+    display: block;
+}
+
+.announcement-content {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    font-size: .95rem;
+}
+
+.announcement-icon {
+    font-size: 1.2rem;
+}
+
+.announcement-text {
+    margin-left: .4rem;
+    font-weight: 400;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.announcement-dots {
+    text-align: center;
+    margin-top: .6rem;
+}
+
+.dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: rgba(255,255,255,.5);
+    border-radius: 50%;
+    margin: 0 4px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.dot.active {
+    background: white;
+    transform: scale(1.2);
+}
 </style>
 
 
@@ -336,6 +453,46 @@ new Chart(document.getElementById('pieChart{{ $loop->index }}'), {
 
 @endforeach
 
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const slides = document.querySelectorAll('.announcement-slide');
+    const dots = document.querySelectorAll('.dot');
+    let currentSlide = 0;
+    let slideInterval = null;
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.toggle('active', i === index);
+            if (dots[i]) {
+                dots[i].classList.toggle('active', i === index);
+            }
+        });
+        currentSlide = index;
+    }
+
+    function startAutoSlide() {
+        slideInterval = setInterval(() => {
+            let next = (currentSlide + 1) % slides.length;
+            showSlide(next);
+        }, 4000); // 4 seconds
+    }
+
+    if (slides.length > 1) {
+        startAutoSlide();
+
+        // Optional: click dots to manually switch
+        dots.forEach(dot => {
+            dot.addEventListener('click', function () {
+                clearInterval(slideInterval);
+                showSlide(parseInt(this.dataset.index));
+                startAutoSlide();
+            });
+        });
+    }
+
+});
 </script>
 
 @endsection

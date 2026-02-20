@@ -8,7 +8,9 @@
         $user = auth()->user();
         $isAdmin = $user && $user->role === 'admin';
         $isSK = $user && $user->role === 'sk';
-        $protectionEnabled = $user && $user->action_protection;
+
+        // 🔥 Protection only applies to SK users
+        $protectionEnabled = $isSK && \App\Models\User::where('role', 'admin')->value('action_protection');
     @endphp
 
 
@@ -31,24 +33,24 @@
                             $user = auth()->user();
                         @endphp
 
-                        <select name="barangay" class="form-input" onchange="this.form.submit()" {{ $user && $user->role === 'sk' ? 'disabled' : '' }}>
+                        <select name="barangay" class="form-input" onchange="this.form.submit()"
+                            {{ $user && $user->role === 'sk' ? 'disabled' : '' }}>
 
-                            @if(!$user || $user->role !== 'sk')
+                            @if (!$user || $user->role !== 'sk')
                                 <option value="">All Barangay</option>
                             @endif
 
-                            @foreach(['Awang', 'Bagocboc', 'Barra', 'Bonbon', 'Cauyunan', 'Igpit', 'Limunda', 'Luyong Bonbon', 'Malanang', 'Nangcaon', 'Patag', 'Poblacion', 'Taboc', 'Tingalan'] as $b)
-
-                                @if(!$user || $user->role !== 'sk' || $user->barangay === $b)
-                                    <option value="{{ $b }}" {{ request('barangay', $user->role === 'sk' ? $user->barangay : '') === $b ? 'selected' : '' }}>
+                            @foreach (['Awang', 'Bagocboc', 'Barra', 'Bonbon', 'Cauyunan', 'Igpit', 'Limunda', 'Luyong Bonbon', 'Malanang', 'Nangcaon', 'Patag', 'Poblacion', 'Taboc', 'Tingalan'] as $b)
+                                @if (!$user || $user->role !== 'sk' || $user->barangay === $b)
+                                    <option value="{{ $b }}"
+                                        {{ request('barangay', $user->role === 'sk' ? $user->barangay : '') === $b ? 'selected' : '' }}>
                                         {{ $b }}
                                     </option>
                                 @endif
-
                             @endforeach
                         </select>
 
-                        @if($user && $user->role === 'sk')
+                        @if ($user && $user->role === 'sk')
                             <input type="hidden" name="barangay" value="{{ $user->barangay }}">
                         @endif
 
@@ -91,7 +93,7 @@
                     </thead>
 
                     <tbody>
-                        @foreach($youths as $y)
+                        @foreach ($youths as $y)
                             <tr>
                                 <td>{{ $y->last_name }}, {{ $y->first_name }}</td>
                                 <td>{{ $y->sex }}</td>
@@ -101,19 +103,19 @@
                                 <td>
                                     <div class="action-group">
 
-                                        @if(!request('archived'))
-
+                                        @if (!request('archived'))
                                             <!-- ACTIVE VIEW -->
 
                                             <a href="/youth/{{ $y->id }}/pdf" class="btn btn-indigo">
                                                 PDF
                                             </a>
 
-                                            <button type="button" class="btn btn-green" onclick='openEditModal(@json($y))'>
+                                            <button type="button" class="btn btn-green"
+                                                onclick='openEditModal(@json($y))'>
                                                 Edit
                                             </button>
 
-                                            @if($isSK && $protectionEnabled)
+                                            @if ($isSK && $protectionEnabled)
                                                 <button class="btn btn-red disabled-btn" disabled>
                                                     Archive
                                                 </button>
@@ -123,12 +125,15 @@
                                                     Archive
                                                 </button>
                                             @endif
-
                                         @else
-
                                             <!-- ARCHIVED VIEW -->
 
-                                            @if($isSK && $protectionEnabled)
+                                            @if ($isSK && $protectionEnabled)
+                                                <button type="button" class="btn btn-green"
+                                                    onclick='openEditModal(@json($y))'>
+                                                    Edit
+                                                </button>
+
                                                 <button class="btn btn-yellow disabled-btn" disabled>
                                                     Restore
                                                 </button>
@@ -136,6 +141,11 @@
                                                     Delete
                                                 </button>
                                             @else
+                                                <button type="button" class="btn btn-green"
+                                                    onclick='openEditModal(@json($y))'>
+                                                    Edit
+                                                </button>
+
                                                 <button type="button" class="btn btn-yellow"
                                                     onclick="handleRestore({{ $y->id }}, {{ $protectionEnabled ? 'true' : 'false' }})">
                                                     Restore
@@ -146,7 +156,6 @@
                                                     Delete
                                                 </button>
                                             @endif
-
                                         @endif
 
                                     </div>
@@ -206,34 +215,19 @@
                     <input id="edit_municipality" name="municipality" class="form-input">
                 </div>
 
-<div class="form-row">
+                <div class="form-row">
 
-    <select id="edit_barangay" name="barangay" class="form-input">
-        <option value="">Select Barangay</option>
+                    <select id="edit_barangay" name="barangay" class="form-input">
+                        <option value="">Select Barangay</option>
 
-        @foreach([
-            'Awang',
-            'Bagocboc',
-            'Barra',
-            'Bonbon',
-            'Cauyunan',
-            'Igpit',
-            'Limunda',
-            'Luyong Bonbon',
-            'Malanang',
-            'Nangcaon',
-            'Patag',
-            'Poblacion',
-            'Taboc',
-            'Tingalan'
-        ] as $b)
-            <option value="{{ $b }}">{{ $b }}</option>
-        @endforeach
-    </select>
+                        @foreach (['Awang', 'Bagocboc', 'Barra', 'Bonbon', 'Cauyunan', 'Igpit', 'Limunda', 'Luyong Bonbon', 'Malanang', 'Nangcaon', 'Patag', 'Poblacion', 'Taboc', 'Tingalan'] as $b)
+                            <option value="{{ $b }}">{{ $b }}</option>
+                        @endforeach
+                    </select>
 
-    <input id="edit_home_address" name="home_address" class="form-input" readonly>
+                    <input id="edit_home_address" name="home_address" class="form-input" readonly>
 
-</div>
+                </div>
 
 
                 <div class="form-row">
@@ -277,14 +271,17 @@
     <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#youthTable').DataTable({
-                order: [[0, 'asc']],
+                order: [
+                    [0, 'asc']
+                ],
                 pageLength: 10,
                 lengthChange: false,
-                columnDefs: [
-                    { orderable: false, targets: 5 }
-                ]
+                columnDefs: [{
+                    orderable: false,
+                    targets: 5
+                }]
             });
         });
     </script>
@@ -418,8 +415,6 @@
                 });
             });
         }
-
-
     </script>
 
 
@@ -508,12 +503,12 @@
         }
 
         // Close modal when clicking outside
-        document.getElementById('editModal').addEventListener('click', function (e) {
+        document.getElementById('editModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeEditModal();
             }
         });
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
 
             const editBirthday = document.getElementById('edit_birthday');
             const editAge = document.getElementById('edit_age');
@@ -564,7 +559,6 @@
             const event = new Event('input');
             document.getElementById('edit_barangay').dispatchEvent(event);
         }, 100);
-
     </script>
 
 
