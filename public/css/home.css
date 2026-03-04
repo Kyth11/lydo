@@ -1,0 +1,183 @@
+ html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image:url("images/LydoCover.jpg") center center no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            filter: blur(8px);
+            transform: scale(1.05);
+            z-index: -2;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: -1;
+        }
+
+        .header-card {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            max-width: 1200px;
+            background: linear-gradient(to right,
+                    rgba(150, 0, 0, 0.88),
+                    rgba(45, 35, 130, 0.88),
+                    rgba(10, 20, 80, 0.92));
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-radius: 14px;
+            padding: 16px 24px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand img {
+            height: 48px;
+        }
+
+        .brand h2 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .login-btn {
+            padding: 10px 22px;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: #ffffff;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .login-btn:hover {
+            opacity: 0.9;
+        }
+
+        .header-spacer {
+            height: 120px;
+        }
+
+        .content-section {
+            padding: 60px 20px 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .announcement-card {
+            background: rgba(255, 255, 255, 0.85);
+            width: 100%;
+            max-width: 1200px;
+            border-radius: 14px;
+            padding: 35px;
+            margin-bottom: 60px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .announcement-card h2 {
+            margin-bottom: 20px;
+            color: #dc2626;
+        }
+
+        .auto-scroll {
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .scroll-content {
+            display: flex;
+            gap: 25px;
+            width: max-content;
+        }
+
+        /* 4 Column Layout */
+        .announcement-item {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 20px;
+            min-width: 260px;
+            width: 260px;
+            text-align: left;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .announcement-item h3 {
+            font-size: 16px;
+            margin-bottom: 6px;
+            color: #dc2626;
+        }
+
+        .announcement-item p {
+            font-size: 13px;
+            color: #4b5563;
+            margin: 6px 0;
+            line-height: 1.5;
+        }
+
+        .cards {
+            max-width: 1100px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.75);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+            transition: all 0.3s ease;
+        }
+
+        .info-card h3 {
+            margin-top: 0;
+            font-size: 22px;
+            color: #4f46e5;
+            text-align: center;
+        }
+
+        .info-card p {
+            color: #374151;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        @media(max-width: 768px) {
+            .announcement-item {
+                min-width: 220px;
+                width: 220px;
+            }
+        }

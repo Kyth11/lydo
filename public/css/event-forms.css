@@ -1,0 +1,130 @@
+/* ============================= */
+/* FORCE FORM CENTERING */
+/* ============================= */
+
+.event-form-container {
+    max-width: 720px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    background: #ffffff !important;
+    padding: 32px !important;
+    border-radius: 16px !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06) !important;
+}
+
+/* ============================= */
+/* FORCE FORM WIDTH */
+/* ============================= */
+
+.event-form {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 18px !important;
+}
+
+/* ============================= */
+/* FORCE FULL-WIDTH INPUTS */
+/* ============================= */
+
+.event-form-container input,
+.event-form-container textarea,
+.event-form-container select {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 10px 0 !important;
+    padding: 10px 12px !important;
+    border-radius: 8px !important;
+    border: 1px solid #ddd !important;
+    font-size: 14px !important;
+}
+
+.event-divider {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 30px 0;
+}
+
+/* ============================= */
+/* FORM GROUP NORMALIZATION */
+/* ============================= */
+
+.event-form .form-group {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+}
+
+/* ============================= */
+/* ACTION BAR (TAILWIND OVERRIDE) */
+/* ============================= */
+
+.action-bar {
+    position: sticky !important;
+    top: 5.2rem !important;
+    z-index: 30 !important;
+
+    display: flex !important;
+    justify-content: flex-end !important;
+    gap: 10px !important;
+    padding: 6px 0 !important;
+    margin-bottom: 16px !important;
+}
+
+/* ============================= */
+/* IMAGE PREVIEW GRID (CREATE + EDIT) */
+/* ============================= */
+
+.preview-grid,
+.image-preview-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)) !important;
+    gap: 10px !important;
+    margin-top: 12px !important;
+}
+
+/* ============================= */
+/* IMAGE PREVIEW ITEM */
+/* ============================= */
+
+.preview-image {
+    width: 100% !important;
+    height: 90px !important;
+    object-fit: cover !important;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08) !important;
+}
+
+/* ============================= */
+/* IMAGE DELETE BUTTON (EDIT) */
+/* ============================= */
+
+.image-wrapper {
+    position: relative !important;
+}
+
+.image-wrapper .remove-btn.small {
+    position: absolute !important;
+    top: 5px !important;
+    right: 5px !important;
+
+    padding: 2px 6px !important;
+    font-size: 11px !important;
+    border-radius: 6px !important;
+
+    background: #ef4444 !important;
+    color: #fff !important;
+    border: none !important;
+    cursor: pointer !important;
+}
+
+.image-wrapper .remove-btn.small:hover {
+    background: #dc2626 !important;
+}
+
+.event-form-container label{
+    font-weight: 600;}

@@ -1,0 +1,170 @@
+/* =====================================================
+   MODAL OVERLAY & CONTAINER
+===================================================== */
+
+.modal-overlay {
+    position: fixed;
+    top: 80px; /* navbar height (h-20 = 80px) */
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+
+    padding-top: 2rem;
+    z-index: 9000; /* below navbar (9999) */
+}
+
+.modal-content {
+    background: #ffffff;
+    width: 100%;
+    max-width: 1000px;
+    max-height: 90vh;
+
+    padding: 2rem;
+    border-radius: 1rem;
+    overflow-y: auto;
+}
+
+
+/* =====================================================
+   MODAL ANIMATION
+===================================================== */
+
+.animated-modal {
+    animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+/* =====================================================
+   FORM LAYOUT
+===================================================== */
+
+.youth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+
+
+
+/* =====================================================
+   SAVE BAR (STICKY ACTION BAR)
+===================================================== */
+
+.save-bar {
+    position: sticky !important;
+    top: 2rem !important;
+
+    display: flex !important;
+    justify-content: flex-end !important;
+
+    padding: 0.75rem 0 !important;
+    margin-bottom: 1rem !important;
+}
+
+
+/* =====================================================
+   FAMILY TABLE
+===================================================== */
+
+.family-wrapper {
+    width: 100% !important;
+    overflow-x: auto !important;
+}
+
+.family-table {
+    width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+}
+
+.family-table th,
+.family-table td {
+    border: 0.5px solid #e5e7eb !important;
+    padding: 8px !important;
+    font-size: 14px !important;
+    vertical-align: middle !important;
+}
+
+.family-table th {
+    font-weight: 600 !important;
+    text-align: center !important;
+}
+
+.family-table .form-input {
+    width: 100% !important;
+    min-width: unset !important;
+}
+
+
+/* ===== COLUMN WIDTHS ===== */
+
+.family-table th:nth-child(1),
+.family-table td:nth-child(1) { width: 18% !important; }
+
+.family-table th:nth-child(2),
+.family-table td:nth-child(2) { width: 8% !important; }
+
+.family-table th:nth-child(3),
+.family-table td:nth-child(3) { width: 16% !important; }
+
+.family-table th:nth-child(4),
+.family-table td:nth-child(4) { width: 18% !important; }
+
+.family-table th:nth-child(5),
+.family-table td:nth-child(5) { width: 16% !important; }
+
+.family-table th:nth-child(6),
+.family-table td:nth-child(6) { width: 14% !important; }
+
+.family-table th:nth-child(7),
+.family-table td:nth-child(7) { width: 10% !important; }
+
+
+/* =====================================================
+   FAMILY TABLE — MOBILE
+===================================================== */
+
+@media (max-width: 768px) {
+    .family-table {
+        min-width: 700px !important;
+    }
+
+    .family-table th,
+    .family-table td {
+        font-size: 11px !important;
+        padding: 6px !important;
+    }
+}
+
+
+/* =====================================================
+   PHOTO PREVIEW
+===================================================== */
+
+#photoPreview {
+    width: 96px !important;
+    height: 96px !important;
+    object-fit: cover !important;
+}
+
+.relative.w-32.h-32 {
+    width: 96px !important;
+    height: 96px !important;
+}

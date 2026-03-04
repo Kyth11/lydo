@@ -11,16 +11,16 @@
 
             <!-- Header -->
             <div class="flex justify-between items-center mb-6">
-                <h4 class="section-title">Announcements</h4>
+                <h4 class="section-title"></h4>
 
-                <a href="{{ route('announcements.create') }}" class="add-btn">
+                <a href="{{ route('announcements.create') }}" class="save-btn">
                     + Add Announcement
                 </a>
             </div>
 
             <!-- Custom Barangay Filter -->
             <div class="mb-4 flex items-center gap-3">
-                {{-- <label class="font-semibold text-sm">Filter by Barangay:</label> --}}
+                <label class="font-semibold text-sm">Filter by Barangay:</label>
                 <select id="barangayFilter" style="padding-right: 50px" class="border rounded-md px-3 py-2 text-sm">
                     <option value="">All Barangays</option>
                     @php
@@ -74,7 +74,7 @@
                                 <td>
                                     <div class="flex gap-3">
 
-                                        <a href="{{ route('announcements.edit', $a->id) }}" class="edit-btn">
+                                        <a href="{{ route('announcements.edit', $a->id) }}" class="btn btn-green">
                                             Edit
                                         </a>
 
@@ -82,7 +82,7 @@
                                             class="delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="delete-btn delete-btn-trigger">
+                                            <button type="button" class="btn btn-red delete-btn-trigger">
                                                 Delete
                                             </button>
                                         </form>
@@ -103,17 +103,23 @@
 
 
     <!-- DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="{{ asset('css/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/ann-index.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
 
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
 
     <!-- DataTables JS -->
-    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('js/youth-index.js') }}"></script>
+    <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
 
             var table = $('#announcementTable').DataTable({
                 pageLength: 10,
@@ -128,7 +134,7 @@
             });
 
             // Custom Barangay Filter
-            $('#barangayFilter').on('change', function() {
+            $('#barangayFilter').on('change', function () {
                 var selected = $(this).val();
 
                 if (selected === "") {
@@ -141,7 +147,7 @@
         });
 
         // SweetAlert Delete Confirmation
-        $(document).on('click', '.delete-btn-trigger', function() {
+        $(document).on('click', '.delete-btn-trigger', function () {
 
             let form = $(this).closest('form');
 
@@ -162,71 +168,5 @@
 
         });
     </script>
-
-    <style>
-        .section-title {
-            font-size: 1.2rem !important;
-            font-weight: 600 !important;
-        }
-
-        .announcement-table thead th {
-            font-size: 1rem !important;
-            padding: 16px 14px !important;
-        }
-
-        .announcement-table tbody td {
-            font-size: 1rem !important;
-            padding: 16px 14px !important;
-        }
-
-        .title-cell {
-            font-weight: 600 !important;
-        }
-
-        .add-btn {
-            background: #4f46e5 !important;
-            color: white !important;
-            padding: .6rem 1.2rem !important;
-            font-size: .9rem !important;
-            border-radius: .5rem !important;
-            text-decoration: none !important;
-        }
-
-        .add-btn:hover {
-            background: #4338ca !important;
-            transition: .2s ease-in-out !important;
-            translate: 0 -2px !important;
-        }
-
-        .edit-btn {
-            background: #10b981 !important;
-            color: white !important;
-            padding: .5rem 1rem !important;
-            font-size: .85rem !important;
-            border-radius: .45rem !important;
-            text-decoration: none !important;
-        }
-
-        .edit-btn:hover {
-            background: #059669 !important;
-            transition: .2s ease-in-out !important;
-            translate: 0 -2px !important;
-        }
-
-        .delete-btn {
-            background: #ef4444 !important;
-            color: white !important;
-            padding: .5rem 1rem !important;
-            font-size: .85rem !important;
-            border-radius: .45rem !important;
-            border: none !important;
-        }
-
-        .delete-btn:hover {
-            background: #dc2626 !important;
-            transition: .2s ease-in-out !important;
-            translate: 0 -2px !important;
-        }
-    </style>
 
 @endsection

@@ -1,0 +1,132 @@
+/* ================================
+   NAVBAR
+================================ */
+
+.lydo-navbar {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 9999 !important;
+    background-image: url("/images/LydoCover.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    isolation: isolate;
+}
+
+.lydo-navbar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right,
+            rgba(150,0,0,0.88),
+            rgba(45,35,130,0.88),
+            rgba(10,20,80,0.92));
+    z-index: 0;
+}
+
+.lydo-navbar > * {
+    position: relative;
+    z-index: 1;
+}
+
+.lydo-title {
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 900;
+    letter-spacing: 0.15em;
+}
+
+.lydo-subtitle {
+    color: rgba(255,210,210,0.85);
+}
+
+.lydo-logo {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+}
+
+/* Links */
+.lydo-link {
+    color: white !important;
+    background: rgba(255,255,255,0.15);
+    padding: 0.55rem 1.2rem;
+    border-radius: 14px;
+    font-weight: 600;
+    transition: 0.25s ease;
+    margin-right: 10px;
+
+}
+
+.lydo-link:hover {
+    background: #facc15 !important;
+    color: #111 !important;
+}
+
+/* Dropdown */
+.lydo-dropdown {
+    background: linear-gradient(to bottom, #1e1b4b, #1e3a8a);
+    border-radius: 14px;
+    padding: 0.5rem;
+    min-width: 230px;
+}
+
+.lydo-dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    border-radius: 10px;
+    color: white !important;
+    font-weight: 600;
+    background: rgba(255,255,255,0.12);
+    transition: 0.25s ease;
+}
+
+.lydo-dropdown-item:hover {
+    background: #facc15 !important;
+    color: #111 !important;
+}
+
+.lydo-dropdown-item.logout {
+    background: rgba(189,0,0,0.6);
+}
+
+.lydo-dropdown-item.logout:hover {
+    background: #dc2626 !important;
+    color: #fff !important;
+}
+
+/* Mobile */
+.lydo-mobile-panel {
+    background: linear-gradient(to bottom, #1e1b4b, #1e3a8a);
+    padding: 1rem !important;
+}
+
+.lydo-mobile-link,
+.lydo-mobile-link-logout {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    height: 52px !important;
+    padding: 0 16px !important;
+    font-weight: 600 !important;
+    border-radius: 14px !important;
+    background: rgba(255,255,255,0.12) !important;
+    color: #fff !important;
+    margin-bottom: 10px !important;
+    transition: 0.25s ease !important;
+}
+
+.lydo-mobile-link:hover {
+    background: #facc15 !important;
+    color: #111 !important;
+}
+
+.lydo-mobile-link-logout {
+    background: #8b1c3b !important;
+}
+
+.lydo-mobile-link-logout:hover {
+    background: #dc2626 !important;
+    color: #fff !important;
+}

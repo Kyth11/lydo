@@ -12,7 +12,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
-        /* ===== LYDO NAVBAR BACKGROUND ===== */
+        /* ================================
+   NAVBAR BASE (DESKTOP)
+================================ */
+
         .lydo-navbar {
             position: sticky !important;
             top: 0 !important;
@@ -22,7 +25,6 @@
             background-position: center;
             background-repeat: no-repeat;
             isolation: isolate;
-            /* create stacking context */
         }
 
         .lydo-navbar::before {
@@ -34,14 +36,16 @@
                     rgba(45, 35, 130, 0.88),
                     rgba(10, 20, 80, 0.92));
             z-index: 0;
-            /* behind content */
         }
 
-        /* Ensure all navbar content is above overlay */
         .lydo-navbar>* {
             position: relative;
             z-index: 1;
         }
+
+        /* ================================
+   BRANDING
+================================ */
 
         .lydo-title {
             color: #ffffff;
@@ -63,6 +67,10 @@
             filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .5));
         }
 
+        /* ================================
+   DESKTOP LINKS
+================================ */
+
         .lydo-link {
             color: white !important;
             background: rgba(255, 255, 255, 0.15);
@@ -73,6 +81,7 @@
             transition: all 0.25s ease;
             white-space: nowrap;
             margin-right: 0.5rem;
+            font-size: 14px;
         }
 
         .lydo-link:hover {
@@ -82,54 +91,15 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
         }
 
-        /* MOBILE PANEL */
-        .lydo-mobile-panel {
-            background: linear-gradient(to bottom, #1e1b4b, #1e3a8a);
-            padding: 1rem !important;
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
-            position: relative;
-            z-index: 9999;
-        }
-
-        .lydo-mobile-link {
-            display: block !important;
-            width: 100% !important;
-            padding: 0.75rem 1rem !important;
-            color: white !important;
-            border-radius: 10px !important;
-            background: rgba(255, 255, 255, 0.12) !important;
-            margin-bottom: 0.5rem !important;
-            font-weight: 600 !important;
-            transition: 0.25s ease !important;
-        }
-
-        .lydo-mobile-link-logout {
-            display: block !important;
-            width: 100% !important;
-            padding: 0.75rem 1rem !important;
-            color: white !important;
-            border-radius: 10px !important;
-            background: rgba(255, 255, 255, 0.12) !important;
-            margin-bottom: 0.5rem !important;
-            font-weight: 600 !important;
-            transition: 0.25s ease !important;
-        }
-
-        .lydo-mobile-link-logout:hover {
-            background: #ff0000 !important;
-            color: #ffffff !important;
-        }
-
-        .lydo-mobile-link:hover {
-            background: #facc15 !important;
-            color: #111 !important;
-        }
+        /* ================================
+   DROPDOWN
+================================ */
 
         .lydo-dropdown {
             background: linear-gradient(to bottom, #1e1b4b, #1e3a8a);
             border-radius: 14px;
             padding: 0.5rem;
-            min-width: 220px;
+            min-width: 230px;
             box-shadow: 0 25px 50px rgba(0, 0, 0, .55);
             z-index: 99999 !important;
         }
@@ -137,11 +107,12 @@
         .lydo-dropdown-item {
             display: block;
             width: 100%;
-            padding: 0.65rem 0.9rem;
+            padding: 0.6rem 0.9rem;
             border-radius: 10px;
             color: white !important;
             font-weight: 600;
             text-align: left;
+            font-size: 14px;
             transition: all 0.25s ease;
             background: rgba(255, 255, 255, 0.12);
         }
@@ -153,7 +124,7 @@
         }
 
         .lydo-dropdown-item.logout {
-            background: rgba(255, 0, 0, 0.25);
+            background: rgba(189, 0, 0, 0.53);
         }
 
         .lydo-dropdown-item.logout:hover {
@@ -161,12 +132,138 @@
             color: white !important;
         }
 
-        /* space between navbar and main content  */
+        .lydo-dropdown-divider {
+            height: 2px;
+            background: rgba(255, 255, 255, 0.15);
+            margin: 0.8rem 0;
+        }
+
+        /* ================================
+   MOBILE PANEL — UNIFORM SIZE FIX
+================================ */
+
+        .lydo-mobile-panel {
+            background: linear-gradient(to bottom, #1e1b4b, #1e3a8a);
+            padding: 1rem !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* FORCE IDENTICAL SIZE FOR ALL ITEMS */
+        .lydo-mobile-link,
+        .lydo-mobile-link-logout {
+
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+
+            width: 100% !important;
+
+            height: 52px !important;
+            /* fixed identical height */
+            padding: 0 16px !important;
+            /* horizontal only */
+
+            font-size: 15px !important;
+            font-weight: 600 !important;
+
+            border-radius: 14px !important;
+
+            background: rgba(255, 255, 255, 0.12) !important;
+            color: #ffffff !important;
+
+            border: none !important;
+            outline: none !important;
+
+            margin-bottom: 10px !important;
+
+            transition: all 0.25s ease !important;
+            cursor: pointer !important;
+
+            white-space: nowrap !important;
+            /* prevent wrapping */
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+        }
+
+        /* Normal hover */
+        .lydo-mobile-link:hover {
+            background: #facc15 !important;
+            color: #111 !important;
+        }
+
+        /* Logout special style */
+        .lydo-mobile-link-logout {
+            background: #8b1c3b !important;
+        }
+
+        .lydo-mobile-link-logout:hover {
+            background: #dc2626 !important;
+            color: #fff !important;
+        }
+
+        /* ================================
+   MAIN CONTENT
+================================ */
+
         .main-content {
             padding-top: 2em !important;
         }
+
+        .main-content h1 {
+            font-size: 28px;
+        }
+
+        .main-content p {
+            font-size: 15px;
+        }
+
+        /* ================================
+   RESPONSIVE
+================================ */
+
+        @media (max-width: 768px) {
+
+            .lydo-navbar .h-20 {
+                height: 70px !important;
+            }
+
+            .lydo-logo {
+                width: 42px;
+                height: 42px;
+            }
+
+            .lydo-title {
+                font-size: 1rem;
+                letter-spacing: 0.08em;
+            }
+
+            .lydo-subtitle {
+                font-size: 10px;
+            }
+
+            .sm\:hidden button {
+                font-size: 1.8rem !important;
+            }
+
+            .main-content h1 {
+                font-size: 20px !important;
+            }
+
+            .main-content p {
+                font-size: 13px !important;
+            }
+
+            .max-w-7xl {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+            }
+
+            .main-content {
+                padding-top: 1.2rem !important;
+            }
+        }
     </style>
-    
+
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -193,12 +290,15 @@
                     <div class="hidden sm:flex sm:ms-10 space-x-3">
                         <a href="{{ route('dashboard') }}" class="lydo-link">Dashboard</a>
                         <a href="/youth" class="lydo-link">Youth Profiles</a>
-                        <a href="/youth/create" class="lydo-link">Add Profile</a>
-                        @if (Auth::user()->isAdmin())
-                            <a href="{{ route('announcements.index') }}" class="lydo-link bg-yellow-400 text-black">
-                                Announcements
-                            </a>
-                        @endif
+                        {{-- <a href="/youth/create" class="lydo-link">Add Profile</a> --}}
+                        @auth
+                            @if (Auth::user()->isAdmin())
+                                <a href="{{ route('announcements.index') }}" class="lydo-link bg-yellow-400 text-black">
+                                    Announcements
+                                </a>
+                                   <a href="{{ route('events.index') }}" class="lydo-link">Events</a>
+                            @endif
+                        @endauth
 
                     </div>
                 </div>
@@ -210,29 +310,39 @@
                         <x-slot name="trigger">
                             <button
                                 class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/15 backdrop-blur-md text-white font-semibold hover:bg-yellow-400 hover:text-black transition shadow-lg">
-                                {{ Auth::user()->name }}
+                                @auth
+                                    {{ Auth::user()->name }}
+                                @endauth
                                 <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
                                 </svg>
                             </button>
-                        </x-slot>
+                        </x-slot> @csrf
 
                         <x-slot name="content">
                             <div class="lydo-dropdown space-y-1">
-                                @if (Auth::user()->isAdmin())
-                                    <a href="{{ route('sk.manage') }}" class="lydo-dropdown-item">
-                                        Manage SK Account
-                                    </a>
+                                @auth
+                                    @if (Auth::user()->isAdmin())
+                                        <button onclick="toggleProtection()" class="lydo-dropdown-item">
+                                            {{ \App\Models\User::where('role', 'admin')->value('action_protection') ? '🔐 SK Archive Disabled' : '🔓 SK Archive Enabled' }}
+                                        </button>
+                                        <button onclick="toggleKKRegister()" class="lydo-dropdown-item">
+                                            {{ auth()->user()->kk_register_enabled ? '👁 KK Register Shown ' : '🙈 KK Register Hidden' }}
+                                        </button>
+                                        <div class="lydo-dropdown-divider"></div>
+                                        <a href="{{ route('sk.manage') }}" class="lydo-dropdown-item">
+                                            Manage SK Account
+                                        </a>
 
-                                    <a href="{{ route('sk.create') }}" class="lydo-dropdown-item">
-                                        Add SK
-                                    </a>
-
-                                    <button onclick="toggleProtection()" class="lydo-dropdown-item">
-                                        {{ \App\Models\User::where('role', 'admin')->value('action_protection') ? '🔐 Protection Enabled' : '🔐 Protection Disabled' }}
-                                    </button>
-                                @endif
+                                        {{-- <a href="{{ route('sk.create') }}" class="lydo-dropdown-item">
+                                            Add SK
+                                        </a> --}}
+                                        <a href="#" class="lydo-dropdown-item">
+                                            Reports
+                                        </a>
+                                    @endif
+                                @endauth
 
                                 <a href="{{ route('account.edit') }}" class="lydo-dropdown-item">Edit Account</a>
                                 <form method="POST" action="{{ route('logout') }}">
@@ -254,25 +364,51 @@
 
             </div>
         </div>
-
         <!-- MOBILE PANEL -->
         <div x-show="open" x-transition @click.away="open=false" class="sm:hidden lydo-mobile-panel">
+            <button type="button" onclick="toggleProtection()" class="lydo-mobile-link">
+                {{ \App\Models\User::where('role', 'admin')->value('action_protection')
+                    ? '🔐 SK Archive Disabled'
+                    : '🔓 SK Archive Enabled' }}
+            </button>
+
+            <button type="button" onclick="toggleKKRegister()" class="lydo-mobile-link">
+                {{ auth()->user()->kk_register_enabled ? '👁 KK Register Shown' : '🙈 KK Register Hidden' }}
+            </button>
+
+            <div class="lydo-dropdown-divider"></div>
             <a href="{{ route('dashboard') }}" class="lydo-mobile-link">Dashboard</a>
             <a href="/youth" class="lydo-mobile-link">Youth Profiles</a>
-            <a href="/youth/create" class="lydo-mobile-link">Add Profile</a>
 
-            @if (Auth::user()->isAdmin())
-                <a href="{{ route('sk.create') }}" class="lydo-mobile-link">Add SK</a>
-            @endif
+            @auth
+                @if (Auth::user()->isAdmin())
+                    {{-- <a href="{{ route('sk.create') }}" class="lydo-mobile-link">
+                Add SK
+            </a> --}}
 
-            <a href="{{ route('account.edit') }}" class="lydo-mobile-link">Edit Account</a>
+
+
+                    <a href="{{ route('sk.manage') }}" class="lydo-mobile-link">
+                        Manage SK Account
+                    </a>
+
+                    <a href="#" class="lydo-mobile-link">
+                        Reports
+                    </a>
+                @endif
+            @endauth
+
+            <a href="{{ route('account.edit') }}" class="lydo-mobile-link">
+                Edit Account
+            </a>
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="lydo-mobile-link-logout bg-red-600">
+                <button type="submit" class="lydo-mobile-link lydo-mobile-link-logout">
                     Log Out
                 </button>
             </form>
+
         </div>
 
     </nav>
@@ -344,50 +480,174 @@
 
         @yield('content')
     </main>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @if (Auth::user()->isAdmin())
-        <script>
-            function toggleProtection() {
-                Swal.fire({
-                    title: 'Admin Verification Required',
-                    input: 'password',
-                    inputLabel: 'Enter your password',
-                    inputPlaceholder: 'Password',
-                    inputAttributes: {
-                        autocapitalize: 'off',
-                        autocorrect: 'off'
-                    },
-                    showCancelButton: true,
-                    confirmButtonText: 'Verify',
-                    confirmButtonColor: '#4f46e5'
-                }).then((result) => {
-                    if (result.isConfirmed && result.value) {
+<script src="{{ asset('js/sweetalert2.min.js') }}"></script>
 
-                        const form = document.createElement('form');
-                        form.method = 'POST';
-                        form.action = "{{ route('admin.toggle.protection') }}";
+    @auth
+        @if (Auth::user()->isAdmin())
+            <script>
+                function showAdminPasswordModal(title, confirmText, confirmColor, callback) {
 
-                        const csrf = document.createElement('input');
-                        csrf.type = 'hidden';
-                        csrf.name = '_token';
-                        csrf.value = "{{ csrf_token() }}";
+                    Swal.fire({
+                        title: title,
+                        html: `
+            <div style="position:relative;margin-top:10px;">
+                <input id="swal-password"
+                       type="password"
+                       class="swal2-input"
+                       placeholder="Enter Admin Password"
+                       style="padding-right:40px;" />
 
-                        const password = document.createElement('input');
-                        password.type = 'hidden';
-                        password.name = 'password';
-                        password.value = result.value;
+                <span id="toggle-eye"
+                      style="position:absolute;right:30px;top:30px;cursor:pointer;font-size:18px;">
+                      🙈
+                </span>
 
-                        form.appendChild(csrf);
-                        form.appendChild(password);
+                <div id="caps-warning"
+                     style="color:#f59e0b;font-size:13px;margin-top:5px;display:none;">
+                    ⚠️ Caps Lock is ON
+                </div>
+            </div>
+        `,
+                        showCancelButton: true,
+                        confirmButtonText: confirmText,
+                        confirmButtonColor: confirmColor,
+                        focusConfirm: false,
+                        preConfirm: () => {
+                            return document.getElementById('swal-password').value;
+                        },
+                        didOpen: () => {
 
-                        document.body.appendChild(form);
-                        form.submit();
-                    }
-                });
-            }
-        </script>
-    @endif
+                            const passwordInput = document.getElementById('swal-password');
+                            const eye = document.getElementById('toggle-eye');
+                            const capsWarning = document.getElementById('caps-warning');
 
+                            // 👁 Toggle visibility
+                            eye.addEventListener('click', function() {
+                                if (passwordInput.type === "password") {
+                                    passwordInput.type = "text";
+                                    eye.textContent = "👁";
+                                } else {
+                                    passwordInput.type = "password";
+                                    eye.textContent = "🙈";
+                                }
+                            });
+
+                            // ⚠️ Caps Lock detection
+                            passwordInput.addEventListener('keyup', function(e) {
+                                if (e.getModifierState && e.getModifierState('CapsLock')) {
+                                    capsWarning.style.display = "block";
+                                } else {
+                                    capsWarning.style.display = "none";
+                                }
+                            });
+
+                            passwordInput.addEventListener('keydown', function(e) {
+                                if (e.getModifierState && e.getModifierState('CapsLock')) {
+                                    capsWarning.style.display = "block";
+                                } else {
+                                    capsWarning.style.display = "none";
+                                }
+                            });
+
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed && result.value) {
+                            callback(result.value);
+                        }
+                    });
+                }
+            </script>
+
+            <script>
+                // 🔒 SK Archive Protection Toggle
+                function toggleProtection() {
+
+                    showAdminPasswordModal(
+                        'Admin Verification Required',
+                        'Verify SK Archive Protection',
+                        '#4f46e5',
+                        function(password) {
+
+                            const form = document.createElement('form');
+                            form.method = 'POST';
+                            form.action = "{{ route('admin.toggle.protection') }}";
+
+                            const csrf = document.createElement('input');
+                            csrf.type = 'hidden';
+                            csrf.name = '_token';
+                            csrf.value = "{{ csrf_token() }}";
+
+                            const pass = document.createElement('input');
+                            pass.type = 'hidden';
+                            pass.name = 'password';
+                            pass.value = password;
+
+                            form.appendChild(csrf);
+                            form.appendChild(pass);
+
+                            document.body.appendChild(form);
+                            form.submit();
+                        }
+                    );
+                }
+            </script>
+
+            <script>
+                // 🔓 KK Registration Toggle
+                function toggleKKRegister() {
+
+                    showAdminPasswordModal(
+                        'Admin Verification Required',
+                        'Verify KK Register',
+                        '#f59e0b',
+                        function(password) {
+
+                            fetch("{{ route('admin.toggle.kk') }}", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                                    },
+                                    body: JSON.stringify({
+                                        password: password
+                                    })
+                                })
+                                .then(res => res.json())
+                                .then(data => {
+
+                                    if (data.success) {
+
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: data.enabled ?
+                                                'KK Registration Enabled' : 'KK Registration Disabled',
+                                            text: data.enabled ?
+                                                'The KK registration form is now accessible.' :
+                                                'The KK registration form has been disabled.',
+                                            confirmButtonColor: '#16a34a'
+                                        }).then(() => {
+                                            location.reload();
+                                        });
+
+                                    } else {
+
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Incorrect Password',
+                                            text: 'Admin verification failed.',
+                                            confirmButtonColor: '#dc2626'
+                                        });
+
+                                    }
+
+                                });
+                        }
+                    );
+                }
+            </script>
+        @endif
+    @endauth
+<script src="{{ asset('js/sweetalert2.min.js') }}"></script>
 </body>
 
 </html>

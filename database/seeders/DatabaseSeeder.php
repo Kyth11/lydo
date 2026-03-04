@@ -19,10 +19,10 @@ class DatabaseSeeder extends Seeder
 
         // Create default admin user (won't duplicate if already exists)
         \App\Models\User::firstOrCreate(
-            ['email' => 'admin@default.com'],
+            ['email' => 'opollydo@gmail.com'],
             [
-                'name' => 'Administrator',
-                'password' => 'default123', // will be hashed by User cast
+                'name' => 'OPOL LYDO',
+                'password' => 'opolyouth', // will be hashed by User cast
                 'role' => 'admin',
                 'email_verified_at' => now(),
             ]

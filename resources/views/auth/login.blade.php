@@ -20,7 +20,8 @@
         <!-- Email -->
         <div>
             <x-input-label for="email" value="Email" class="text-gray-200" />
-            <x-text-input id="email" class="block mt-1 w-full bg-white/90" type="email" name="email" {{--
+            <x-text-input id="email" class="block mt-1 w-full bg-white/90" type="email" name="email"
+                {{--
                 :value="old('email')" --}} required autofocus />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
@@ -53,7 +54,7 @@
 
             @if (Route::has('password.request'))
                 <a class="text-sm text-indigo-500 hover:underline" href="{{ route('password.request') }}">
-                Forgot password?
+                    Forgot password?
                 </a>
             @endif
         </div>
@@ -71,7 +72,7 @@
 
         <!-- Buttons -->
         <div class="flex justify-center items-center !important">
-              <x-primary-button class="!mx-auto !block !text-center !important">
+            <x-primary-button class="!mx-auto !block !text-center !important">
                 Log in
             </x-primary-button>
         </div>
@@ -214,7 +215,7 @@
         }
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
 
             const emailInput = document.getElementById("email");
             const rememberCheckbox = document.getElementById("remember");
@@ -228,14 +229,14 @@
             }
 
             // Save email when typing
-            emailInput.addEventListener("input", function () {
+            emailInput.addEventListener("input", function() {
                 if (rememberCheckbox.checked) {
                     localStorage.setItem("rememberedEmail", emailInput.value);
                 }
             });
 
             // Remove email if unchecked
-            rememberCheckbox.addEventListener("change", function () {
+            rememberCheckbox.addEventListener("change", function() {
                 if (!this.checked) {
                     localStorage.removeItem("rememberedEmail");
                 } else {

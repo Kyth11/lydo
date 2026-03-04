@@ -1,0 +1,239 @@
+/* ============================= */
+/* EVENTS CONTAINER */
+/* ============================= */
+
+.events-container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+.events-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.event-divider {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 30px 0;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+/* ============================= */
+/* GRID LAYOUT */
+/* ============================= */
+
+.event-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+/* Tablet */
+@media (max-width: 1200px) {
+    .event-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Small Tablet */
+@media (max-width: 900px) {
+    .event-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .event-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================= */
+/* EVENT CARD */
+/* ============================= */
+
+.event-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    transition: 0.3s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.event-card.past {
+    opacity: 0.75;
+}
+
+/* ============================= */
+/* IMAGE COLLAGE */
+/* ============================= */
+
+.event-collage {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3px;
+    height: 160px;
+    cursor: pointer;
+    background: #f3f4f6;
+}
+
+.event-collage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ============================= */
+/* CONTENT (WHITE CARD) */
+/* ============================= */
+
+.event-content {
+    background: #ffffff;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.event-content h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.event-date {
+    font-weight: 600;
+    color: #4338ca;
+    font-size: 14px;
+}
+
+.event-location {
+    margin-top: 4px;
+    color: #555;
+    font-size: 14px;
+}
+
+.event-description {
+    font-size: 13px;
+    color: #666;
+}
+
+/* ============================= */
+/* EVENT MODAL */
+/* ============================= */
+
+.event-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 99999;
+    justify-content: center;
+    align-items: center;
+}
+
+.event-modal-content {
+    background: white;
+    width: 900px;
+    max-width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 16px;
+    padding: 25px;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+/* ============================= */
+/* MODAL CONTENT */
+/* ============================= */
+
+.modal-date {
+    color: #4338ca;
+    font-weight: 600;
+}
+
+.modal-location {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.modal-description {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+/* ============================= */
+/* MODAL GALLERY */
+/* ============================= */
+
+.modal-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.modal-gallery img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+/* ============================= */
+/* EVENT CARD ACTION BUTTONS */
+/* ============================= */
+
+.event-actions {
+    margin-top: 14px;
+    display: flex;
+    gap: 8px;
+}
+
+.event-actions a,
+.event-actions button {
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* ============================= */
+/* FORM SAFETY OVERRIDES */
+/* ============================= */
+
+
+/* Prevent card styles from leaking into forms */
+.event-form .event-content,
+.event-form .event-card {
+    all: unset;
+}

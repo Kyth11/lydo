@@ -335,7 +335,96 @@
     background: white;
     transform: scale(1.2);
 }
+/* =========================
+   📱 MOBILE RESPONSIVE DASHBOARD
+========================= */
 
+@media (max-width: 768px) {
+
+    /* GRID STACK */
+    .dashboard-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+
+    /* CARDS */
+    .card {
+        padding: 1.25rem !important;
+    }
+
+    .equal-card {
+        height: auto !important;
+    }
+
+    .card-title {
+        font-size: 1rem !important;
+        text-align: center;
+    }
+
+    /* STAT BOXES */
+    .stat-container {
+        gap: 1rem !important;
+    }
+
+    .stat-box {
+        width: 100% !important;
+        height: 80px !important;
+    }
+
+    .stat-count {
+        font-size: 1.6rem !important;
+    }
+
+    /* BAR CHART */
+    .chart-area {
+        min-height: 260px !important;
+    }
+
+    /* RIGHT CARD SCROLL */
+    .scroll-area {
+        max-height: unset !important;
+    }
+
+    /* BARANGAY ROW */
+    .barangay-row {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        gap: .75rem !important;
+    }
+
+    .barangay-name {
+        font-size: .85rem !important;
+    }
+
+    .chart-wrapper {
+        width: 90px !important;
+        height: 90px !important;
+    }
+
+    /* ANNOUNCEMENT STRIP */
+    .announcement-strip {
+        padding: .75rem 1rem !important;
+        text-align: center;
+    }
+
+    .announcement-content {
+        flex-direction: column !important;
+        gap: .4rem !important;
+        font-size: .85rem !important;
+    }
+
+    .announcement-icon {
+        font-size: 1.1rem !important;
+    }
+
+    /* DOTS */
+    .dot {
+        width: 6px !important;
+        height: 6px !important;
+    }
+
+}
 </style>
 
 
@@ -344,7 +433,7 @@
 <!-- CHARTS -->
 <!-- ========================= -->
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ asset('js/chart.js') }}"></script>
 
 <script>
 new Chart(document.getElementById('barangayChart'), {
@@ -369,7 +458,7 @@ new Chart(document.getElementById('barangayChart'), {
                 data: {!! json_encode(
                     $barangayGenderData->map(fn($v)=>(int)$v['male'] + (int)$v['female'])
                 ) !!},
-                backgroundColor: '#6366f1',
+                backgroundColor: '#50C878       ',
                 borderRadius: 6
             }
         ]
@@ -399,7 +488,7 @@ new Chart(document.getElementById('barangayChart'), {
 
 {{-- to get rid if the percentage in the bar chart --}}
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ asset('js/chart.js') }}"></script>
 <script>
     /* =========================
        CENTER TEXT PLUGIN

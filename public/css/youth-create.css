@@ -1,0 +1,170 @@
+    /* =============================
+                                                       BASE FORM STYLING (DESKTOP)
+                                                    ============================= */
+
+        .youth-form {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 1rem !important;
+        }
+
+        .bold {
+            font-weight: 700 !important;
+        }
+
+        .form-row {
+            display: flex !important;
+            gap: 1rem !important;
+            flex-wrap: wrap !important;
+        }
+
+        .form-input {
+            flex: 1 1 0 !important;
+            min-width: 160px !important;
+            padding: .6rem .75rem !important;
+            border-radius: .5rem !important;
+            border: 1px solid #d1d5db !important;
+            font-size: 14px !important;
+        }
+
+        h4 {
+            font-size: 18px !important;
+        }
+
+     
+        /* =============================
+                                                       FAMILY TABLE (DESKTOP)
+                                                    ============================= */
+
+        .family-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .family-table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+
+        .family-table th,
+        .family-table td {
+            border: .5px solid #e5e7eb;
+            padding: 8px;
+            vertical-align: middle;
+            font-size: 14px;
+        }
+
+        .family-table .form-input {
+            width: 100% !important;
+            min-width: unset !important;
+        }
+
+        /* Equal column sizing */
+        .family-table th:nth-child(1),
+        .family-table td:nth-child(1) {
+            width: 18%;
+        }
+
+        .family-table th:nth-child(2),
+        .family-table td:nth-child(2) {
+            width: 8%;
+        }
+
+        .family-table th:nth-child(3),
+        .family-table td:nth-child(3) {
+            width: 16%;
+        }
+
+        .family-table th:nth-child(4),
+        .family-table td:nth-child(4) {
+            width: 18%;
+        }
+
+        .family-table th:nth-child(5),
+        .family-table td:nth-child(5) {
+            width: 16%;
+        }
+
+        .family-table th:nth-child(6),
+        .family-table td:nth-child(6) {
+            width: 14%;
+        }
+
+        .family-table th:nth-child(7),
+        .family-table td:nth-child(7) {
+            width: 10%;
+        }
+
+        #photoPreview {
+            width: 96px !important;
+            height: 96px !important;
+            object-fit: cover !important;
+        }
+
+        .relative.w-32.h-32 {
+            width: 96px !important;
+            height: 96px !important;
+        }
+
+        /* =============================
+                                                       📱 MOBILE RESPONSIVE (≤768px)
+                                                    ============================= */
+
+        @media (max-width: 768px) {
+
+            /* Overall spacing */
+            .youth-form {
+                gap: .75rem !important;
+            }
+
+            h4 {
+                font-size: 15px !important;
+            }
+
+            /* Stack form rows vertically */
+            .form-row {
+                flex-direction: column !important;
+                gap: .5rem !important;
+            }
+
+            .form-input {
+                min-width: 100% !important;
+                font-size: 12px !important;
+                padding: .45rem .6rem !important;
+            }
+
+            /* Checkbox labels smaller */
+            .form-row label {
+                font-size: 12px !important;
+            }
+
+            /* Save bar */
+            .save-bar {
+                top: 4.5rem !important;
+                padding: .5rem 0 !important;
+            }
+
+            .save-btn {
+                padding: .4rem 1rem !important;
+                font-size: 12px !important;
+            }
+
+            /* FAMILY TABLE */
+
+            .family-table th,
+            .family-table td {
+                font-size: 11px !important;
+                padding: 6px !important;
+            }
+
+            .family-table {
+                min-width: 700px;
+                /* force horizontal scroll */
+            }
+
+            .family-wrapper {
+                overflow-x: auto !important;
+            }
+
+        }

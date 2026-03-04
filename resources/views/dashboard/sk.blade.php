@@ -343,7 +343,7 @@
 <!-- CHARTS -->
 <!-- ========================= -->
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ asset('js/chart.js') }}"></script>
 
 <script>
 new Chart(document.getElementById('barangayChart'), {
@@ -368,7 +368,7 @@ new Chart(document.getElementById('barangayChart'), {
                 data: {!! json_encode(
                     $barangayGenderData->map(fn($v)=>(int)$v['male'] + (int)$v['female'])
                 ) !!},
-                backgroundColor: '#6366f1',
+                backgroundColor: '##50C878',
                 borderRadius: 6
             }
         ]
@@ -394,7 +394,7 @@ new Chart(document.getElementById('barangayChart'), {
     }
 });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ asset('js/sweetalert2.min.js') }}"></script>
 <script>
 /* =========================
    CENTER TEXT PLUGIN

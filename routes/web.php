@@ -3,83 +3,119 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\EventImageController;
+use App\Http\Controllers\PublicYouthController;
 use App\Http\Controllers\SKController;
 use App\Http\Controllers\YouthController;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/', function () {
-    return view('home'); // resources/views/home.blade.php
+    return view('home');
 });
 
+/*
+|--------------------------------------------------------------------------
+| KK REGISTER (Protected by Toggle)
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/kk/register', function () {
+    return view('kk-register');
+})->name('kk.register');
+
+
+Route::post('/kk-register', [PublicYouthController::class, 'store'])
+    ->name('kk.register.store');
+
+
+/*
+|--------------------------------------------------------------------------
+| Authenticated Routes
+|--------------------------------------------------------------------------
+*/
 
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    /*
+    |--------------------------------------------------------------------------
+    | Dashboard
+    |--------------------------------------------------------------------------
+    */
 
-    // Youth
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Youth Management
+    |--------------------------------------------------------------------------
+    */
+
     Route::get('/youth', [YouthController::class, 'index'])->name('youth.index');
-
     Route::get('/youth/create', [YouthController::class, 'create']);
     Route::post('/youth', [YouthController::class, 'store']);
-    Route::get('/youth/{id}/pdf', [YouthController::class, 'exportPDF']);
-    // ✅ UPDATE (for modal edit)
     Route::put('/youth/{id}', [YouthController::class, 'update']);
 
-    // ✅ ARCHIVE
     Route::patch('/youth/{id}/archive', [YouthController::class, 'archive']);
     Route::get('/youth/{id}/restore', [YouthController::class, 'restore']);
-    Route::get('/youth/{id}/archive', [YouthController::class, 'archive']);
     Route::post('/youth/{id}/delete', [YouthController::class, 'delete']);
 
-
-    // ✅ PDF
     Route::get('/youth/{id}/pdf', [YouthController::class, 'exportPDF']);
-    // SK management (admin only)
-    Route::get('/sk/create', [App\Http\Controllers\SKController::class, 'create'])->name('sk.create');
-    Route::post('/sk', [App\Http\Controllers\SKController::class, 'store'])->name('sk.store');
+    Route::get('/youth/{id}/print', [YouthController::class, 'printView'])
+        ->name('youth.print');
+
+    /*
+    |--------------------------------------------------------------------------
+    | SK Management (Admin)
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/sk/create', [SKController::class, 'create'])->name('sk.create');
+    Route::post('/sk', [SKController::class, 'store'])->name('sk.store');
     Route::get('/sk/manage', [SKController::class, 'index'])->name('sk.manage');
+    Route::post('/sk/{id}/toggle', [SKController::class, 'toggle'])->name('sk.toggle');
 
-    Route::post('/sk/{id}/toggle', [SKController::class, 'toggle'])
-        ->name('sk.toggle');
+    /*
+    |--------------------------------------------------------------------------
+    | Announcements
+    |--------------------------------------------------------------------------
+    */
 
-    Route::get(
-        '/announcements/create',
-        [AnnouncementController::class, 'create']
-    )->name('announcements.create');
+    Route::resource('announcements', AnnouncementController::class);
+    Route::get('/announcements/create', [AnnouncementController::class, 'create'])
+        ->name('announcements.create');
+    Route::post('/announcements/store', [AnnouncementController::class, 'store'])
+        ->name('announcements.store');
 
-    Route::post(
-        '/announcements/store',
-        [AnnouncementController::class, 'store']
-    )->name('announcements.store');
-    Route::resource('announcements', \App\Http\Controllers\AnnouncementController::class);
+    /*
+    |--------------------------------------------------------------------------
+    | Account
+    |--------------------------------------------------------------------------
+    */
 
+    Route::get('/account/edit', [AccountController::class, 'edit'])
+        ->name('account.edit');
+    Route::patch('/account', [AccountController::class, 'update'])
+        ->name('account.update');
 
-    // Account editing
-    Route::get('/account/edit', [App\Http\Controllers\AccountController::class, 'edit'])->name('account.edit');
-    Route::patch('/account', [App\Http\Controllers\AccountController::class, 'update'])->name('account.update');
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Protection Toggle
+    |--------------------------------------------------------------------------
+    */
 
-    // Mailable preview (admin only)
-    Route::get('/mail/preview/sk-created', function () {
-        $user = Auth::user();
-        if (!$user || !$user->isAdmin()) {
-            abort(403);
-        }
-        $dummy = new App\Models\User([
-            'name' => 'SK Preview',
-            'email' => 'preview@example.com',
-            'barangay' => 'Awang'
-        ]);
-
-        return new App\Mail\SKCreated($dummy, 'examplepass');
-    })->name('mail.preview.sk');
-
-    // Admin mail test
-    Route::get('/mail/test', [App\Http\Controllers\SKController::class, 'testMail'])->name('mail.test');
-
-    Route::post('/admin/toggle-protection', function (\Illuminate\Http\Request $request) {
+    Route::post('/admin/toggle-protection', function (Request $request) {
 
         $user = auth()->user();
 
@@ -87,7 +123,7 @@ Route::middleware(['auth'])->group(function () {
             abort(403);
         }
 
-        if (!Hash::check($request->password, $user->password)) {
+        if (!Hash::check($request->input('password'), $user->password)) {
             return back()->with('error', 'Incorrect password.');
         }
 
@@ -96,8 +132,77 @@ Route::middleware(['auth'])->group(function () {
 
         return back()->with('success', 'Protection mode updated.');
 
-    })->name('admin.toggle.protection')->middleware('auth');
+    })->name('admin.toggle.protection');
+
+    /*
+    |--------------------------------------------------------------------------
+    | KK Register Toggle (Admin Only)
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post('/admin/toggle-kk-register', function (Request $request) {
+
+        $admin = auth()->user();
+
+        if (!$admin || !$admin->isAdmin()) {
+            return response()->json(['success' => false]);
+        }
+
+        if (!Hash::check($request->input('password'), $admin->password)) {
+            return response()->json(['success' => false]);
+        }
+
+        $admin->kk_register_enabled = !$admin->kk_register_enabled;
+        $admin->save();
+
+        return response()->json([
+            'success' => true,
+            'enabled' => $admin->kk_register_enabled
+        ]);
+
+    })->name('admin.toggle.kk');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Mail Preview (Admin Only)
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/mail/preview/sk-created', function () {
+
+        $user = Auth::user();
+
+        if (!$user || !$user->isAdmin()) {
+            abort(403);
+        }
+
+        $dummy = new User([
+            'name' => 'SK Preview',
+            'email' => 'preview@example.com',
+            'barangay' => 'Awang'
+        ]);
+
+        return new App\Mail\SKCreated($dummy, 'examplepass');
+
+    })->name('mail.preview.sk');
+
+    Route::get('/mail/test', [SKController::class, 'testMail'])
+        ->name('mail.test');
 
 });
 
 require __DIR__ . '/auth.php';
+
+
+Route::resource('events', EventController::class);
+Route::get('/events', [EventController::class, 'publicIndex']);
+Route::get('/events/{id}', [EventController::class, 'show']);
+Route::get('/events', [EventController::class, 'index'])
+    ->name('events.index');
+
+
+
+Route::post('/events', [EventController::class, 'store'])
+    ->name('events.store');
+Route::delete('/event-images/{image}', [EventImageController::class, 'destroy'])
+    ->name('event-images.destroy');

@@ -1,0 +1,21 @@
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap
+        }
+
+        .form-input {
+            flex: 1;
+            min-width: 160px;
+            padding: .6rem;
+            border: 1px solid #d1d5db;
+            border-radius: .5rem;
+            transition: .2s ease
+        }
+
+        .form-input:hover {
+            border-color: #4f46e5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(79, 70, 229, .1)
+        }
+
