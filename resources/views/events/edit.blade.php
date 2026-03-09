@@ -83,7 +83,7 @@
                 <label>End Date</label>
                 <input type="date" name="end_date" value="{{ $event->end_date->format('Y-m-d') }}" required>
             </div>
-            
+
             {{-- Location --}}
             <div class="form-group">
                 <label>Location</label>

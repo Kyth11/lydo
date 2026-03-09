@@ -346,6 +346,25 @@
                         + Add Family Member
                     </button>
                 </div>
+
+                <!-- ATTACHMENTS -->
+                <h4 class="bold mt-6">III. Attachments</h4>
+
+                <div class="attachment-wrapper">
+
+                    <!-- File Input -->
+                    <input type="file" name="attachments[]" id="attachments" multiple
+                        accept="image/jpeg,image/png,image/jpg" class="form-input">
+
+                    <small class="text-gray-500">
+                        Upload multiple JPG/PNG images (Max 4MB each)
+                    </small>
+
+                    <!-- Preview Grid -->
+                    <div id="attachmentPreview" class="attachment-preview-grid"></div>
+
+                </div>
+
                 <!-- DATA PRIVACY CONSENT -->
                 <div class="form-row items-center mt-6 !important">
                     <label class="flex items-center gap-2 text-sm cursor-pointer">

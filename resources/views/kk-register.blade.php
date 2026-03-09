@@ -1,224 +1,172 @@
-@extends('layouts.public')
-@section('page-title', 'KK Youth Registration')
-@section('page-desc', 'Complete KK Youth Information')
+    @extends('layouts.public')
+    @section('page-title', 'KK Youth Registration')
+    @section('page-desc', 'Complete KK Youth Information')
 
-@section('content')
-
-    <style>
-        .bold {
-            font-weight: bold;
-        }
-        .youth-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .form-row {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .form-row>* {
-            flex: 1 1 calc(33.333% - 1rem);
-        }
-
-        /* Tablet */
-        @media (max-width: 1024px) {
-            .form-row>* {
-                flex: 1 1 calc(50% - 1rem);
-            }
-        }
-
-        /* Mobile */
-        @media (max-width: 640px) {
-            .form-row {
-                flex-direction: column;
-            }
-
-            .form-row>* {
-                flex: 1 1 100%;
-                width: 100%;
-            }
-
-            .form-input {
-                width: 100%;
-                font-size: 16px;
-                /* Prevent zoom on iOS */
-            }
-
-            .btn {
-                width: 50%;
-                align-self: center;
-                text-align: center;
-            }
-        }
-
-        .form-input {
-            flex: 1 1 0;
-            min-width: 100px;
-            padding: .65rem .8rem;
-            border-radius: .5rem;
-            border: 1px solid #d1d5db;
-            width: 100%;
-        }
-
-        .save-btn {
-            background: #4f46e5 !important;
-            color: white !important;
-            padding: .55rem 1.5rem !important;
-            border-radius: .5rem !important;
-            font-weight: 600 !important;
-        }
-
-        .save-btn:hover {
-            background: #4338ca !important;
-            translate: 0 -2px;
-            transition: .2s ease-in-out;
-        }
-
-
-
-        .rmv-btn {
-            background: #cd0000 !important;
-            color: white !important;
-            padding: .55rem 1.5rem !important;
-            border-radius: .5rem !important;
-            font-weight: 600 !important;
-        }
-
-        .rmv-btn:hover {
-            background: #b30000 !important;
-            translate: 0 -2px;
-            transition: .2s ease-in-out;
-        }
-
-        .action-bar {
-            position: sticky;
-            top: 0;
-            z-index: 20;
-            padding: 1rem 0;
-            display: flex;
-            gap: .75rem;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-        }
-
-        .btn {
-            padding: .65rem 1.5rem;
-            border-radius: .5rem;
-            font-weight: 600;
-            transition: .2s ease;
-            width: auto;
-            max-width: 50%;
-
-        }
-
-        .btn-submit {
-            background: #0700d7;
-            color: white;
-            text-align: center;
-        }
-
-        .btn-submit:hover {
-            background: #140087;
-            translate: 0 -2px;
-            transition: .2s ease-in-out;
-        }
-
-        .btn-back {
-            background: #cd0000;
-            text-align: center;
-            color: #ffffff;
-        }
-
-        .btn-back:hover {
-            background: #b30000;
-            translate: 0 -2px;
-            transition: .2s ease-in-out;
-        }
-
-        /* Mobile stacking */
-        @media (max-width: 640px) {
-            .action-bar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .btn {
-                width: 100%;
-            }
-        }
-    </style>
+    @section('content')
 
     <div class="max-w-6xl mx-auto px-4 space-y-6">
 
         <div class="bg-white rounded-xl shadow p-6 relative">
 
-
-
-            <!-- ACTION BUTTONS -->
-            <div class="action-bar">
-                <a href="{{ url('/') }}" class="btn btn-back">
-                    Back
-                </a>
-
-                <button form="youthForm" type="submit" class="btn btn-submit">
+            <!-- Sticky Submit Button -->
+            <div class="save-bar">
+                <button form="youthForm" type="submit" class="save-btn">
                     Submit Registration
                 </button>
             </div>
 
-            <form id="youthForm" method="POST" action="{{ route('kk.register.store') }}" class="youth-form">
+            <form id="youthForm"
+                method="POST"
+                action="{{ route('kk.register.store') }}"
+                enctype="multipart/form-data"
+                class="youth-form">
                 @csrf
 
-                <!-- I. Identifying Information -->
-                <h4 class="bold">I. Identifying Information</h4>
+                    <!-- I. Identifying Information -->
+                    <h4 class="bold">I. Identifying Information</h4>
 
-                <div class="form-row">
-                    <input name="first_name" class="form-input" placeholder="First Name" required>
-                    <input name="middle_name" class="form-input" placeholder="Middle Name">
-                    <input name="last_name" class="form-input" placeholder="Last Name" required>
-                </div>
+                    <!-- PROFILE PHOTO -->
+                    <div class="flex flex-col items-center gap-3 mb-6">
 
-                <div class="form-row">
-                    <select name="sex" class="form-input" required>
-                        <option value="" class="bold">Sex</option>
-                        <option>Male</option>
-                        <option>Female</option>
-                    </select>
+                        <div class="relative w-24 h-24 rounded-full overflow-hidden border-2 border-indigo-500">
+                            <img id="photoPreview" src="{{ asset('images/avatar.png') }}" class="w-24 h-24 object-cover">
+                        </div>
 
-                    <input id="birthday" type="date" name="birthday" class="form-input" required
-                        max="{{ now()->toDateString() }}">
+                        <label class="save-btn cursor-pointer text-sm">
+                            📷 Take / Upload Photo
+                            <input type="file" name="profile_photo" accept="image/jpeg,image/png" capture="environment" hidden
+                                onchange="previewPhoto(event)">
+                        </label>
 
-                    <input id="age" type="number" name="age" class="form-input" placeholder="Age" readonly>
-                </div>
+                        <span class="text-xs text-gray-500">
+                            JPG or PNG • Max 2MB
+                        </span>
 
-                <!-- Location -->
-                <div class="form-row">
-                    <input id="region" name="region" class="form-input" value="Northern Mindanao" required>
-                    <input id="province" name="province" class="form-input" value="Misamis Oriental" required>
-                    <input id="municipality" name="municipality" class="form-input" value="Opol" required>
-                </div>
+                    </div>
+                    <div class="form-row">
+                        <input name="first_name" class="form-input" placeholder="First Name" required>
+                        <input name="middle_name" class="form-input" placeholder="Middle Name">
+                        <input name="last_name" class="form-input" placeholder="Last Name" required>
+                    </div>
 
-                <div class="form-row">
-                    <select id="barangay" name="barangay" class="form-input" required>
-                        <option value="" class="bold">Barangay</option>
-                        @foreach (['Awang', 'Bagocboc', 'Barra', 'Bonbon', 'Cauyunan', 'Igpit', 'Limunda', 'Luyong Bonbon', 'Malanang', 'Nangcaon', 'Patag', 'Poblacion', 'Taboc', 'Tingalan'] as $b)
-                            <option value="{{ $b }}">{{ $b }}</option>
-                        @endforeach
-                    </select>
+                    <div class="form-row">
+                        <select name="sex" class="form-input" required>
+                            <option value="" class="bold">Sex</option>
+                            <option>Male</option>
+                            <option>Female</option>
+                        </select>
+                        <select name="gender" class="form-input" required>
+                            <option value="" class="bold">Gender</option>
+                            <option>LGBTQAI+</option>
+                            <option>Prefer not to say</option>
+                        </select>
 
-                    <input id="purok_zone" name="purok_zone" class="form-input" placeholder="Purok / Zone" required>
+                        <input id="birthday" type="date" name="birthday" class="form-input" required
+                            max="{{ now()->toDateString() }}">
+                        <input id="age" type="number" name="age" class="form-input" placeholder="Age" readonly>
 
-                    <input id="home_address" name="home_address" class="form-input" placeholder="Home Address" required
-                        readonly>
-                </div>
 
-                <div class="form-row">
-                    <input name="religion" class="form-input" placeholder="Religion">
+                        <select name="civil_status" class="form-input" required>
+                            <option value="" disabled {{ old('civil_status') ? '' : 'selected' }}>
+                                Civil Status
+                            </option>
+
+                            <option value="Single" {{ old('civil_status') == 'Single' ? 'selected' : '' }}>
+                                Single
+                            </option>
+
+                            <option value="Married" {{ old('civil_status') == 'Married' ? 'selected' : '' }}>
+                                Married
+                            </option>
+
+                            <option value="Widowed" {{ old('civil_status') == 'Widowed' ? 'selected' : '' }}>
+                                Widowed
+                            </option>
+
+                            <option value="Separated" {{ old('civil_status') == 'Separated' ? 'selected' : '' }}>
+                                Separated
+                            </option>
+
+                            <option value="Live-in" {{ old('civil_status') == 'Live-in' ? 'selected' : '' }}>
+                                Live-in
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Location (DEFAULT VALUES SET) -->
+                    <div class="form-row">
+                        <input id="region" name="region" class="form-input" value="Northern Mindanao" required>
+                        <input id="province" name="province" class="form-input" value="Misamis Oriental" required>
+                        <input id="municipality" name="municipality" class="form-input" value="Opol" required>
+                    </div>
+
+                    <!-- Barangay + Home Address -->
+                    @php
+                        $user = auth()->user();
+                    @endphp
+
+                    <div class="form-row">
+                        <select id="barangay" name="barangay" class="form-input" required {{ $user && $user->role === 'sk' ? 'disabled' : '' }}>
+
+                            <option value="" disabled class="bold">Barangay</option>
+
+                            @foreach (['Awang', 'Bagocboc', 'Barra', 'Bonbon', 'Cauyunan', 'Igpit', 'Limunda', 'Luyong Bonbon', 'Malanang', 'Nangcaon', 'Patag', 'Poblacion', 'Taboc', 'Tingalan'] as $b)
+                                <option value="{{ $b }}" @if ($user && $user->role === 'sk' && $user->barangay === $b) selected @endif>
+                                    {{ $b }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        {{-- Hidden input so disabled select still submits --}}
+                        @if ($user && $user->role === 'sk')
+                            <input type="hidden" name="barangay" value="{{ $user->barangay }}">
+                        @endif
+                        <input id="purok_zone" name="purok_zone" class="form-input" placeholder="Purok / Zone (e.g. Zone 1)"
+                            required>
+                        <input id="home_address" name="home_address" class="form-input" placeholder="Home Address" required
+                            readonly>
+                    </div>
+
+                    <div class="form-row">
+                        <select name="religion" id="religionSelect" class="form-input" required>
+                            <option value="" disabled class="bold" {{ old('religion') ? '' : 'selected' }}>Religion
+                            </option>
+
+                            <!-- Christian -->
+                            <option value="Roman Catholic" {{ old('religion') == 'Roman Catholic' ? 'selected' : '' }}>Roman
+                                Catholic</option>
+                            <option value="Baptist" {{ old('religion') == 'Baptist' ? 'selected' : '' }}>Baptist</option>
+                            <option value="Born Again Christian" {{ old('religion') == 'Born Again Christian' ? 'selected' : '' }}>Born Again Christian</option>
+                            <option value="Iglesia ni Cristo" {{ old('religion') == 'Iglesia ni Cristo' ? 'selected' : '' }}>
+                                Iglesia ni Cristo</option>
+                            <option value="Seventh-day Adventist" {{ old('religion') == 'Seventh-day Adventist' ? 'selected' : '' }}>Seventh-day Adventist
+                            </option>
+                            <option value="Jehovah's Witnesses" {{ old('religion') == "Jehovah's Witnesses" ? 'selected' : '' }}>
+                                Jehovah's Witnesses</option>
+                            <option value="Methodist" {{ old('religion') == 'Methodist' ? 'selected' : '' }}>Methodist
+                            </option>
+                            <option value="Lutheran" {{ old('religion') == 'Lutheran' ? 'selected' : '' }}>Lutheran</option>
+                            <option value="Anglican" {{ old('religion') == 'Anglican' ? 'selected' : '' }}>Anglican</option>
+                            <option value="Pentecostal" {{ old('religion') == 'Pentecostal' ? 'selected' : '' }}>Pentecostal
+                            </option>
+                            <option value="United Church of Christ in the Philippines (UCCP)" {{ old('religion') == 'United Church of Christ in the Philippines (UCCP)' ? 'selected' : '' }}>
+                                United Church of Christ in the Philippines (UCCP)
+                            </option>
+
+                            <!-- Non-Christian -->
+                            <option value="Islam" {{ old('religion') == 'Islam' ? 'selected' : '' }}>Islam</option>
+
+                            <!-- Others -->
+                            <option value="Others" {{ old('religion') == 'Others' ? 'selected' : '' }}>Others (Specify)
+                            </option>
+                        </select>
+
+                        <input type="text" name="religion_other" id="otherReligionInput" class="form-input"
+                            placeholder="Please specify religion" value="{{ old('religion_other') }}" style="display:none;">
+                    </div>
+
                     <select name="education" class="form-input" required>
-                        <option value="" class="bold">Education Level</option>
+                        <option disabled value="" class="bold">Education Last Attended</option>
                         <option>Elementary Level</option>
                         <option>Elementary Graduate</option>
                         <option>High School Level</option>
@@ -227,187 +175,322 @@
                         <option>College Graduate</option>
                         <option>Vocational</option>
                     </select>
+
+                    <div class="form-row">
+                        <label>Are you a Registered Sk Voter? </label>
+<label><input type="radio" name="is_sk_voter" value="Yes"> Yes</label>
+<label><input type="radio" name="is_sk_voter" value="No"> No</label>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Youth Classification: </label>
+                        <label><input type="checkbox" name="is_osy"> Out-of-School Youth</label>
+                        <label><input type="checkbox" name="is_isy"> In-School Youth</label>
+                        <label><input type="checkbox" name="is_4ps"> 4Ps</label>
+                        <label><input type="checkbox" name="is_ip"> Indigenous People IP</label>
+                        <label><input type="checkbox" name="is_pwd"> Person with Disability PWD</label>
+
+                    </div>
+
+                    <div class="form-row">
+                        <label> Work Classification: </label>
+                        <label><input type="checkbox" name="is_unemployed"> Unemployed Youth</label>
+                        <label><input type="checkbox" name="is_employed"> Employed Youth</label>
+                        <label><input type="checkbox" name="is_self_employed"> Self-Employed Youth</label>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- Skills Input -->
+                        <input type="text" name="skills" class="form-input" placeholder="Skills" value="{{ old('skills') }}"
+                            required>
+
+                        <!-- Preferred Skills Dropdown -->
+                        <select name="preferred_skills" id="preferredSkillsSelect" class="form-input" required>
+                            <option value="" disabled class="bold" {{ old('preferred_skills') ? '' : 'selected' }}>
+                                Preferred Skills
+                            </option>
+
+                            <option value="Housekeeping" {{ old('preferred_skills') == 'Housekeeping' ? 'selected' : '' }}>
+                                Housekeeping
+                            </option>
+                            <option value="Bread & Pastries Production" {{ old('preferred_skills') == 'Bread & Pastries Production' ? 'selected' : '' }}>Bread &
+                                Pastries
+                                Production</option>
+                            <option value="Driving" {{ old('preferred_skills') == 'Driving' ? 'selected' : '' }}>Driving
+                            </option>
+                            <option value="Automotive Servicing" {{ old('preferred_skills') == 'Automotive Servicing' ? 'selected' : '' }}>Automotive Servicing
+                            </option>
+                            <option value="Bookkeeping" {{ old('preferred_skills') == 'Bookkeeping' ? 'selected' : '' }}>
+                                Bookkeeping
+                            </option>
+                            <option value="Electrical Installation & Maintenance" {{ old('preferred_skills') == 'Electrical Installation & Maintenance' ? 'selected' : '' }}>
+                                Electrical
+                                Installation & Maintenance</option>
+                            <option value="Plumbing" {{ old('preferred_skills') == 'Plumbing' ? 'selected' : '' }}>Plumbing
+                            </option>
+                            <option value="Shielded Metal Arc Welding SMAW" {{ old('preferred_skills') == 'Shielded Metal Arc Welding SMAW' ? 'selected' : '' }}>Shielded
+                                Metal Arc
+                                Welding SMAW</option>
+                            <option value="Tile Setting" {{ old('preferred_skills') == 'Tile Setting' ? 'selected' : '' }}>
+                                Tile
+                                Setting
+                            </option>
+                            <option value="Food & Beverage Services" {{ old('preferred_skills') == 'Food & Beverage Services' ? 'selected' : '' }}>Food & Beverage
+                                Services
+                            </option>
+                            <option value="Computer System Servicing" {{ old('preferred_skills') == 'Computer System Servicing' ? 'selected' : '' }}>Computer System
+                                Servicing
+                            </option>
+                            <option value="Carpentry" {{ old('preferred_skills') == 'Carpentry' ? 'selected' : '' }}>Carpentry
+                            </option>
+                            <option value="Masonry" {{ old('preferred_skills') == 'Masonry' ? 'selected' : '' }}>Masonry
+                            </option>
+                            <option value="Barista" {{ old('preferred_skills') == 'Barista' ? 'selected' : '' }}>Barista
+                            </option>
+                            <option value="Massage Therapist" {{ old('preferred_skills') == 'Massage Therapist' ? 'selected' : '' }}>
+                                Massage Therapist</option>
+                            <option value="Caregiving" {{ old('preferred_skills') == 'Caregiving' ? 'selected' : '' }}>
+                                Caregiving
+                            </option>
+                            <option value="Dressmaking" {{ old('preferred_skills') == 'Dressmaking' ? 'selected' : '' }}>
+                                Dressmaking
+                            </option>
+                            <option value="Tailoring" {{ old('preferred_skills') == 'Tailoring' ? 'selected' : '' }}>Tailoring
+                            </option>
+
+                            <!-- Others -->
+                            <option value="Others" {{ old('preferred_skills') == 'Others' ? 'selected' : '' }}>
+                                Others (Specify)
+                            </option>
+                        </select>
+
+                        <!-- Others Input -->
+                        <input type="text" name="preferred_skills_other" id="otherPreferredSkillInput" class="form-input"
+                            placeholder="Please specify preferred skill" value="{{ old('preferred_skills_other') }}"
+                            style="{{ old('preferred_skills') == 'Others' ? '' : 'display:none;' }}">
+
+                        <input type="text" name="source_of_income" class="form-input" placeholder="Source of Income">
+                        <input type="number" name="contact_number" class="form-input" placeholder="Contact Number">
+                    </div>
+
+
+                    <!-- II. Family Composition -->
+                    <h4 class="bold mt-6 mb-2">II. Family Composition</h4>
+
+                    <div class="family-wrapper">
+                        <table class="family-table">
+                            <thead>
+                                <tr>
+                                    <th>Family Member</th>
+                                    <th>Age</th>
+                                    <th>Relationship</th>
+                                    <th>Educational Attainment</th>
+                                    <th>Occupation</th>
+                                    <th>Income</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="familyBody">
+                                <tr>
+                                    <td>
+                                        <input class="form-input" name="family_members[0][name]" placeholder="Full Name">
+                                    </td>
+
+                                    <td>
+                                        <input type="number" class="form-input" name="family_members[0][age]" min="1" max="99"
+                                            inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                                    </td>
+
+                                    <td>
+                                        <select name="family_members[0][relationship]" class="form-input">
+                                            <option value="" disabled selected>Relationship</option>
+                                            <option>Mother</option>
+                                            <option>Father</option>
+                                            <option>Brother</option>
+                                            <option>Sister</option>
+                                            <option>Grandparent</option>
+                                            <option>Aunt</option>
+                                            <option>Uncle</option>
+                                            <option>Cousin</option>
+                                            <option>Spouse</option>
+                                        </select>
+                                    </td>
+
+                                    <td>
+                                        <select name="family_members[0][education]" class="form-input">
+                                            <option value="" disabled selected>Education</option>
+                                            <option>None</option>
+                                            <option>Pre-School</option>
+                                            <option>Kindergarten</option>
+                                            <option>Elementary Level</option>
+                                            <option>Elementary Graduate</option>
+                                            <option>High School Level</option>
+                                            <option>High School Graduate</option>
+                                            <option>College Level</option>
+                                            <option>College Graduate</option>
+                                            <option>Vocational</option>
+                                        </select>
+                                    </td>
+
+                                    <td>
+                                        <input class="form-input" name="family_members[0][occupation]" placeholder="Occupation">
+                                    </td>
+
+                                    <td>
+                                        <input type="number" class="form-input" name="family_members[0][income]" min="0"
+                                            step="1" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+                                            placeholder="Monthly Income">
+                                    </td>
+
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <button type="button" id="addFamilyRow" class="save-btn mt-3">
+                            + Add Family Member
+                        </button>
+                    </div>
+
+                    <!-- ATTACHMENTS -->
+                    <h4 class="bold mt-6">III. Attachments</h4>
+
+                    <div class="attachment-wrapper">
+
+                        <!-- File Input -->
+                        <input type="file" name="attachments[]" id="attachments" multiple
+                            accept="image/jpeg,image/png,image/jpg" class="form-input">
+
+                        <small class="text-gray-500">
+                            Upload multiple JPG/PNG images (Max 4MB each)
+                        </small>
+
+                        <!-- Preview Grid -->
+                        <div id="attachmentPreview" class="attachment-preview-grid"></div>
+
+                    </div>
+
+                    <!-- DATA PRIVACY CONSENT -->
+                    <div class="form-row items-center mt-6 !important">
+                        <label class="flex items-center gap-2 text-sm cursor-pointer">
+                            <input type="checkbox" id="privacyConsent" class="mt-1" required>
+
+                            <span>
+                                I agree to the
+                                <a href="javascript:void(0)" id="openPrivacyModal"
+                                    class="text-indigo-600 font-semibold underline">
+                                    Terms & Conditions and Data Privacy Consent
+                                </a>
+                            </span>
+                        </label>
+                    </div>
+                </form>
+                <!-- PRIVACY MODAL -->
+                <div id="privacyModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center px-4">
+
+                    <div class="bg-white rounded-xl shadow-lg max-w-3xl w-full max-h-[85vh] overflow-hidden">
+
+                        <!-- Modal Header -->
+                        <div class="flex justify-between items-center px-6 py-4 border-b">
+                            <h3 class="text-lg font-bold">Terms & Conditions & Data Privacy Consent</h3>
+                            <button id="closePrivacyModal" class="text-gray-500 hover:text-black text-xl">
+                                &times;
+                            </button>
+                        </div>
+
+                        <!-- Modal Body -->
+                        <div class="px-6 py-4 overflow-y-auto text-sm leading-relaxed space-y-4">
+
+                            <p>
+                                This form collects personal information in accordance with the
+                                <strong>Data Privacy Act of 2012 (Republic Act No. 10173)</strong>.
+                            </p>
+
+                            <p>
+                                By submitting this form, you voluntarily provide accurate and truthful
+                                information for youth profiling, planning, and program development purposes
+                                of the Local Youth Development Office.
+                            </p>
+
+                            <p>
+                                The collected data may include but is not limited to:
+                            </p>
+
+                            <ul class="list-disc ml-6 space-y-1">
+                                <li>Personal identification details</li>
+                                <li>Contact and address information</li>
+                                <li>Educational, employment, and skills data</li>
+                                <li>Household and family composition</li>
+                            </ul>
+
+                            <p>
+                                All information shall be treated with strict confidentiality and will only
+                                be accessed by authorized personnel. Data will not be shared without lawful
+                                basis and shall be stored securely.
+                            </p>
+
+                            <p>
+                                You have the right to access, correct, and request deletion of your data,
+                                subject to legal and administrative requirements.
+                            </p>
+
+                            <p class="font-semibold">
+                                By clicking “I Agree” and submitting this form, you confirm that you have
+                                read, understood, and consent to the collection and processing of your
+                                personal data.
+                            </p>
+                        </div>
+
+                        <!-- Modal Footer -->
+                        <div class="flex justify-end gap-3 px-6 py-4 border-t">
+                            <button id="closePrivacyModalBtn" class="px-4 py-2 rounded-lg border border-gray-300 text-sm">
+                                Close
+                            </button>
+                        </div>
+
+                    </div>
                 </div>
-
-                <div class="form-row">
-                    <label><input type="checkbox" name="is_osy"> Out-of-School Youth</label>
-                    <label><input type="checkbox" name="is_isy"> In-School Youth</label>
-                    <label><input type="checkbox" name="is_working_youth"> Working Youth</label>
-                </div>
-
-                <div class="form-row">
-                    <input name="skills" class="form-input" placeholder="Skills">
-                    <input name="source_of_income" class="form-input" placeholder="Source of Income">
-                    <input name="contact_number" class="form-input" placeholder="Contact Number">
-                </div>
-
-                <!-- II. Family Composition -->
-                <h4 class="bold mt-6">II. Family Composition</h4>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full border mt-2">
-                        <thead>
-                            <tr class="border">
-                                <th>Family Member</th>
-                                <th>Age</th>
-                                <th>Relationship</th>
-                                <th>Education</th>
-                                <th>Occupation</th>
-                                <th>Income</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody id="familyBody">
-                            <tr>
-                                <td><input class="form-input" name="family_members[0][name]"></td>
-                                <td><input class="form-input" name="family_members[0][age]"></td>
-                                <td>
-                                    <select name="family_members[0][relationship]" class="form-input">
-                                        <option value="" class="bold"></option>
-                                        <option>Mother</option>
-                                        <option>Father</option>
-                                        <option>Brother</option>
-                                        <option>Sister</option>
-                                        <option>Grandparent</option>
-                                        <option>Aunt</option>
-                                        <option>Uncle</option>
-                                        <option>Cousin</option>
-                                        <option>Spouse</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select name="family_members[0][education]" class="form-input">
-                                        <option value="" class="bold"></option>
-                                        <option>None</option>
-                                        <option>Pre-School</option>
-                                        <option>Kindergarten</option>
-                                        <option>Elementary Level</option>
-                                        <option>Elementary Graduate</option>
-                                        <option>High School Level</option>
-                                        <option>High School Graduate</option>
-                                        <option>College Level</option>
-                                        <option>College Graduate</option>
-                                        <option>Vocational</option>
-                                    </select>
-                                </td>
-                                <td><input class="form-input" name="family_members[0][occupation]"></td>
-                                <td><input class="form-input" name="family_members[0][income]"></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <button type="button" id="addFamilyRow" class="save-btn mt-3">
-                        + Add Family Member
-                    </button>
-                </div>
-
-            </form>
+            </div>
         </div>
-    </div>
+        </div>
+        </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        <link rel="stylesheet" href="{{ asset('css/youth-create.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
+        <script src="{{ asset('js/youth-create.js') }}" defer></script>
 
-            /* ===== AGE AUTO COMPUTE ===== */
-            const birthday = document.getElementById('birthday');
-            const age = document.getElementById('age');
+        @if(session('success'))
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    Swal.fire({
+        icon: 'success',
+        title: 'Registration Submitted',
+        text: "{{ session('success') }}",
+        confirmButtonColor: '#6366f1'
+    });
+});
+</script>
+@endif
 
-            function calcAge(v) {
-                if (!v) return '';
-                const d = new Date(v + 'T00:00:00');
-                const t = new Date();
-                let a = t.getFullYear() - d.getFullYear();
-                const m = t.getMonth() - d.getMonth();
-                if (m < 0 || (m === 0 && t.getDate() < d.getDate())) a--;
-                return a;
-            }
 
-            function updateAge() {
-                age.value = calcAge(birthday.value);
-            }
+@if ($errors->any())
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
-            birthday.addEventListener('change', updateAge);
-            birthday.addEventListener('input', updateAge);
+    let errorMessages = "";
 
-            /* ===== AUTO HOME ADDRESS BUILD ===== */
-            const region = document.getElementById('region');
-            const province = document.getElementById('province');
-            const municipality = document.getElementById('municipality');
-            const barangay = document.getElementById('barangay');
-            const purok = document.getElementById('purok_zone');
-            const home = document.getElementById('home_address');
+    @foreach ($errors->all() as $error)
+        errorMessages += "• {{ $error }}\n";
+    @endforeach
 
-            function buildHomeAddress() {
-                const parts = [
-                    purok.value?.trim(),
-                    barangay.value?.trim(),
-                    municipality.value?.trim(),
-                    province.value?.trim(),
-                    region.value?.trim()
-                ].filter(p => p && p.length > 0);
+    Swal.fire({
+        icon: 'error',
+        title: 'Submission Failed',
+        text: errorMessages,
+        confirmButtonColor: '#ef4444'
+    });
 
-                home.value = parts.join(', ');
-            }
-
-            [region, province, municipality, barangay, purok].forEach(el => {
-                el.addEventListener('input', buildHomeAddress);
-                el.addEventListener('change', buildHomeAddress);
-            });
-
-            buildHomeAddress();
-
-            /* ===== DYNAMIC FAMILY ROWS ===== */
-            let familyIndex = 1;
-
-            document.getElementById('addFamilyRow').addEventListener('click', function() {
-                const tbody = document.getElementById('familyBody');
-                const row = document.createElement('tr');
-
-                row.innerHTML = `
-            <td><input class="form-input" name="family_members[${familyIndex}][name]"></td>
-            <td><input class="form-input" name="family_members[${familyIndex}][age]"></td>
-            <td><input class="form-input" name="family_members[${familyIndex}][relationship]"></td>
-            <td><input class="form-input" name="family_members[${familyIndex}][education]"></td>
-            <td><input class="form-input" name="family_members[${familyIndex}][occupation]"></td>
-            <td><input class="form-input" name="family_members[${familyIndex}][income]"></td>
-            <td><button type="button" class="rmv-btn removeRow">Remove</button></td>
-        `;
-
-                tbody.appendChild(row);
-                familyIndex++;
-            });
-
-            document.getElementById('familyBody').addEventListener('click', function(e) {
-                if (e.target.classList.contains('removeRow')) {
-                    e.target.closest('tr').remove();
-                }
-            });
-
-        });
-    </script>
-
-    {{-- SWEET ALERT --}}
-    @if (session('success'))
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Registration Successful!',
-                text: "{{ session('success') }}",
-                confirmButtonColor: '#16a34a'
-            });
-        </script>
-    @endif
-
-    @if ($errors->any())
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Validation Error',
-                html: `{!! implode('<br>', $errors->all()) !!}`,
-                confirmButtonColor: '#dc2626'
-            });
-        </script>
-    @endif
-
-@endsection
+});
+</script>
+@endif
+    @endsection

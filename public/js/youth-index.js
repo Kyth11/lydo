@@ -7,12 +7,9 @@ $(document).ready(function () {
         order: [[0, "asc"]],
         pageLength: 10,
         lengthChange: false,
-        columnDefs: [
-            { orderable: false, targets: 5 }
-        ],
+        columnDefs: [{ orderable: false, targets: 5 }],
     });
 });
-
 
 /* =====================================================
    ARCHIVE / RESTORE / DELETE
@@ -25,7 +22,7 @@ function confirmArchive(id) {
         showCancelButton: true,
         confirmButtonColor: "#ef4444",
         confirmButtonText: "Yes, archive",
-    }).then(result => {
+    }).then((result) => {
         if (result.isConfirmed) {
             submitProtectedAction(`/youth/${id}/archive`, null, "PATCH");
         }
@@ -39,7 +36,7 @@ function confirmRestore(id) {
         showCancelButton: true,
         confirmButtonColor: "#22c55e",
         confirmButtonText: "Yes, restore",
-    }).then(result => {
+    }).then((result) => {
         if (result.isConfirmed) {
             window.location.href = `/youth/${id}/restore`;
         }
@@ -59,12 +56,12 @@ function handleArchive(id, protectedMode) {
         showCancelButton: true,
         confirmButtonColor: "#ef4444",
         confirmButtonText: "Confirm",
-    }).then(result => {
+    }).then((result) => {
         if (result.isConfirmed && result.value) {
             submitProtectedAction(
                 `/youth/${id}/archive`,
                 result.value,
-                "PATCH"
+                "PATCH",
             );
         }
     });
@@ -83,7 +80,7 @@ function handleRestore(id, protectedMode) {
         showCancelButton: true,
         confirmButtonColor: "#22c55e",
         confirmButtonText: "Confirm",
-    }).then(result => {
+    }).then((result) => {
         if (result.isConfirmed && result.value) {
             submitProtectedAction(`/youth/${id}/restore`, result.value);
         }
@@ -98,7 +95,7 @@ function handleDelete(id, protectedMode) {
         showCancelButton: true,
         confirmButtonColor: "#ef4444",
         confirmButtonText: "Yes, delete permanently",
-    }).then(result => {
+    }).then((result) => {
         if (!result.isConfirmed) return;
 
         if (!protectedMode) {
@@ -113,14 +110,13 @@ function handleDelete(id, protectedMode) {
             showCancelButton: true,
             confirmButtonColor: "#ef4444",
             confirmButtonText: "Confirm",
-        }).then(result => {
+        }).then((result) => {
             if (result.isConfirmed && result.value) {
                 submitProtectedAction(`/youth/${id}/delete`, result.value);
             }
         });
     });
 }
-
 
 /* =====================================================
    PROTECTED FORM SUBMITTER
@@ -157,7 +153,6 @@ function submitProtectedAction(action, password = null, method = "POST") {
     form.submit();
 }
 
-
 /* =====================================================
    PRINT OPTIONS
 ===================================================== */
@@ -173,12 +168,12 @@ function openPrintOptions(id) {
         cancelButtonText: "Cancel",
         confirmButtonColor: "#4f46e5",
         denyButtonColor: "#22c55e",
-    }).then(result => {
+    }).then((result) => {
         if (result.isConfirmed) {
             window.open(`/youth/${id}/pdf`, "_blank");
         }
         if (result.isDenied) {
-            window.location.href = `/youth/${id}/print`;
+            window.open(`/youth/${id}/print`, "_blank");
         }
     });
 }

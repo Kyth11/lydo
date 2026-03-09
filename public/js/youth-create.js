@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+
     /* =====================================================
-       ELEMENT REFERENCES (SAFE)
+       ELEMENT REFERENCES
     ===================================================== */
 
     const birthdayInput = document.getElementById("birthday");
@@ -17,15 +18,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const religionSelect = document.getElementById("religionSelect");
     const otherReligionInput = document.getElementById("otherReligionInput");
 
-    const preferredSkillsSelect = document.getElementById(
-        "preferredSkillsSelect",
-    );
-    const otherPreferredSkillInput = document.getElementById(
-        "otherPreferredSkillInput",
-    );
+    const preferredSkillsSelect = document.getElementById("preferredSkillsSelect");
+    const otherPreferredSkillInput = document.getElementById("otherPreferredSkillInput");
 
     const familyBody = document.getElementById("familyBody");
     const addFamilyRowBtn = document.getElementById("addFamilyRow");
+
+    const attachmentInput = document.getElementById("attachments");
+    const previewContainer = document.getElementById("attachmentPreview");
 
     /* =====================================================
        AGE CALCULATION
@@ -42,10 +42,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
             age--;
         }
+
         return age;
     }
 
     function updateAge() {
+        if (!birthdayInput || !ageInput) return;
+
         const age = calculateAge(birthdayInput.value);
         ageInput.value = age;
 
@@ -56,25 +59,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    if (birthdayInput) {
-        birthdayInput.addEventListener("change", updateAge);
-        birthdayInput.addEventListener("input", updateAge);
-    }
+    birthdayInput?.addEventListener("change", updateAge);
+    birthdayInput?.addEventListener("input", updateAge);
 
-    if (youthForm) {
-        youthForm.addEventListener("submit", (e) => {
-            const age = parseInt(ageInput.value);
-            if (isNaN(age) || age < 15 || age > 30) {
-                e.preventDefault();
-                Swal.fire({
-                    icon: "warning",
-                    title: "Submission Blocked",
-                    text: "Only ages 15 to 30 are allowed to submit this form.",
-                    confirmButtonColor: "#ef4444",
-                });
-            }
-        });
-    }
+    youthForm?.addEventListener("submit", (e) => {
+        const age = parseInt(ageInput?.value);
+        if (isNaN(age) || age < 15 || age > 30) {
+            e.preventDefault();
+            Swal.fire({
+                icon: "warning",
+                title: "Submission Blocked",
+                text: "Only ages 15 to 30 are allowed.",
+                confirmButtonColor: "#ef4444",
+            });
+        }
+    });
 
     /* =====================================================
        HOME ADDRESS BUILDER
@@ -94,10 +93,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    [region, province, municipality, barangay, purokZone].forEach((el) => {
-        if (!el) return;
-        el.addEventListener("input", buildHomeAddress);
-        el.addEventListener("change", buildHomeAddress);
+    [region, province, municipality, barangay, purokZone].forEach(el => {
+        el?.addEventListener("input", buildHomeAddress);
+        el?.addEventListener("change", buildHomeAddress);
     });
 
     buildHomeAddress();
@@ -149,32 +147,34 @@ document.addEventListener("DOMContentLoaded", () => {
     let familyIndex = familyBody ? familyBody.children.length : 0;
 
     addFamilyRowBtn?.addEventListener("click", () => {
+
         const row = document.createElement("tr");
 
         row.innerHTML = `
 <td><input class="form-input" name="family_members[${familyIndex}][name]" placeholder="Full Name"></td>
 <td><input type="number" class="form-input" name="family_members[${familyIndex}][age]" min="1" max="99"></td>
 <td>
-    <select name="family_members[${familyIndex}][relationship]" class="form-input">
-        <option disabled selected>Relationship</option>
-        <option>Mother</option><option>Father</option><option>Brother</option>
-        <option>Sister</option><option>Grandparent</option><option>Aunt</option>
-        <option>Uncle</option><option>Cousin</option><option>Spouse</option>
-    </select>
+<select name="family_members[${familyIndex}][relationship]" class="form-input">
+<option disabled selected>Relationship</option>
+<option>Mother</option><option>Father</option><option>Brother</option>
+<option>Sister</option><option>Grandparent</option><option>Aunt</option>
+<option>Uncle</option><option>Cousin</option><option>Spouse</option>
+</select>
 </td>
 <td>
-    <select name="family_members[${familyIndex}][education]" class="form-input">
-        <option disabled selected>Educational Attainment</option>
-        <option>None</option><option>Pre-School</option><option>Kindergarten</option>
-        <option>Elementary Level</option><option>Elementary Graduate</option>
-        <option>High School Level</option><option>High School Graduate</option>
-        <option>College Level</option><option>College Graduate</option><option>Vocational</option>
-    </select>
+<select name="family_members[${familyIndex}][education]" class="form-input">
+<option disabled selected>Educational Attainment</option>
+<option>None</option><option>Pre-School</option><option>Kindergarten</option>
+<option>Elementary Level</option><option>Elementary Graduate</option>
+<option>High School Level</option><option>High School Graduate</option>
+<option>College Level</option><option>College Graduate</option><option>Vocational</option>
+</select>
 </td>
 <td><input class="form-input" name="family_members[${familyIndex}][occupation]" placeholder="Occupation"></td>
 <td><input type="number" class="form-input" name="family_members[${familyIndex}][income]" placeholder="Monthly Income"></td>
 <td><button type="button" class="remove-btn removeRow">Remove</button></td>
 `;
+
         familyBody.appendChild(row);
         familyIndex++;
     });
@@ -186,39 +186,85 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     /* =====================================================
-       PRIVACY MODAL
+       ATTACHMENTS (GRID + REMOVE)
     ===================================================== */
 
-    const privacyModal = document.getElementById("privacyModal");
-    const openPrivacyBtn = document.getElementById("openPrivacyModal");
-    const closePrivacyBtn = document.getElementById("closePrivacyModal");
-    const closePrivacyFooterBtn = document.getElementById(
-        "closePrivacyModalBtn",
-    );
+    let selectedFiles = [];
 
-    function openPrivacyModalFn() {
-        privacyModal.classList.remove("hidden");
-        privacyModal.classList.add("flex");
-        document.body.style.overflow = "hidden";
-    }
+    attachmentInput?.addEventListener("change", function (e) {
 
-    function closePrivacyModalFn() {
-        privacyModal.classList.add("hidden");
-        privacyModal.classList.remove("flex");
-        document.body.style.overflow = "";
-    }
+        const files = Array.from(e.target.files);
 
-    openPrivacyBtn?.addEventListener("click", openPrivacyModalFn);
-    closePrivacyBtn?.addEventListener("click", closePrivacyModalFn);
-    closePrivacyFooterBtn?.addEventListener("click", closePrivacyModalFn);
+        files.forEach(file => {
 
-    privacyModal?.addEventListener("click", (e) => {
-        if (e.target === privacyModal) closePrivacyModalFn();
+            if (!file.type.startsWith("image/")) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Invalid File",
+                    text: "Only image files allowed.",
+                });
+                return;
+            }
+
+            if (file.size > 4 * 1024 * 1024) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "File Too Large",
+                    text: "Maximum file size is 4MB.",
+                });
+                return;
+            }
+
+            selectedFiles.push(file);
+        });
+
+        renderPreviews();
     });
+
+    function renderPreviews() {
+
+        if (!previewContainer) return;
+
+        previewContainer.innerHTML = "";
+
+        selectedFiles.forEach((file, index) => {
+
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+
+                const wrapper = document.createElement("div");
+                wrapper.classList.add("attachment-item");
+
+                wrapper.innerHTML = `
+<img src="${e.target.result}">
+<button type="button"
+class="attachment-remove-btn"
+onclick="removeAttachment(${index})">
+&times;
+</button>
+`;
+
+                previewContainer.appendChild(wrapper);
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        const dataTransfer = new DataTransfer();
+        selectedFiles.forEach(file => dataTransfer.items.add(file));
+        attachmentInput.files = dataTransfer.files;
+    }
+
+    window.removeAttachment = function (index) {
+        selectedFiles.splice(index, 1);
+        renderPreviews();
+    };
+
 });
 
 /* =====================================================
-   PHOTO PREVIEW (GLOBAL)
+   PHOTO PREVIEW
 ===================================================== */
 
 function previewPhoto(event) {
@@ -228,6 +274,7 @@ function previewPhoto(event) {
     if (!input.files || !input.files[0]) return;
 
     const file = input.files[0];
+
     if (!file.type.startsWith("image/")) {
         Swal.fire({
             icon: "error",
@@ -239,6 +286,6 @@ function previewPhoto(event) {
     }
 
     const reader = new FileReader();
-    reader.onload = (e) => (preview.src = e.target.result);
+    reader.onload = (e) => preview.src = e.target.result;
     reader.readAsDataURL(file);
 }

@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Youth;
-use Illuminate\Http\Request;
+use App\Models\YouthAttachment;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Mail\Attachment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class YouthController extends Controller
 {
@@ -41,7 +44,9 @@ class YouthController extends Controller
             $query->where('is_archived', 0);
         }
 
-        $youths = $query->orderBy('created_at', 'desc')->get();
+        $youths = $query->with('attachments')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('youth.index', compact('youths'));
     }
@@ -81,6 +86,7 @@ class YouthController extends Controller
             'municipality' => 'required',
             'barangay' => 'required',
             'purok_zone' => 'nullable|string',
+            'attachments.*' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
         ]);
 
         // 🔒 Force SK barangay
@@ -123,7 +129,17 @@ class YouthController extends Controller
         $data['family_members'] = $request->family_members;
 
 
-        Youth::create($data);
+        $youth = Youth::create($data);
+
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $file) {
+                $path = $file->store('youth_attachments', 'public');
+
+                $youth->attachments()->create([
+                    'file_path' => $path
+                ]);
+            }
+        }
 
         return back()->with('success', 'Profile saved.');
     }
@@ -131,81 +147,98 @@ class YouthController extends Controller
     /**
      * Update youth
      */
-public function update(Request $request, $id)
-{
-    $user = Auth::user();
-    $youth = Youth::findOrFail($id);
+    public function update(Request $request, $id)
+    {
+        $user = Auth::user();
+        $youth = Youth::findOrFail($id);
 
-    if ($user && $user->role === 'sk' && $youth->barangay !== $user->barangay) {
-        abort(403);
+        if ($user && $user->role === 'sk' && $youth->barangay !== $user->barangay) {
+            abort(403);
+        }
+
+        $data = $request->validate([
+            'first_name' => 'required',
+            'middle_name' => 'nullable',
+            'last_name' => 'required',
+            'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'sex' => 'required|in:Male,Female',
+            'gender' => 'required|in:LGBTQAI+,Prefer not to say',
+            'birthday' => 'required|date|before_or_equal:today',
+            'civil_status' => 'required',
+            'home_address' => 'required',
+            'religion' => 'required',
+            'education' => 'required',
+            'is_sk_voter' => 'required|in:Yes,No',
+            'skills' => 'nullable',
+            'preferred_skills' => 'nullable',
+            'source_of_income' => 'nullable',
+            'contact_number' => 'nullable',
+            'region' => 'required',
+            'province' => 'required',
+            'municipality' => 'required',
+            'barangay' => 'required',
+            'purok_zone' => 'nullable|string',
+            'attachments.*' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
+        ]);
+
+        if ($user && $user->role === 'sk') {
+            $data['barangay'] = $user->barangay;
+        }
+
+        // Age validation
+        $birthday = Carbon::parse($data['birthday']);
+        $age = $birthday->diffInYears(now());
+
+        if ($age < 15 || $age > 30) {
+            return back()->withErrors(['birthday' => 'Only ages 15 to 30 are allowed.']);
+        }
+
+        $data['age'] = $age;
+
+        // Religion "Others"
+        if ($data['religion'] === 'Others') {
+            $data['religion'] = $request->religion_other;
+        }
+
+        // Preferred Skills "Others"
+        if ($data['preferred_skills'] === 'Others') {
+            $data['preferred_skills'] = $request->preferred_skills_other;
+        }
+
+        // Booleans
+        foreach ([
+            'is_osy',
+            'is_isy',
+            'is_4ps',
+            'is_ip',
+            'is_pwd',
+            'is_unemployed',
+            'is_employed',
+            'is_self_employed'
+        ] as $field) {
+            $data[$field] = $request->boolean($field);
+        }
+
+        $data['family_members'] = $request->family_members;
+
+        if ($request->hasFile('profile_photo')) {
+            $data['profile_photo'] = $request->file('profile_photo')
+                ->store('profile_photos', 'public');
+        }
+
+        $youth->update($data);
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $file) {
+                $path = $file->store('youth_attachments', 'public');
+
+                $youth->attachments()->create([
+                    'file_path' => $path
+                ]);
+            }
+        }
+
+        return back()->with('success', 'Profile updated.');
     }
-
-    $data = $request->validate([
-        'first_name' => 'required',
-        'middle_name' => 'nullable',
-        'last_name' => 'required',
-        'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        'sex' => 'required|in:Male,Female',
-        'gender' => 'required|in:LGBTQAI+,Prefer not to say',
-        'birthday' => 'required|date|before_or_equal:today',
-        'civil_status' => 'required',
-        'home_address' => 'required',
-        'religion' => 'required',
-        'education' => 'required',
-        'is_sk_voter' => 'required|in:Yes,No',
-        'skills' => 'nullable',
-        'preferred_skills' => 'nullable',
-        'source_of_income' => 'nullable',
-        'contact_number' => 'nullable',
-        'region' => 'required',
-        'province' => 'required',
-        'municipality' => 'required',
-        'barangay' => 'required',
-    ]);
-
-    if ($user && $user->role === 'sk') {
-        $data['barangay'] = $user->barangay;
-    }
-
-    // Age validation
-    $birthday = Carbon::parse($data['birthday']);
-    $age = $birthday->diffInYears(now());
-
-    if ($age < 15 || $age > 30) {
-        return back()->withErrors(['birthday' => 'Only ages 15 to 30 are allowed.']);
-    }
-
-    $data['age'] = $age;
-
-    // Religion "Others"
-    if ($data['religion'] === 'Others') {
-        $data['religion'] = $request->religion_other;
-    }
-
-    // Preferred Skills "Others"
-    if ($data['preferred_skills'] === 'Others') {
-        $data['preferred_skills'] = $request->preferred_skills_other;
-    }
-
-    // Booleans
-    foreach ([
-        'is_osy', 'is_isy', 'is_4ps', 'is_ip', 'is_pwd',
-        'is_unemployed', 'is_employed', 'is_self_employed'
-    ] as $field) {
-        $data[$field] = $request->boolean($field);
-    }
-
-    $data['family_members'] = $request->family_members;
-
-    if ($request->hasFile('profile_photo')) {
-        $data['profile_photo'] = $request->file('profile_photo')
-            ->store('profile_photos', 'public');
-    }
-
-    $youth->update($data);
-
-    return back()->with('success', 'Profile updated.');
-}
 
     /**
      * Archive youth
@@ -328,5 +361,17 @@ public function update(Request $request, $id)
         }
 
         return view('youth.print', compact('youth'));
+    }
+    public function deleteAttachment($id)
+    {
+        $attachment = YouthAttachment::findOrFail($id);
+
+        if (Storage::exists('public/' . $attachment->file_path)) {
+            Storage::delete('public/' . $attachment->file_path);
+        }
+
+        $attachment->delete();
+
+        return response()->json(['success' => true]);
     }
 }

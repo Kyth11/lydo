@@ -38,7 +38,7 @@
             z-index: 0;
         }
 
-        .lydo-navbar>* {
+        .lydo-navbar > * {
             position: relative;
             z-index: 1;
         }
@@ -80,7 +80,7 @@
             backdrop-filter: blur(6px);
             transition: all 0.25s ease;
             white-space: nowrap;
-            margin-right: 0.5rem;
+            margin-right: 2%;
             font-size: 14px;
         }
 
@@ -296,7 +296,7 @@
                                 <a href="{{ route('announcements.index') }}" class="lydo-link bg-yellow-400 text-black">
                                     Announcements
                                 </a>
-                                   <a href="{{ route('events.index') }}" class="lydo-link">Events</a>
+                                <a href="{{ route('events.index') }}" class="lydo-link">Events</a>
                             @endif
                         @endauth
 
@@ -368,12 +368,12 @@
         <div x-show="open" x-transition @click.away="open=false" class="sm:hidden lydo-mobile-panel">
             <button type="button" onclick="toggleProtection()" class="lydo-mobile-link">
                 {{ \App\Models\User::where('role', 'admin')->value('action_protection')
-                    ? '🔐 SK Archive Disabled'
-                    : '🔓 SK Archive Enabled' }}
+    ? 'SK Archive Disabled'
+    : 'SK Archive Enabled' }}
             </button>
 
             <button type="button" onclick="toggleKKRegister()" class="lydo-mobile-link">
-                {{ auth()->user()->kk_register_enabled ? '👁 KK Register Shown' : '🙈 KK Register Hidden' }}
+                {{ auth()->user()->kk_register_enabled ? 'KK Register Shown' : 'KK Register Hidden' }}
             </button>
 
             <div class="lydo-dropdown-divider"></div>
@@ -383,8 +383,8 @@
             @auth
                 @if (Auth::user()->isAdmin())
                     {{-- <a href="{{ route('sk.create') }}" class="lydo-mobile-link">
-                Add SK
-            </a> --}}
+                        Add SK
+                    </a> --}}
 
 
 
@@ -419,7 +419,7 @@
         {{-- SweetAlert Flash Messages --}}
         @if (session('success') || session('error') || session('warning') || session('info') || $errors->any())
             <script>
-                document.addEventListener('DOMContentLoaded', function() {
+                document.addEventListener('DOMContentLoaded', function () {
 
                     @if (session('success'))
                         Swal.fire({
@@ -466,7 +466,7 @@
                         });
                     @endif
 
-                });
+                    });
             </script>
         @endif
         <div class="mb-6 bg-white p-6 rounded-xl shadow-md">
@@ -480,7 +480,7 @@
 
         @yield('content')
     </main>
-<script src="{{ asset('js/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
 
     @auth
         @if (Auth::user()->isAdmin())
@@ -490,24 +490,24 @@
                     Swal.fire({
                         title: title,
                         html: `
-            <div style="position:relative;margin-top:10px;">
-                <input id="swal-password"
-                       type="password"
-                       class="swal2-input"
-                       placeholder="Enter Admin Password"
-                       style="padding-right:40px;" />
+                    <div style="position:relative;margin-top:10px;">
+                        <input id="swal-password"
+                               type="password"
+                               class="swal2-input"
+                               placeholder="Enter Admin Password"
+                               style="padding-right:40px;" />
 
-                <span id="toggle-eye"
-                      style="position:absolute;right:30px;top:30px;cursor:pointer;font-size:18px;">
-                      🙈
-                </span>
+                        <span id="toggle-eye"
+                              style="position:absolute;right:30px;top:30px;cursor:pointer;font-size:18px;">
+                              🙈
+                        </span>
 
-                <div id="caps-warning"
-                     style="color:#f59e0b;font-size:13px;margin-top:5px;display:none;">
-                    ⚠️ Caps Lock is ON
-                </div>
-            </div>
-        `,
+                        <div id="caps-warning"
+                             style="color:#f59e0b;font-size:13px;margin-top:5px;display:none;">
+                            ⚠️ Caps Lock is ON
+                        </div>
+                    </div>
+                `,
                         showCancelButton: true,
                         confirmButtonText: confirmText,
                         confirmButtonColor: confirmColor,
@@ -522,7 +522,7 @@
                             const capsWarning = document.getElementById('caps-warning');
 
                             // 👁 Toggle visibility
-                            eye.addEventListener('click', function() {
+                            eye.addEventListener('click', function () {
                                 if (passwordInput.type === "password") {
                                     passwordInput.type = "text";
                                     eye.textContent = "👁";
@@ -533,7 +533,7 @@
                             });
 
                             // ⚠️ Caps Lock detection
-                            passwordInput.addEventListener('keyup', function(e) {
+                            passwordInput.addEventListener('keyup', function (e) {
                                 if (e.getModifierState && e.getModifierState('CapsLock')) {
                                     capsWarning.style.display = "block";
                                 } else {
@@ -541,7 +541,7 @@
                                 }
                             });
 
-                            passwordInput.addEventListener('keydown', function(e) {
+                            passwordInput.addEventListener('keydown', function (e) {
                                 if (e.getModifierState && e.getModifierState('CapsLock')) {
                                     capsWarning.style.display = "block";
                                 } else {
@@ -566,7 +566,7 @@
                         'Admin Verification Required',
                         'Verify SK Archive Protection',
                         '#4f46e5',
-                        function(password) {
+                        function (password) {
 
                             const form = document.createElement('form');
                             form.method = 'POST';
@@ -600,18 +600,18 @@
                         'Admin Verification Required',
                         'Verify KK Register',
                         '#f59e0b',
-                        function(password) {
+                        function (password) {
 
                             fetch("{{ route('admin.toggle.kk') }}", {
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                                    },
-                                    body: JSON.stringify({
-                                        password: password
-                                    })
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                                },
+                                body: JSON.stringify({
+                                    password: password
                                 })
+                            })
                                 .then(res => res.json())
                                 .then(data => {
 
@@ -647,7 +647,7 @@
             </script>
         @endif
     @endauth
-<script src="{{ asset('js/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
 </body>
 
 </html>

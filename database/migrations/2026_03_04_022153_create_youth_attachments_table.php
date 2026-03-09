@@ -10,19 +10,19 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::table('youths', function ($table) {
-            $table->boolean('is_archived')->default(0);
+        Schema::create('youth_attachments', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('youth_id')->constrained()->onDelete('cascade');
+            $table->string('file_path');
+            $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('youths', function (Blueprint $table) {
-            $table->dropColumn('is_archived');
-        });
+        Schema::dropIfExists('youth_attachments');
     }
 };

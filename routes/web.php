@@ -206,3 +206,5 @@ Route::post('/events', [EventController::class, 'store'])
     ->name('events.store');
 Route::delete('/event-images/{image}', [EventImageController::class, 'destroy'])
     ->name('event-images.destroy');
+
+    Route::delete('/attachments/{id}', [YouthController::class, 'deleteAttachment']);

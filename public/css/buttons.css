@@ -7,7 +7,7 @@
     padding: 0.75rem 0 !important;
     margin-bottom: 1rem !important;
     display: flex !important;
-    justify-content: flex-end !important;
+    justify-content: flex-end !important;   
 }
 
 .save-btn {
@@ -17,7 +17,7 @@
     padding: 0.55rem 1.5rem !important;
     border-radius: 0.5rem !important;
     font-weight: 600 !important;
-    font-size: 14px !important;
+    font-size: 12px !important;
 }
 
 .save-btn:hover {
@@ -34,7 +34,7 @@
     padding: 0.55rem 1.5rem !important;
     border-radius: 0.5rem !important;
     font-weight: 600 !important;
-    font-size: 14px !important;
+    font-size: 12px !important;
 }
 
 .edit-btn:hover {
@@ -51,7 +51,7 @@
     padding: 0.55rem 1.5rem !important;
     border-radius: 0.5rem !important;
     font-weight: 600 !important;
-    font-size: 14px !important;
+    font-size: 12px !important;
 }
 
 .delete-btn:hover {
@@ -68,7 +68,7 @@
     padding: 0.55rem 1.5rem !important;
     border-radius: 0.5rem !important;
     font-weight: 600 !important;
-    font-size: 14px !important;
+    font-size: 12px !important;
 }
 
 .remove-btn:hover {
@@ -85,7 +85,7 @@
     padding: 0.55rem 1.5rem !important;
     border-radius: 0.5rem !important;
     font-weight: 600 !important;
-    font-size: 14px !important;
+    font-size: 12px !important;
 }
 
 .cancel-btn:hover {
@@ -148,7 +148,7 @@
     padding: 0.55rem 1.5rem !important;
     border-radius: 0.5rem !important;
     font-weight: 600 !important;
-    font-size: 14px !important;
+    font-size: 12px !important;
 }
 
 .archive-btn:hover {
@@ -164,7 +164,7 @@
     padding: 0.55rem 1.5rem !important;
     border-radius: 0.5rem !important;
     font-weight: 600 !important;
-    font-size: 14px !important;
+    font-size: 12px !important;
 }
 
 .active-btn:hover {
