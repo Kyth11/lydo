@@ -34,7 +34,7 @@
             </div>
 
             <!-- DataTable -->
-            <div class="overflow-x-auto">
+            <div class="datatable-scale overflow-x-auto">
                 <table id="announcementTable" class="display w-full announcement-table">
                     <thead>
                         <tr>

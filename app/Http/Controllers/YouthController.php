@@ -7,8 +7,9 @@ use App\Models\YouthAttachment;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Mail\Attachment;
+// use Illuminate\Mail\Attachment;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,36 +20,103 @@ class YouthController extends Controller
      */
     public function index(Request $request)
     {
+
+        // AUTO ARCHIVE AGE 31+
+        Youth::whereDate('birthday', '<=', now()->subYears(31))
+            ->update(['is_archived' => 1]);
+        DB::table('youths')
+            ->where('age', '>=', 31)
+            ->update(['is_archived' => 1]);
         $query = Youth::query();
         $user = Auth::user();
 
-        // SK sees only their barangay
-        if ($user && $user->role === 'sk') {
-            $query->where('barangay', $user->barangay);
-        }
 
-        // Admin barangay filter
+
+        // ===============================
+        // SK USERS SEE ONLY THEIR BARANGAY
+        // ===============================
+        if ($user && $user->role === 'sk') {
+
+            if ($request->filled('transferred')) {
+
+                // SK sees transferred FROM their barangay
+                $query->where('previous_barangay', $user->barangay);
+
+            } else {
+
+                // SK sees active youth in their barangay
+                $query->where('barangay', $user->barangay);
+
+            }
+
+        }
+        // ===============================
+        // ADMIN BARANGAY FILTER
+        // ===============================
         if ($request->filled('barangay') && (!$user || $user->role !== 'sk')) {
             $query->where('barangay', $request->barangay);
         }
 
-        // Sex filter
+        // ===============================
+        // SEX FILTER
+        // ===============================
         if ($request->filled('sex')) {
             $query->where('sex', $request->sex);
         }
 
-        // Archived filter
-        if ($request->filled('archived')) {
-            $query->where('is_archived', 1);
-        } else {
-            $query->where('is_archived', 0);
-        }
+        // ===============================
+        // MODE FILTER (ACTIVE / ARCHIVED / TRANSFERRED)
+        // ===============================
+        if ($request->filled('transferred')) {
 
+            // TRANSFERRED PAGE
+            $query->whereNotNull('previous_barangay')
+                ->where('is_archived', 0);
+
+        } elseif ($request->filled('archived')) {
+
+            // ARCHIVED PAGE
+            $query->where('is_archived', 1);
+
+        } else {
+
+            // ACTIVE PAGE
+            $query->where('is_archived', 0)
+                ->whereDate('birthday', '>', now()->subYears(31));
+
+        }
+        // ===============================
+        // GET RESULTS
+        // ===============================
         $youths = $query->with('attachments')
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('youth.index', compact('youths'));
+        // ===============================
+        // BARANGAY POPULATION
+        // ===============================
+        $barangayPopulation = DB::table('barangay_populations')
+            ->pluck('population', 'barangay')
+            ->toArray();
+
+        $allBarangays = DB::table('barangay_populations')
+            ->pluck('barangay')
+            ->toArray();
+        // ===============================
+        // PROFILES PER BARANGAY
+        // ===============================
+        $barangayProfiles = Youth::where('is_archived', 0)
+            ->select('barangay', DB::raw('COUNT(*) as total'))
+            ->groupBy('barangay')
+            ->pluck('total', 'barangay')
+            ->toArray();
+
+        return view('youth.index', compact(
+            'youths',
+            'barangayProfiles',
+            'barangayPopulation',
+    'allBarangays'
+        ));
     }
 
     public function create()
@@ -151,7 +219,10 @@ class YouthController extends Controller
     {
         $user = Auth::user();
         $youth = Youth::findOrFail($id);
-
+        // Detect barangay transfer
+        if ($youth->barangay !== $request->barangay) {
+            $youth->previous_barangay = $youth->barangay;
+        }
         if ($user && $user->role === 'sk' && $youth->barangay !== $user->barangay) {
             abort(403);
         }
@@ -181,19 +252,23 @@ class YouthController extends Controller
             'attachments.*' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
         ]);
 
-        if ($user && $user->role === 'sk') {
-            $data['barangay'] = $user->barangay;
-        }
-
-        // Age validation
+        // Calculate age temporarily for validation
         $birthday = Carbon::parse($data['birthday']);
-        $age = $birthday->diffInYears(now());
+        $age = $birthday->age;
 
-        if ($age < 15 || $age > 30) {
-            return back()->withErrors(['birthday' => 'Only ages 15 to 30 are allowed.']);
+        // Minimum age validation
+        if ($age < 15) {
+            return back()->withErrors([
+                'birthday' => 'Youth must be at least 15 years old.'
+            ]);
         }
 
-        $data['age'] = $age;
+        // Auto archive if 31+
+        if ($age >= 31) {
+            $data['is_archived'] = 1;
+        }
+
+
 
         // Religion "Others"
         if ($data['religion'] === 'Others') {
@@ -205,7 +280,7 @@ class YouthController extends Controller
             $data['preferred_skills'] = $request->preferred_skills_other;
         }
 
-        // Booleans
+        // Boolean fields
         foreach ([
             'is_osy',
             'is_isy',
@@ -227,6 +302,7 @@ class YouthController extends Controller
         }
 
         $youth->update($data);
+
         if ($request->hasFile('attachments')) {
             foreach ($request->file('attachments') as $file) {
                 $path = $file->store('youth_attachments', 'public');
@@ -239,7 +315,6 @@ class YouthController extends Controller
 
         return back()->with('success', 'Profile updated.');
     }
-
     /**
      * Archive youth
      */

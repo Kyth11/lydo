@@ -240,3 +240,130 @@ h4 {
         line-height: 20px;
     }
 }
+
+/* =========================
+   PRIVACY MODAL (LGU STYLE)
+========================= */
+
+.privacy-overlay {
+
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 9999;
+
+    display: none; /* 🔥 IMPORTANT FIX */
+    align-items: center;
+    justify-content: center;
+
+    padding: 1rem;
+}
+
+/* SHOW MODAL */
+.privacy-overlay.active {
+    display: flex !important;
+
+}
+
+.privacy-modal {
+            margin-top: 6%;
+    background: #ffffff;
+    width: 100%;
+    max-width: 700px;
+    max-height: 85vh;
+
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+
+    animation: fadeIn 0.2s ease;
+}
+
+/* HEADER */
+.privacy-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.privacy-header h3 {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.privacy-header span {
+    font-size: 13px;
+    font-weight: normal;
+}
+
+/* BODY */
+.privacy-body {
+    padding: 1rem;
+    overflow-y: auto;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.privacy-body ul {
+    margin-left: 1.5rem;
+}
+
+/* FOOTER */
+.privacy-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    padding: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.agree-btn {
+    background: #16a34a;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.close-secondary {
+    border: 1px solid #ccc;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.close-btn {
+    font-size: 20px;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+    .privacy-modal {
+        max-width: 100%;
+    }
+
+    .privacy-body {
+        font-size: 12px;
+    }
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

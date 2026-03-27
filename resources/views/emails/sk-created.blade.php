@@ -8,7 +8,7 @@
 <body style="font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; color:#111">
     <div style="max-width:600px;margin:40px auto;border:1px solid #e5e7eb;padding:24px;border-radius:8px;">
         <div style="text-align:center;padding-bottom:12px;">
-            <img src="{{ asset('images/LydoLogo.png') }}" alt="Lydo Logo" style="height:64px;object-fit:contain;">
+            <img src="https://www.canva.com/design/DAHDtfySK-A/CwwuFlUSOzOLBoLKu6cNqw/view?utm_content=DAHDtfySK-A&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h94b5ef8388"  style="height:64px;object-fit:contain;">
         </div>
 
         <h2 style="font-weight:700;color:#111">Your SK account has been created</h2>

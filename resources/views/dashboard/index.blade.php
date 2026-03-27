@@ -3,619 +3,301 @@
 @section('page-title', 'Dashboard')
 @section('page-desc', 'Overview of youth profiling statistics')
 
-
 @section('content')
-{{-- =========================
-   ANNOUNCEMENT STRIP
+
+    @php
+
+        $userBarangay = auth()->user()->barangay ?? null;
+        $isSK = $userBarangay !== null;
+
+        /*
+|--------------------------------------------------------------------------
+| ANNOUNCEMENTS
+|--------------------------------------------------------------------------
+*/
+
+        $announcements = \App\Models\Announcement::when($isSK, function ($q) use ($userBarangay) {
+            $q->where(function ($query) use ($userBarangay) {
+                $query->whereNull('barangay')->orWhere('barangay', 'All Barangay')->orWhere('barangay', $userBarangay);
+            });
+        })
+            ->latest()
+            ->get();
+
+        /*
+|--------------------------------------------------------------------------
+| BARANGAY DATA FILTER
+|--------------------------------------------------------------------------
+*/
+
+        $filteredBarangayData = $isSK
+            ? $barangayGenderData->where('barangay', $userBarangay)->values()
+            : $barangayGenderData;
+
+    @endphp
+
+
+    {{-- =========================
+ANNOUNCEMENT STRIP
 ========================= --}}
-@php
-  $announcements = \App\Models\Announcement::all();
-@endphp
 
-@if($announcements->count())
+    @if ($announcements->count())
 
-<div class="announcement-strip">
+        <div class="announcement-strip" id="announcementStrip">
 
-    <div class="announcement-slider" id="announcementSlider">
+            <div class="announcement-slider" id="announcementSlider">
 
-        @foreach($announcements as $index => $a)
-            <div class="announcement-slide {{ $index === 0 ? 'active' : '' }}">
-                <div class="announcement-content">
-                    <span class="announcement-icon">📢</span>
-                    <div>
-                        <strong>{{ $a->title }}</strong>
-                        <span class="announcement-text">
-                            {{ $a->description }}
-                        </span>
+                @foreach ($announcements as $a)
+                    <div class="announcement-slide" data-start="{{ $a->start_date }}" data-end="{{ $a->end_date }}">
+
+                        <div class="announcement-content">
+
+                            <span class="announcement-icon">📢</span>
+
+                            <div>
+
+                                <strong>{{ $a->title }}</strong>
+
+                                <div class="announcement-date">
+                                    {{ \Carbon\Carbon::parse($a->start_date)->format('M d, Y') }}
+
+                                    @if ($a->end_date)
+                                        - {{ \Carbon\Carbon::parse($a->end_date)->format('M d, Y') }}
+                                    @endif
+                                </div>
+
+                                <span class="announcement-text">
+                                    {{ $a->description }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
                     </div>
-                </div>
+                @endforeach
+
             </div>
-        @endforeach
 
-    </div>
+            <div class="announcement-dots" id="announcementDots"></div>
 
-    @if($announcements->count() > 1)
-    <div class="announcement-dots">
-        @foreach($announcements as $index => $a)
-            <span class="dot {{ $index === 0 ? 'active' : '' }}"
-                  data-index="{{ $index }}"></span>
-        @endforeach
-    </div>
+        </div>
+
     @endif
 
-</div>
 
-@endif
+    <div class="dashboard-grid">
 
-<div class="dashboard-grid">
+        <!-- ========================= -->
+        <!-- LEFT COLUMN -->
+        <!-- ========================= -->
 
+        <div class="card equal-card">
 
-    <!-- ========================= -->
-    <!-- LEFT CARD -->
-    <!-- ========================= -->
-    <div class="card equal-card">
+            <h3 class="card-title">Youth Summary</h3>
 
-        <h3 class="card-title">Youth Summary</h3>
+            <div class="card-content">
 
-        <div class="card-content">
+                <div class="stat-container">
 
-            <div class="stat-container">
+                    <div class="stat-box bg-indigo-50">
+                        <div class="stat-text">Total Youth</div>
+                        <div class="stat-count text-indigo-600">{{ $total }}</div>
+                    </div>
 
-                <div class="stat-box bg-indigo-50">
-                    <div class="stat-text">Total Youth</div>
-                    <div class="stat-count text-indigo-600">{{ $total }}</div>
+                    <div class="stat-box bg-blue-50">
+                        <div class="stat-text">Male</div>
+                        <div class="stat-count text-blue-600">{{ $male }}</div>
+                    </div>
+
+                    <div class="stat-box bg-pink-50">
+                        <div class="stat-text">Female</div>
+                        <div class="stat-count text-pink-600">{{ $female }}</div>
+                    </div>
+
                 </div>
 
-                <div class="stat-box bg-blue-50">
-                    <div class="stat-text">Male</div>
-                    <div class="stat-count text-blue-600">{{ $male }}</div>
+
+                {{-- AGE GROUPS (VISIBLE FOR ADMIN ONLY) --}}
+
+
+                <div class="event-divider"></div>
+
+                <div class="age-group-section">
+
+                    <h3 class="card-title mt-6">Youth Age Groups</h3>
+
+                    <p class="text-xs text-gray-500 text-center mb-3">
+                        Distribution of youth based on SK age brackets
+                    </p>
+
+                    <div class="age-group-grid">
+
+                        <div class="stat-box bg-green-50">
+                            <div class="stat-text">Age 15–17</div>
+                            <div class="stat-count text-green-600">{{ $ageGroups['15-17'] ?? 0 }}</div>
+                        </div>
+
+                        <div class="stat-box bg-blue-50">
+                            <div class="stat-text">Age 18–21</div>
+                            <div class="stat-count text-blue-600">{{ $ageGroups['18-21'] ?? 0 }}</div>
+                        </div>
+
+                        <div class="stat-box bg-purple-50">
+                            <div class="stat-text">Age 22–25</div>
+                            <div class="stat-count text-purple-600">{{ $ageGroups['22-25'] ?? 0 }}</div>
+                        </div>
+
+                        <div class="stat-box bg-orange-50">
+                            <div class="stat-text">Age 26–30</div>
+                            <div class="stat-count text-orange-600">{{ $ageGroups['26-30'] ?? 0 }}</div>
+                        </div>
+
+                    </div>
+
+                    <div class="chart-area-sm mt-3">
+                        <canvas id="ageGroupChart"></canvas>
+                    </div>
+
                 </div>
 
-                <div class="stat-box bg-pink-50">
-                    <div class="stat-text">Female</div>
-                    <div class="stat-count text-pink-600">{{ $female }}</div>
+
+
+
+                <div class="event-divider"></div>
+
+                <h3 class="card-title mt-6 mb-0">
+                    Youth Distribution per Barangay
+                </h3>
+
+                <em class="text-xs text-center text-gray-500">
+                    Click the bars below to hide gender or total count
+                </em>
+
+                <div class="chart-area">
+                    <canvas id="barangayChart"></canvas>
                 </div>
 
             </div>
 
-            <h3 class="card-title mt-6 mb-0">
-                Youth Distribution per Barangay
+
+
+            <div class="event-divider"></div>
+
+            <h3 class="card-title mt-6">
+                Municipality Profiling Coverage
             </h3>
-            <em class="text-xs text-center text-gray-500">
-                Click the bars below to hide gender or total count
-            </em>
 
             <div class="chart-area">
-                <canvas id="barangayChart"></canvas>
+                <canvas id="coverageChart"></canvas>
+            </div>
+
+            <div class="coverage-summary">
+
+                <div class="coverage-box">
+                    <div class="coverage-label">Total Youth Population</div>
+                    <div class="coverage-value">{{ $totalPopulation }}</div>
+                </div>
+
+                <div class="coverage-box">
+                    <div class="coverage-label">Profiles Added</div>
+                    <div class="coverage-value">{{ $totalProfiles }}</div>
+                </div>
+
+                <div class="coverage-box">
+                    <div class="coverage-label">Coverage</div>
+                    <div class="coverage-value">{{ $coveragePercent }}%</div>
+                </div>
+
             </div>
 
         </div>
 
-    </div>
 
+        <!-- ========================= -->
+        <!-- RIGHT COLUMN -->
+        <!-- ========================= -->
 
+        <div class="card equal-card">
 
-<!-- ========================= -->
-<!-- RIGHT CARD -->
-<!-- ========================= -->
-<div class="card equal-card">
+            <h3 class="card-title">
+                Gender % per Barangay
+            </h3>
 
-    <h3 class="card-title">
-        Gender % per Barangay
-    </h3>
+            <div class="barangay-row border-bottom-strong">
 
-    <!-- ALL BARANGAY SUMMARY -->
-    <div class="barangay-row border-bottom-strong">
-
-        <div class="barangay-name font-bold text-indigo-600">
-            All Barangay
-        </div>
-
-        <div class="chart-wrapper">
-            <canvas id="pieChartAll"></canvas>
-        </div>
-
-    </div>
-
-    <!-- SCROLLABLE CONTENT -->
-    <div class="card-content scroll-area">
-
-        @foreach($barangayGenderData as $data)
-
-            <div class="barangay-row">
-
-                <div class="barangay-name">
-                    {{ $data['barangay'] }}
+                <div class="barangay-name font-bold text-indigo-600">
+                    All Barangay
                 </div>
 
                 <div class="chart-wrapper">
-                    <canvas id="pieChart{{ $loop->index }}"></canvas>
+                    <canvas id="pieChartAll"></canvas>
                 </div>
 
             </div>
 
-        @endforeach
+
+            <div class="card-content scroll-area">
+
+                @foreach ($filteredBarangayData as $data)
+                    <div class="barangay-row">
+
+                        <div class="barangay-name">
+                            {{ $data['barangay'] }}
+                        </div>
+
+                        <div class="chart-wrapper">
+                            <canvas id="pieChart{{ $loop->index }}"></canvas>
+                        </div>
+
+                    </div>
+                @endforeach
+
+            </div>
+
+
+            <div class="event-divider"></div>
+
+            <h3 class="card-title">
+                Barangay Profiling Coverage
+            </h3>
+
+            <div class="chart-area-lg">
+                <canvas id="barangayCoverageChart"></canvas>
+            </div>
+
+        </div>
 
     </div>
 
-</div>
 
+    <link rel="stylesheet" href="{{ asset('css/dashboard-index.css') }}">
+    <script src="{{ asset('js/chart.js') }}"></script>
 
-</div>
+    <script>
+        window.dashboardData = {
 
+            barangayLabels: @json($filteredBarangayData->pluck('barangay')),
 
+            maleData: @json($filteredBarangayData->pluck('male')->map(fn($v) => (int) $v)),
 
-<!-- ========================= -->
-<!-- STYLES -->
-<!-- ========================= -->
-<style>
+            femaleData: @json($filteredBarangayData->pluck('female')->map(fn($v) => (int) $v)),
 
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 1.5rem;
-    align-items: stretch; /* makes cards same height */
-}
+            totalData: @json($filteredBarangayData->map(fn($v) => (int) $v['male'] + (int) $v['female'])),
 
-/* CARD */
-.card {
-    background: white;
-    border-radius: 1.25rem;
-    padding: 1.75rem;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-    display: flex;
-    flex-direction: column;
-}
+            maleTotal: {{ (int) $male }},
+            femaleTotal: {{ (int) $female }},
 
-.equal-card {
-    height: 520px; /* SAME HEIGHT FOR BOTH CARDS */
-}
+            barangayGenderData: @json($filteredBarangayData),
 
-.card-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 1.2rem;
-}
+            totalPopulation: {{ $totalPopulation }},
+            totalProfiles: {{ $totalProfiles }},
 
-.card-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
+            barangayCoverage: @json($barangayCoverage)
 
-/* SUMMARY */
-.stat-container {
-    display: flex;
-    justify-content: center;
-    gap: 2.5rem;
-    flex-wrap: wrap;
-    margin-bottom: 1.5rem;
-}
+        };
+    </script>
 
-.stat-box {
-    width: 180px;
-    height: 90px;
-    border-radius: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transition: .2s ease;
-}
-
-.stat-box:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.12);
-}
-
-.stat-text {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: .1em;
-    color: #6b7280;
-    font-weight: 700;
-    margin-bottom: .3rem;
-}
-
-.stat-count {
-    font-size: 2rem;
-    font-weight: 800;
-}
-
-/* BAR CHART AREA */
-.chart-area {
-    flex: 1;
-    position: relative;
-}
-
-/* SCROLLABLE RIGHT CARD */
-.scroll-area {
-    overflow-y: auto;
-}
-
-.scroll-area::-webkit-scrollbar {
-    width: 6px;
-}
-
-.scroll-area::-webkit-scrollbar-thumb {
-    background: #d1d5db;
-    border-radius: 6px;
-}
-
-.barangay-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1.2rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #f1f1f1;
-}
-
-.barangay-name {
-    font-weight: 600;
-    color: #4b5563;
-}
-
-.chart-wrapper {
-    width: 100px;
-    height: 100px;
-}
-.border-bottom-strong {
-    border-bottom: 2px solid #e5e7eb;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-}
-/* =========================
-   ANNOUNCEMENT STRIP
-========================= */
-
-.announcement-strip {
-    background: linear-gradient(90deg, #4f46e5, #6366f1);
-    color: white;
-    border-radius: 1rem;
-    padding: .9rem 1.5rem;
-    margin-bottom: 1.5rem;
-    position: relative;
-    overflow: hidden;
-}
-
-.announcement-slider {
-    position: relative;
-}
-
-.announcement-slide {
-    display: none;
-    animation: fadeIn .4s ease-in-out;
-}
-
-.announcement-slide.active {
-    display: block;
-}
-
-.announcement-content {
-    display: flex;
-    align-items: center;
-    gap: .8rem;
-    font-size: .95rem;
-}
-
-.announcement-icon {
-    font-size: 1.2rem;
-}
-
-.announcement-text {
-    margin-left: .4rem;
-    font-weight: 400;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.announcement-dots {
-    text-align: center;
-    margin-top: .6rem;
-}
-
-.dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    background: rgba(255,255,255,.5);
-    border-radius: 50%;
-    margin: 0 4px;
-    cursor: pointer;
-    transition: .2s;
-}
-
-.dot.active {
-    background: white;
-    transform: scale(1.2);
-}
-/* =========================
-   📱 MOBILE RESPONSIVE DASHBOARD
-========================= */
-
-@media (max-width: 768px) {
-
-    /* GRID STACK */
-    .dashboard-grid {
-        grid-template-columns: 1fr !important;
-        gap: 1rem !important;
-    }
-
-    /* CARDS */
-    .card {
-        padding: 1.25rem !important;
-    }
-
-    .equal-card {
-        height: auto !important;
-    }
-
-    .card-title {
-        font-size: 1rem !important;
-        text-align: center;
-    }
-
-    /* STAT BOXES */
-    .stat-container {
-        gap: 1rem !important;
-    }
-
-    .stat-box {
-        width: 100% !important;
-        height: 80px !important;
-    }
-
-    .stat-count {
-        font-size: 1.6rem !important;
-    }
-
-    /* BAR CHART */
-    .chart-area {
-        min-height: 260px !important;
-    }
-
-    /* RIGHT CARD SCROLL */
-    .scroll-area {
-        max-height: unset !important;
-    }
-
-    /* BARANGAY ROW */
-    .barangay-row {
-        flex-direction: column !important;
-        align-items: center !important;
-        text-align: center !important;
-        gap: .75rem !important;
-    }
-
-    .barangay-name {
-        font-size: .85rem !important;
-    }
-
-    .chart-wrapper {
-        width: 90px !important;
-        height: 90px !important;
-    }
-
-    /* ANNOUNCEMENT STRIP */
-    .announcement-strip {
-        padding: .75rem 1rem !important;
-        text-align: center;
-    }
-
-    .announcement-content {
-        flex-direction: column !important;
-        gap: .4rem !important;
-        font-size: .85rem !important;
-    }
-
-    .announcement-icon {
-        font-size: 1.1rem !important;
-    }
-
-    /* DOTS */
-    .dot {
-        width: 6px !important;
-        height: 6px !important;
-    }
-
-}
-</style>
-
-
-
-<!-- ========================= -->
-<!-- CHARTS -->
-<!-- ========================= -->
-
-<script src="{{ asset('js/chart.js') }}"></script>
-
-<script>
-new Chart(document.getElementById('barangayChart'), {
-    type: 'bar',
-    data: {
-        labels: {!! json_encode($barangayGenderData->pluck('barangay')) !!},
-        datasets: [
-            {
-                label: 'Male',
-                data: {!! json_encode($barangayGenderData->pluck('male')->map(fn($v)=>(int)$v)) !!},
-                backgroundColor: '#3b82f6',
-                borderRadius: 6
-            },
-            {
-                label: 'Female',
-                data: {!! json_encode($barangayGenderData->pluck('female')->map(fn($v)=>(int)$v)) !!},
-                backgroundColor: '#ec4899',
-                borderRadius: 6
-            },
-            {
-                label: 'Total',
-                data: {!! json_encode(
-                    $barangayGenderData->map(fn($v)=>(int)$v['male'] + (int)$v['female'])
-                ) !!},
-                backgroundColor: '#50C878       ',
-                borderRadius: 6
-            }
-        ]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                display: true,
-                position: 'top'
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    precision: 0,
-                    stepSize: 1
-                }
-            }
-        }
-    }
-});
-</script>
-
-
-{{-- to get rid if the percentage in the bar chart --}}
-
-<script src="{{ asset('js/chart.js') }}"></script>
-<script>
-    /* =========================
-       CENTER TEXT PLUGIN
-    ========================= */
-    const centerTextPlugin = {
-        id: 'centerText',
-        beforeDraw(chart) {
-            const { width, height, ctx } = chart;
-            const dataset = chart.data.datasets[0].data;
-
-            const total = dataset.reduce((a, b) => a + b, 0);
-
-            if (!total) return;
-
-            const malePercent = Math.round((dataset[0] / total) * 100);
-            const femalePercent = Math.round((dataset[1] / total) * 100);
-
-            ctx.restore();
-            ctx.font = "bold 8px sans-serif";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-
-            ctx.fillStyle = "#374151";
-            ctx.fillText(
-                malePercent + "% M / " + femalePercent + "% F",
-                width / 2,
-                height / 2
-            );
-
-            ctx.save();
-        }
-    };
-
-    Chart.register(centerTextPlugin);
-
-
-
-    /* =========================
-       ALL BARANGAY PIE
-    ========================= */
-    new Chart(document.getElementById('pieChartAll'), {
-        type: 'doughnut',
-        data: {
-            labels: ['Male', 'Female'],
-            datasets: [{
-                data: [{{ (int)$male }}, {{ (int)$female }}],
-                backgroundColor: ['#3b82f6', '#ec4899']
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            cutout: '65%',
-            plugins: {
-                legend: { display: false }
-            }
-        }
-    });
-
-
-    /* =========================
-       PIE CHARTS PER BARANGAY
-    ========================= */
-    @foreach($barangayGenderData as $data)
-
-        new Chart(document.getElementById('pieChart{{ $loop->index }}'), {
-            type: 'doughnut',
-            data: {
-                labels: ['Male', 'Female'],
-                datasets: [{
-                    data: [{{ (int)$data['male'] }}, {{ (int)$data['female'] }}],
-                    backgroundColor: ['#3b82f6', '#ec4899']
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                cutout: '65%',
-                plugins: {
-                    legend: { display: false }
-                }
-            }
-        });
-
-    @endforeach
-
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-
-    const slides = document.querySelectorAll('.announcement-slide');
-    const dots = document.querySelectorAll('.dot');
-    let currentSlide = 0;
-    let slideInterval = null;
-
-    function showSlide(index) {
-        slides.forEach((slide, i) => {
-            slide.classList.toggle('active', i === index);
-            if (dots[i]) {
-                dots[i].classList.toggle('active', i === index);
-            }
-        });
-        currentSlide = index;
-    }
-
-    function startAutoSlide() {
-        slideInterval = setInterval(() => {
-            let next = (currentSlide + 1) % slides.length;
-            showSlide(next);
-        }, 4000); // 4 seconds
-    }
-
-    if (slides.length > 1) {
-        startAutoSlide();
-
-        // Optional: click dots to manually switch
-        dots.forEach(dot => {
-            dot.addEventListener('click', function () {
-                clearInterval(slideInterval);
-                showSlide(parseInt(this.dataset.index));
-                startAutoSlide();
-            });
-        });
-    }
-
-});
-</script>
+    <script src="{{ asset('js/dashboard-index.js') }}"></script>
 
 @endsection

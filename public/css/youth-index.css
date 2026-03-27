@@ -1,21 +1,160 @@
-        .form-row {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap
-        }
+.form-row {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
 
-        .form-input {
-            flex: 1;
-            min-width: 160px;
-            padding: .6rem;
-            border: 1px solid #d1d5db;
-            border-radius: .5rem;
-            transition: .2s ease
-        }
+.form-input {
+    flex: 1;
+    min-width: 128px;
+    padding: 0.48rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.4rem;
+    transition: 0.2s ease;
+}
 
-        .form-input:hover {
-            border-color: #4f46e5;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(79, 70, 229, .1)
-        }
+.form-input:hover {
+    border-color: #4f46e5;
+    transform: translateY(-1.6px);
+    box-shadow: 0 3.2px 8px rgba(79, 70, 229, 0.1);
+}
 
+/* =====================================
+BARANGAY POPULATION CARD
+===================================== */
+
+.barangay-table th {
+    text-align: left;
+    padding: 9.6px;
+    font-size: 11.2px;
+    color: #374151;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.barangay-table td {
+    padding: 9.6px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 11.2px;
+}
+
+/* population input */
+
+.population-input {
+    width: 72px;
+    padding: 3.2px 4.8px;
+    border: 1px solid #d1d5db;
+    border-radius: 4.8px;
+    font-size: 11.2px;
+}
+
+/* coverage bar */
+
+.coverage {
+    display: flex;
+    align-items: center;
+    gap: 6.4px;
+}
+
+.coverage-bar {
+    width: 96px;
+    height: 6.4px;
+    background: #e5e7eb;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.coverage-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #22c55e, #16a34a);
+    transition: width 0.4s ease;
+}
+
+.coverage-text {
+    font-size: 9.6px;
+    font-weight: 600;
+    color: #374151;
+}
+
+/* =====================================
+SCROLLABLE BARANGAY LIST
+===================================== */
+
+.barangay-scroll {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+/* sticky header */
+
+.barangay-scroll thead th {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 2;
+}
+
+/* scrollbar */
+
+.barangay-scroll::-webkit-scrollbar {
+    width: 4.8px;
+}
+
+.barangay-scroll::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 8px;
+}
+
+.barangay-scroll::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+/* =====================================
+MUNICIPALITY SUMMARY
+===================================== */
+
+.municipality-summary{
+    margin-bottom:16px;
+}
+
+.summary-header{
+    display:flex;
+    justify-content:space-between;
+    font-weight:600;
+    margin-bottom:4.8px;
+}
+
+.summary-bar{
+    width:100%;
+    height:8px;
+    background:#e5e7eb;
+    border-radius:999px;
+    overflow:hidden;
+}
+
+.summary-fill{
+    height:100%;
+    background:linear-gradient(90deg,#2563eb,#1d4ed8);
+    transition:width .4s ease;
+}
+
+.summary-meta{
+    font-size:9.6px;
+    margin-top:3.2px;
+    color:#6b7280;
+}
+
+/* =====================================
+COVERAGE COLORS
+===================================== */
+
+.coverage-red{
+    background:linear-gradient(90deg,#ef4444,#dc2626);
+}
+
+.coverage-yellow{
+    background:linear-gradient(90deg,#facc15,#eab308);
+}
+
+.coverage-green{
+    background:linear-gradient(90deg,#22c55e,#16a34a);
+}

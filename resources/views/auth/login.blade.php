@@ -85,7 +85,9 @@
         body {
             height: 100% !important;
             margin: 0 !important;
-            overflow: hidden !important;
+            overflow-x: hidden;
+            overflow-y: auto;
+            size: 100% !important;
         }
 
         /* FULLSCREEN IMAGE BACKGROUND */
@@ -121,9 +123,14 @@
             background: transparent !important;
             box-shadow: none !important;
             border-radius: 0 !important;
-            padding: 2.5rem;
-            max-width: 420px;
-            width: 100%;
+
+            padding: 2rem;
+            /* reduced from 2.5rem (~20% smaller) */
+            max-width: 340px !important;
+            /* reduced from 420px */
+            width: 90% !important;
+            /* flexible for mobile */
+
             margin: auto;
         }
 
@@ -187,6 +194,61 @@
 
         .hidden {
             display: none;
+        }
+
+        /* =========================
+   MOBILE RESPONSIVE
+========================= */
+        @media (max-width: 768px) {
+
+            .login-form {
+                max-width: 300px;
+                padding: 1.5rem;
+            }
+
+            .h1 {
+                font-size: 18px !important;
+            }
+
+            .h2 {
+                font-size: 16px !important;
+            }
+
+            input,
+            .password-input {
+                font-size: 14px;
+                padding: 0.5rem;
+            }
+
+            .password-eye {
+                right: 0.5rem;
+            }
+
+            .caps-toast {
+                font-size: 0.7rem;
+                top: -2rem;
+            }
+        }
+
+        /* Extra small devices */
+        @media (max-width: 480px) {
+
+            .login-form {
+                max-width: 260px;
+                padding: 1.2rem;
+            }
+
+            .h1 {
+                font-size: 16px !important;
+            }
+
+            .h2 {
+                font-size: 14px !important;
+            }
+
+            p {
+                font-size: 12px;
+            }
         }
     </style>
 

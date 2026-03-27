@@ -42,21 +42,21 @@ class Youth extends Model
         'is_archived'
     ];
 
-protected $casts = [
-    'birthday' => 'date',
-    'age' => 'integer',
-    'is_osy' => 'boolean',
-    'is_isy' => 'boolean',
-    'is_unemployed' => 'boolean',
-    'is_employed' => 'boolean',
-    'is_self_employed' => 'boolean',
-    'is_4ps' => 'boolean',
-    'is_ip' => 'boolean',
-    'is_pwd' => 'boolean',
+    protected $casts = [
+        'birthday' => 'date',
+        'age' => 'integer',
+        'is_osy' => 'boolean',
+        'is_isy' => 'boolean',
+        'is_unemployed' => 'boolean',
+        'is_employed' => 'boolean',
+        'is_self_employed' => 'boolean',
+        'is_4ps' => 'boolean',
+        'is_ip' => 'boolean',
+        'is_pwd' => 'boolean',
 
-    'is_archived' => 'boolean',
-    'family_members' => 'array',
-];
+        'is_archived' => 'boolean',
+        'family_members' => 'array',
+    ];
 
     protected static function booted()
     {
@@ -93,5 +93,11 @@ protected $casts = [
     public function attachments()
     {
         return $this->hasMany(\App\Models\YouthAttachment::class);
+    }
+
+
+    public function getAgeAttribute()
+    {
+        return Carbon::parse($this->birthday)->age;
     }
 }

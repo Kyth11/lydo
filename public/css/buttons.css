@@ -2,14 +2,14 @@
 
 .save-bar {
     position: sticky !important;
-    top: 5.5rem !important;
+    top: 5rem !important;
     z-index: 30 !important;
     padding: 0.75rem 0 !important;
     margin-bottom: 1rem !important;
     display: flex !important;
-    justify-content: flex-end !important;   
+    justify-content: flex-end !important;
+    gap: 1rem !important;
 }
-
 .save-btn {
     background: #ffffff !important;
     border: 2px solid #3500d5 !important;
@@ -135,12 +135,6 @@
     color: white !important;
 }
 
-.save-bar {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1rem;
-}
-
 .archive-btn {
     background: #ffffff !important;
     border: 2px solid #00b6b9 !important;
@@ -179,6 +173,22 @@
     box-shadow: 0 4px 4px rgba(107, 107, 107, 0.1) !important;
 }
 
+.transfer-btn {
+    background: #ffffff !important;
+    border: 2px solid #ff0066 !important;
+    color: #ff0066 !important;
+    padding: 0.55rem 1.5rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+}
+.transfer-btn:hover {
+    background: #ff0066 !important;
+    color: white !important;
+    translate: 0 -2px !important;
+    transition: 0.2s ease-in-out !important;
+}
+
 .disabled-btn {
     background: #9ca3af !important;
     cursor: not-allowed !important;
@@ -200,4 +210,50 @@
     background: #059669 !important;
     translate: 0 -2px !important;
     transition: all 0.3s ease !important;
+}
+/* =========================
+   MOBILE BUTTON RESPONSIVE
+   ========================= */
+
+@media (max-width: 768px) {
+    /* Save bar stacks buttons properly */
+    .save-bar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.5rem;
+    }
+
+    /* General button sizing */
+    .save-btn,
+    .edit-btn,
+    .delete-btn,
+    .cancel-btn,
+    .archive-btn,
+    .active-btn {
+        width: 100% !important;
+        text-align: center !important;
+        font-size: 11px !important;
+        padding: 0.5rem 1rem !important;
+    }
+
+    /* Table action buttons */
+    .action-group {
+        flex-direction: column;
+        gap: 0.3rem;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+        font-size: 0.75rem !important;
+        padding: 0.45rem 0.6rem !important;
+    }
+
+    /* Add button adjustment */
+    .add-btn {
+        width: 100%;
+        font-size: 0.75rem !important;
+        padding: 0.4rem 0.7rem !important;
+    }
 }

@@ -1,0 +1,565 @@
+/* =========================
+   CONTAINER
+========================= */
+.sk-container,
+.admin-monitoring {
+    max-width: 1000px;
+    margin: auto;
+    padding: 10px;
+}
+
+/* =========================
+   BUTTON
+========================= */
+.add-report-btn {
+    margin-bottom: 20px;
+    padding: 10px 16px;
+    background: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.add-report-btn:hover {
+    background: #4338ca;
+}
+
+/* =========================
+   CARD / CATEGORY
+========================= */
+.report-category,
+.barangay-card {
+    margin-bottom: 25px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================
+   BARANGAY COLLAPSE
+========================= */
+.barangay-card h2 {
+    cursor: pointer;
+    background: #4f46e5;
+    color: white;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.barangay-content {
+    display: none;
+    margin-top: 10px;
+}
+
+.barangay-content.active {
+    display: block;
+}
+
+/* =========================
+   FILTER BAR (ADMIN)
+========================= */
+.filter-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.filter-bar select,
+.filter-bar input,
+.filter-bar button {
+    padding: 6px 10px;
+}
+
+/* =========================
+   TABLE (MODERN STYLE)
+========================= */
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.report-table th {
+    background: #f3f4f6;
+    text-align: left;
+    font-weight: 600;
+}
+
+.report-table th,
+.report-table td {
+    padding: 10px;
+    font-size: 14px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* Hover row */
+.report-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+/* =========================
+   TEXT
+========================= */
+.truncate {
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+.table-actions {
+    display: flex;
+    gap: 6px;
+}
+
+/* =========================
+   STATUS BADGES
+========================= */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-badge.pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-badge.approved {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-badge.rejected {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* =========================
+   MODAL
+========================= */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-box {
+    background: white;
+    padding: 20px;
+    width: 800px;
+    max-width: 95%;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 10000;
+}
+
+/* =========================
+   FILE MODAL GRID
+========================= */
+.file-modal-box {
+    width: 80%;
+    max-width: 900px;
+}
+
+.file-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+}
+
+.file-item {
+    background: #f9fafb;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    aspect-ratio: 1 / 1; /* 🔥 forces square */
+    overflow: hidden;
+}
+
+.file-item img {
+    width: 80%;
+    height: 80%;
+    object-fit: cover; /* 🔥 fills square properly */
+    border-radius: 8px;
+}
+
+.file-item:hover {
+    background: #e0e7ff;
+}
+
+.file-icon {
+    font-size: 40px;
+    display: block;
+}
+
+.file-name {
+    font-size: 8px;
+    margin-top: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* =========================
+   MODAL HEADER / FOOTER
+========================= */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-footer {
+    margin-top: 15px;
+    text-align: center;
+}
+
+/* =========================
+   UTIL
+========================= */
+.text-muted {
+    color: #8d8e90;
+    font-size: 15px;
+}
+
+.file-section-title {
+    font-size: 15px; /* 🔥 smaller */
+    font-weight: 500;
+    color: #6b7280;
+    margin-bottom: 6px;
+}
+
+.event-divider {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    border: 1px dashed #d1d5db;
+}
+
+/* =========================
+   EDIT MODAL PREVIEW (SMALL 1:1)
+========================= */
+
+.preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 6px;
+}
+
+/* each file box */
+.image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1; /* 🔥 perfect square */
+    border-radius: 6px;
+    overflow: hidden;
+    background: #f3f4f6;
+}
+
+/* image inside */
+.image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 🔥 no stretching */
+}
+
+/* remove button */
+.image-wrapper button {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    font-size: 10px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0;
+    line-height: 16px;
+}
+
+/* hover */
+.image-wrapper:hover button {
+    background: red;
+}
+
+/* STATUS BADGES */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-badge.pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-badge.approved {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-badge.rejected {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* ADMIN COMMENT */
+.admin-comment {
+    font-size: 13px;
+    background: #f9fafb;
+    padding: 6px;
+    border-radius: 6px;
+}
+
+/* REVIEW NOTIFICATION */
+.review-note {
+    font-size: 11px;
+    color: #16a34a;
+    margin-top: 4px;
+}
+
+/* ROW HIGHLIGHT */
+.row-approved {
+    background: #f0fdf4;
+}
+
+.row-rejected {
+    background: #fef2f2;
+}
+
+@keyframes flashFade {
+    0% { background: #fde68a; }
+    100% { background: transparent; }
+}
+
+
+/* EDITED LABEL */
+.edit-note {
+    font-size: 11px;
+    color: #2563eb;
+}
+
+/* REVIEW LABEL */
+.review-note {
+    font-size: 11px;
+    color: #16a34a;
+}
+
+/* ROW COLORS */
+.row-edited {
+    background: #eff6ff;
+}
+
+.row-approved {
+    background: #f0fdf4;
+}
+
+.row-rejected {
+    background: #fef2f2;
+}
+
+
+/* =========================
+   MODERN MODAL (ANN STYLE)
+========================= */
+.modern-modal {
+    max-width: 750px;
+    width: 95%;
+    padding: 16px;
+}
+
+/* FORM LAYOUT */
+.announcement-form {
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+}
+
+/* GRID */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .6rem;
+}
+
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* INPUT */
+.form-input {
+    width: 100%;
+    padding: .45rem .6rem;
+    font-size: .85rem;
+    border-radius: .4rem;
+    border: 1px solid #d1d5db;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 1px #6366f1;
+}
+
+/* SECTION TITLE */
+.section-title {
+    font-size: .9rem;
+    font-weight: 600;
+}
+
+/* ACTION BAR (STICKY LIKE ANNOUNCEMENT) */
+.action-bar {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: flex-end;
+    gap: .6rem;
+    margin-bottom: 10px;
+    background: white;
+    padding-bottom: 6px;
+    z-index: 10;
+}
+
+
+/* PREVIEW GRID */
+.preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 6px;
+}
+
+/* FILE BOX */
+.image-wrapper {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #f3f4f6;
+}
+
+.image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-wrapper button {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    border: none;
+    font-size: 10px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.image-wrapper:hover button {
+    background: red;
+}
+
+/* =========================
+   DATATABLE STYLE FILTER BAR
+========================= */
+.dt-filter-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+/* LEFT GROUP */
+.dt-left {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* RIGHT GROUP */
+.dt-right {
+    display: flex;
+    align-items: center;
+}
+
+/* INPUT STYLE */
+.dt-input {
+    padding: 6px 10px;
+    font-size: 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+.dt-input:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 1px #6366f1;
+    outline: none;
+}
+
+/* SEARCH BOX */
+.dt-search {
+    padding: 6px 10px;
+    font-size: 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    width: 180px;
+    transition: all 0.2s ease;
+}
+
+.dt-search:focus {
+    width: 220px;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 1px #6366f1;
+    outline: none;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    .dt-filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .dt-right {
+        width: 100%;
+    }
+
+    .dt-search {
+        width: 100%;
+    }
+}

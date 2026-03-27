@@ -7,7 +7,6 @@
 
     <link rel="stylesheet" href="{{ asset('css/event-forms.css') }}">
     <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/cropper.min.css') }}">
 
 
     <div class="event-form-container">
@@ -29,31 +28,31 @@
             @csrf
             @method('PUT')
 
-            {{-- Existing Images --}}
-            <div class="form-group">
-                <label>Current Images</label>
+                {{-- Existing Images --}}
+                <div class="form-group">
+                    <label>Current Images</label>
 
-                <div class="image-preview-grid">
-                    @foreach($event->images as $image)
-                        <div class="image-wrapper">
-                            <img src="{{ asset('storage/' . $image->image_path) }}" class="preview-image">
+                    <div class="image-preview-grid">
+                        @foreach($event->images as $image)
+                            <div class="image-wrapper">
+                                <img src="{{ asset('storage/' . $image->image_path) }}" class="preview-image">
 
-                            <button type="button" class="remove-btn small" onclick="deleteImage({{ $image->id }})">
-                                X
-                            </button>
-                        </div>
-                    @endforeach
+                                <button type="button" class="remove-btn small" onclick="deleteImage({{ $image->id }})">
+                                    X
+                                </button>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
-            </div>
 
-            <div class="event-divider"></div>
-            {{-- Add More Images --}}
-            <div class="form-group">
-                <label>Add More Images</label>
-                <input type="file" name="images[]" id="imageInput" accept="image/*" multiple>
+                <div class="event-divider"></div>
+                {{-- Add More Images --}}
+                <div class="form-group">
+                    <label>Add More Images</label>
+                    <input type="file" name="images[]" id="imageInput" accept="image/*" multiple>
 
-                <div id="previewContainer" class="image-preview-grid"></div>
-            </div>
+                    <div id="previewContainer" class="image-preview-grid"></div>
+                </div>
 
             {{-- Event Type --}}
             <div class="form-group">
@@ -167,4 +166,45 @@
             });
         }
     </script>
+    <script>
+document.getElementById('imageInput').addEventListener('change', function (event) {
+
+    const container = document.getElementById('previewContainer');
+    const files = event.target.files;
+
+    container.innerHTML = ""; // clear previous previews
+
+    Array.from(files).forEach((file, index) => {
+
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+
+            const wrapper = document.createElement('div');
+            wrapper.classList.add('image-wrapper');
+
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.classList.add('preview-image');
+
+            const removeBtn = document.createElement('button');
+            removeBtn.type = "button";
+            removeBtn.innerText = "X";
+            removeBtn.classList.add('remove-btn', 'small');
+
+            removeBtn.onclick = function () {
+                wrapper.remove();
+            };
+
+            wrapper.appendChild(img);
+            wrapper.appendChild(removeBtn);
+
+            container.appendChild(wrapper);
+        };
+
+        reader.readAsDataURL(file);
+    });
+
+});
+</script>
 @endsection

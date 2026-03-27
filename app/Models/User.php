@@ -55,4 +55,7 @@ public function isSK() {
     return $this->role === 'sk';
 }
 
+public function reports() {
+    return $this->hasMany(SkReport::class);
+}
 }

@@ -54,7 +54,7 @@
                     <option value="Prefer not to say">Prefer not to say</option>
                 </select>
 
-                <input id="edit_birthday" type="date" name="birthday" class="form-input" required>
+                <input id="edit_birthday" type="date" name="birthday" class="form-input">
                 <input id="edit_age" type="number" name="age" class="form-input" readonly>
 
                 <select id="edit_civil_status" name="civil_status" class="form-input" required>
@@ -75,7 +75,17 @@
             </div>
 
             <div class="form-row">
-                <input id="edit_barangay" name="barangay" class="form-input" placeholder="Barangay">
+                <select id="edit_barangay" name="barangay" class="form-input" placeholder="Barangay">
+
+                        <option value="" disabled class="bold">Barangay</option>
+
+                        @foreach (['Awang', 'Bagocboc', 'Barra', 'Bonbon', 'Cauyunan', 'Igpit', 'Limunda', 'Luyong Bonbon', 'Malanang', 'Nangcaon', 'Patag', 'Poblacion', 'Taboc', 'Tingalan'] as $b)
+                            <option value="{{ $b }}">
+                                {{ $b }}
+                            </option>
+                        @endforeach
+                    </select>
+
                 <input id="edit_purok_zone" name="purok_zone" class="form-input" placeholder="Purok / Zone">
                 <input id="edit_home_address" name="home_address" class="form-input" placeholder="Home Address"
                     readonly>
@@ -120,244 +130,201 @@
 
 
 
-<!-- SKILLS -->
-<div class="form-row">
+            <!-- SKILLS -->
+            <div class="form-row">
 
-    <input id="edit_skills"
-        name="skills"
-        class="form-input"
-        placeholder="Skills">
+                <input id="edit_skills" name="skills" class="form-input" placeholder="Skills">
 
-    <select id="edit_preferred_skills"
-        name="preferred_skills"
-        class="form-input">
+                <select id="edit_preferred_skills" name="preferred_skills" class="form-input">
 
-        <option value="" disabled>Preferred Skills</option>
+                    <option value="" disabled>Preferred Skills</option>
 
-        <option value="Housekeeping">Housekeeping</option>
-        <option value="Bread & Pastries Production">Bread & Pastries Production</option>
-        <option value="Driving">Driving</option>
-        <option value="Automotive Servicing">Automotive Servicing</option>
-        <option value="Bookkeeping">Bookkeeping</option>
-        <option value="Electrical Installation & Maintenance">Electrical Installation & Maintenance</option>
-        <option value="Plumbing">Plumbing</option>
-        <option value="Shielded Metal Arc Welding SMAW">Shielded Metal Arc Welding SMAW</option>
-        <option value="Tile Setting">Tile Setting</option>
-        <option value="Food & Beverage Services">Food & Beverage Services</option>
-        <option value="Computer System Servicing">Computer System Servicing</option>
-        <option value="Carpentry">Carpentry</option>
-        <option value="Masonry">Masonry</option>
-        <option value="Barista">Barista</option>
-        <option value="Massage Therapist">Massage Therapist</option>
-        <option value="Caregiving">Caregiving</option>
-        <option value="Dressmaking">Dressmaking</option>
-        <option value="Tailoring">Tailoring</option>
-        <option value="Others">Others (Specify)</option>
+                    <option value="Housekeeping">Housekeeping</option>
+                    <option value="Bread & Pastries Production">Bread & Pastries Production</option>
+                    <option value="Driving">Driving</option>
+                    <option value="Automotive Servicing">Automotive Servicing</option>
+                    <option value="Bookkeeping">Bookkeeping</option>
+                    <option value="Electrical Installation & Maintenance">Electrical Installation & Maintenance</option>
+                    <option value="Plumbing">Plumbing</option>
+                    <option value="Shielded Metal Arc Welding SMAW">Shielded Metal Arc Welding SMAW</option>
+                    <option value="Tile Setting">Tile Setting</option>
+                    <option value="Food & Beverage Services">Food & Beverage Services</option>
+                    <option value="Computer System Servicing">Computer System Servicing</option>
+                    <option value="Carpentry">Carpentry</option>
+                    <option value="Masonry">Masonry</option>
+                    <option value="Barista">Barista</option>
+                    <option value="Massage Therapist">Massage Therapist</option>
+                    <option value="Caregiving">Caregiving</option>
+                    <option value="Dressmaking">Dressmaking</option>
+                    <option value="Tailoring">Tailoring</option>
+                    <option value="Others">Others (Specify)</option>
 
-    </select>
+                </select>
 
-    <input id="edit_preferred_skills_other"
-        name="preferred_skills_other"
-        class="form-input"
-        placeholder="Specify preferred skill"
-        style="display:none;">
+                <input id="edit_preferred_skills_other" name="preferred_skills_other" class="form-input"
+                    placeholder="Specify preferred skill" style="display:none;">
 
-</div>
+            </div>
 
 
-<!-- OTHER INFO -->
-<div class="form-row">
+            <!-- OTHER INFO -->
+            <div class="form-row">
 
-    <input id="edit_source_of_income"
-        name="source_of_income"
-        class="form-input"
-        placeholder="Source of Income">
+                <input id="edit_source_of_income" name="source_of_income" class="form-input"
+                    placeholder="Source of Income">
 
-    <input id="edit_contact_number"
-        name="contact_number"
-        class="form-input"
-        type="number"
-        placeholder="Contact Number">
+                <input id="edit_contact_number" name="contact_number" class="form-input" type="number"
+                    placeholder="Contact Number">
 
-</div>
+            </div>
 
-<!-- SK VOTER -->
-<div class="form-row">
-    <label>Are you a Registered SK Voter?</label>
+            <!-- SK VOTER -->
+            <div class="form-row">
+                <label>Are you a Registered SK Voter?</label>
 
-    <label>
-        <input type="radio" name="is_sk_voter" value="Yes" id="edit_is_sk_voter_yes">
-        Yes
-    </label>
+                <label>
+                    <input type="radio" name="is_sk_voter" value="Yes" id="edit_is_sk_voter_yes">
+                    Yes
+                </label>
 
-    <label>
-        <input type="radio" name="is_sk_voter" value="No" id="edit_is_sk_voter_no">
-        No
-    </label>
-</div>
+                <label>
+                    <input type="radio" name="is_sk_voter" value="No" id="edit_is_sk_voter_no">
+                    No
+                </label>
+            </div>
 
-<!-- YOUTH CLASSIFICATION -->
-<div class="form-row">
-    <label>Youth Classification:</label>
+            <!-- YOUTH CLASSIFICATION -->
+            <div class="form-row">
+                <label>Youth Classification:</label>
 
-    <label>
-        <input type="checkbox"
-            id="edit_is_osy"
-            name="is_osy">
-        Out-of-School Youth
-    </label>
+                <label>
+                    <input type="checkbox" id="edit_is_osy" name="is_osy">
+                    Out-of-School Youth
+                </label>
 
-    <label>
-        <input type="checkbox"
-            id="edit_is_isy"
-            name="is_isy">
-        In-School Youth
-    </label>
+                <label>
+                    <input type="checkbox" id="edit_is_isy" name="is_isy">
+                    In-School Youth
+                </label>
 
-    <label>
-        <input type="checkbox"
-            id="edit_is_4ps"
-            name="is_4ps">
-        4Ps
-    </label>
+                <label>
+                    <input type="checkbox" id="edit_is_4ps" name="is_4ps">
+                    4Ps
+                </label>
 
-    <label>
-        <input type="checkbox"
-            id="edit_is_ip"
-            name="is_ip">
-        Indigenous People (IP)
-    </label>
+                <label>
+                    <input type="checkbox" id="edit_is_ip" name="is_ip">
+                    Indigenous People (IP)
+                </label>
 
-    <label>
-        <input type="checkbox"
-            id="edit_is_pwd"
-            name="is_pwd">
-        Person With Disability
-    </label>
+                <label>
+                    <input type="checkbox" id="edit_is_pwd" name="is_pwd">
+                    Person With Disability
+                </label>
 
-</div>
+            </div>
 
 
-<!-- WORK CLASSIFICATION -->
-<div class="form-row">
+            <!-- WORK CLASSIFICATION -->
+            <div class="form-row">
 
-    <label>Work Classification:</label>
+                <label>Work Classification:</label>
 
-    <label>
-        <input type="checkbox"
-            id="edit_is_unemployed"
-            name="is_unemployed">
-        Unemployed Youth
-    </label>
+                <label>
+                    <input type="checkbox" id="edit_is_unemployed" name="is_unemployed">
+                    Unemployed Youth
+                </label>
 
-    <label>
-        <input type="checkbox"
-            id="edit_is_employed"
-            name="is_employed">
-        Employed Youth
-    </label>
+                <label>
+                    <input type="checkbox" id="edit_is_employed" name="is_employed">
+                    Employed Youth
+                </label>
 
-    <label>
-        <input type="checkbox"
-            id="edit_is_self_employed"
-            name="is_self_employed">
-        Self-Employed Youth
-    </label>
+                <label>
+                    <input type="checkbox" id="edit_is_self_employed" name="is_self_employed">
+                    Self-Employed Youth
+                </label>
 
-</div>
+            </div>
 
-<!-- II. Family Composition -->
-<h4 class="bold mt-6 mb-2">II. Family Composition</h4>
+            <!-- II. Family Composition -->
+            <h4 class="bold mt-6 mb-2">II. Family Composition</h4>
 
-<div class="family-wrapper">
-    <table class="family-table">
-        <thead>
-            <tr>
-                <th>Family Member</th>
-                <th>Age</th>
-                <th>Relationship</th>
-                <th>Educational Attainment</th>
-                <th>Occupation</th>
-                <th>Income</th>
-                <th></th>
-            </tr>
-        </thead>
+            <div class="family-wrapper">
+                <table class="family-table">
+                    <thead>
+                        <tr>
+                            <th>Family Member</th>
+                            <th>Age</th>
+                            <th>Relationship</th>
+                            <th>Educational Attainment</th>
+                            <th>Occupation</th>
+                            <th>Income</th>
+                            <th></th>
+                        </tr>
+                    </thead>
 
-        <tbody id="editFamilyBody">
-            <tr>
-                <td>
-                    <input class="form-input"
-                        name="family_members[0][name]"
-                        placeholder="Full Name">
-                </td>
+                    <tbody id="editFamilyBody">
+                        <tr>
+                            <td>
+                                <input class="form-input" name="family_members[0][name]" placeholder="Full Name">
+                            </td>
 
-                <td>
-                    <input type="number"
-                        class="form-input"
-                        name="family_members[0][age]"
-                        min="1"
-                        max="99"
-                        inputmode="numeric"
-                        oninput="this.value=this.value.replace(/[^0-9]/g,'')">
-                </td>
+                            <td>
+                                <input type="number" class="form-input" name="family_members[0][age]" min="1" max="99"
+                                    inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                            </td>
 
-                <td>
-                    <select name="family_members[0][relationship]" class="form-input">
-                        <option value="" disabled selected>Relationship</option>
-                        <option>Mother</option>
-                        <option>Father</option>
-                        <option>Brother</option>
-                        <option>Sister</option>
-                        <option>Grandparent</option>
-                        <option>Aunt</option>
-                        <option>Uncle</option>
-                        <option>Cousin</option>
-                        <option>Spouse</option>
-                    </select>
-                </td>
+                            <td>
+                                <select name="family_members[0][relationship]" class="form-input">
+                                    <option value="" disabled selected>Relationship</option>
+                                    <option>Mother</option>
+                                    <option>Father</option>
+                                    <option>Brother</option>
+                                    <option>Sister</option>
+                                    <option>Grandparent</option>
+                                    <option>Aunt</option>
+                                    <option>Uncle</option>
+                                    <option>Cousin</option>
+                                    <option>Spouse</option>
+                                </select>
+                            </td>
 
-                <td>
-                    <select name="family_members[0][education]" class="form-input">
-                        <option value="" disabled selected>Education</option>
-                        <option>None</option>
-                        <option>Pre-School</option>
-                        <option>Kindergarten</option>
-                        <option>Elementary Level</option>
-                        <option>Elementary Graduate</option>
-                        <option>High School Level</option>
-                        <option>High School Graduate</option>
-                        <option>College Level</option>
-                        <option>College Graduate</option>
-                        <option>Vocational</option>
-                    </select>
-                </td>
+                            <td>
+                                <select name="family_members[0][education]" class="form-input">
+                                    <option value="" disabled selected>Education</option>
+                                    <option>None</option>
+                                    <option>Pre-School</option>
+                                    <option>Kindergarten</option>
+                                    <option>Elementary Level</option>
+                                    <option>Elementary Graduate</option>
+                                    <option>High School Level</option>
+                                    <option>High School Graduate</option>
+                                    <option>College Level</option>
+                                    <option>College Graduate</option>
+                                    <option>Vocational</option>
+                                </select>
+                            </td>
 
-                <td>
-                    <input class="form-input"
-                        name="family_members[0][occupation]"
-                        placeholder="Occupation">
-                </td>
+                            <td>
+                                <input class="form-input" name="family_members[0][occupation]" placeholder="Occupation">
+                            </td>
 
-                <td>
-                    <input type="number"
-                        class="form-input"
-                        name="family_members[0][income]"
-                        min="0"
-                        step="1"
-                        inputmode="numeric"
-                        oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-                        placeholder="Monthly Income">
-                </td>
+                            <td>
+                                <input type="number" class="form-input" name="family_members[0][income]" min="0"
+                                    step="1" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+                                    placeholder="Monthly Income">
+                            </td>
 
-                <td></td>
-            </tr>
-        </tbody>
-    </table>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
 
-    <button type="button" id="addEditFamilyRow" class="save-btn mt-3">
-        + Add Family Member
-    </button>
-</div>
+                <button type="button" id="addEditFamilyRow" class="save-btn mt-3">
+                    + Add Family Member
+                </button>
+            </div>
 
             <h4 class="bold mt-6 mb-2">III. Attachments</h4>
 

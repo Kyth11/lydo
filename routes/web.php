@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\BarangayPopulationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventImageController;
@@ -13,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SkMonitoringController;
 
 /*
 |--------------------------------------------------------------------------
@@ -207,4 +209,31 @@ Route::post('/events', [EventController::class, 'store'])
 Route::delete('/event-images/{image}', [EventImageController::class, 'destroy'])
     ->name('event-images.destroy');
 
-    Route::delete('/attachments/{id}', [YouthController::class, 'deleteAttachment']);
+Route::delete('/attachments/{id}', [YouthController::class, 'deleteAttachment']);
+
+
+
+// Barangay Population
+
+Route::post('/barangay-population/update', [BarangayPopulationController::class, 'update']);
+Route::post('/barangay-population/update-all', [BarangayPopulationController::class, 'updateAll']);
+
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/sk/monitoring', [SkMonitoringController::class, 'index'])
+        ->name('sk.monitoring');
+    Route::get('/admin/monitoring', [SkMonitoringController::class, 'index'])
+        ->name('admin.monitoring');
+
+    Route::post('/sk/report', [SkMonitoringController::class, 'store'])
+        ->name('sk.report.store');
+
+    Route::post('/admin/report/update', [SkMonitoringController::class, 'updateStatus'])
+        ->name('admin.report.update');
+
+    Route::delete('/sk/report/{id}', [SkMonitoringController::class, 'destroy'])
+        ->name('sk.report.delete');
+    Route::put('/sk/report/{id}', [SkMonitoringController::class, 'update'])
+        ->name('sk.report.update');
+});

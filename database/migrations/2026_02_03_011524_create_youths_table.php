@@ -58,6 +58,7 @@ return new class extends Migration {
             $table->string('province');
             $table->string('municipality');
             $table->string('barangay');
+            $table->string('previous_barangay')->nullable();
             $table->string('purok_zone')->nullable();
 
             /*

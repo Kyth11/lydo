@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-
     /* =====================================================
        ELEMENT REFERENCES
     ===================================================== */
@@ -18,8 +17,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const religionSelect = document.getElementById("religionSelect");
     const otherReligionInput = document.getElementById("otherReligionInput");
 
-    const preferredSkillsSelect = document.getElementById("preferredSkillsSelect");
-    const otherPreferredSkillInput = document.getElementById("otherPreferredSkillInput");
+    const preferredSkillsSelect = document.getElementById(
+        "preferredSkillsSelect",
+    );
+    const otherPreferredSkillInput = document.getElementById(
+        "otherPreferredSkillInput",
+    );
 
     const familyBody = document.getElementById("familyBody");
     const addFamilyRowBtn = document.getElementById("addFamilyRow");
@@ -93,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    [region, province, municipality, barangay, purokZone].forEach(el => {
+    [region, province, municipality, barangay, purokZone].forEach((el) => {
         el?.addEventListener("input", buildHomeAddress);
         el?.addEventListener("change", buildHomeAddress);
     });
@@ -147,7 +150,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let familyIndex = familyBody ? familyBody.children.length : 0;
 
     addFamilyRowBtn?.addEventListener("click", () => {
-
         const row = document.createElement("tr");
 
         row.innerHTML = `
@@ -192,11 +194,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let selectedFiles = [];
 
     attachmentInput?.addEventListener("change", function (e) {
-
         const files = Array.from(e.target.files);
 
-        files.forEach(file => {
-
+        files.forEach((file) => {
             if (!file.type.startsWith("image/")) {
                 Swal.fire({
                     icon: "error",
@@ -222,17 +222,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function renderPreviews() {
-
         if (!previewContainer) return;
 
         previewContainer.innerHTML = "";
 
         selectedFiles.forEach((file, index) => {
-
             const reader = new FileReader();
 
             reader.onload = function (e) {
-
                 const wrapper = document.createElement("div");
                 wrapper.classList.add("attachment-item");
 
@@ -252,7 +249,7 @@ onclick="removeAttachment(${index})">
         });
 
         const dataTransfer = new DataTransfer();
-        selectedFiles.forEach(file => dataTransfer.items.add(file));
+        selectedFiles.forEach((file) => dataTransfer.items.add(file));
         attachmentInput.files = dataTransfer.files;
     }
 
@@ -260,7 +257,6 @@ onclick="removeAttachment(${index})">
         selectedFiles.splice(index, 1);
         renderPreviews();
     };
-
 });
 
 /* =====================================================
@@ -286,6 +282,62 @@ function previewPhoto(event) {
     }
 
     const reader = new FileReader();
-    reader.onload = (e) => preview.src = e.target.result;
+    reader.onload = (e) => (preview.src = e.target.result);
     reader.readAsDataURL(file);
 }
+
+/* =========================
+   PRIVACY MODAL CONTROL (FIXED)
+========================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("privacyModal");
+    const openBtn = document.getElementById("openPrivacyModal");
+    const closeBtn = document.getElementById("closePrivacyModal");
+    const closeBtn2 = document.getElementById("closePrivacyModalBtn");
+    const agreeBtn = document.getElementById("agreePrivacy");
+    const checkbox = document.getElementById("privacyConsent");
+
+    if (!modal) return;
+
+    // OPEN
+    openBtn?.addEventListener("click", () => {
+        modal.classList.add("active");
+    });
+
+    // CLOSE FUNCTION
+    function closeModal() {
+        modal.classList.remove("active");
+    }
+
+    closeBtn?.addEventListener("click", closeModal);
+    closeBtn2?.addEventListener("click", closeModal);
+
+    // AGREE BUTTON
+    agreeBtn?.addEventListener("click", () => {
+        checkbox.checked = true;
+        closeModal();
+    });
+
+    // CLICK OUTSIDE
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+});
+
+/* =========================
+   FORM VALIDATION (CONSENT REQUIRED)
+========================= */
+
+document.getElementById("youthForm")?.addEventListener("submit", function (e) {
+    if (!checkbox.checked) {
+        e.preventDefault();
+        Swal.fire({
+            icon: "warning",
+            title: "Consent Required",
+            text: "You must agree to the Data Privacy Consent before submitting.",
+        });
+    }
+});

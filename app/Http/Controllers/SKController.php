@@ -61,32 +61,6 @@ class SKController extends Controller
         return redirect()->route('dashboard')->with('warning', 'SK account created but email was not sent. Please check mail configuration or logs.');
     }
 
-    /**
-     * Admin-only: Test sending SKCreated mail to any email address to diagnose mail issues.
-     * Use: GET /mail/test?to=you@example.com  (must be logged in as admin)
-     */
-    public function testMail(Request $request)
-    {
-        if (!Auth::user() || !Auth::user()->isAdmin()) {
-            abort(403);
-        }
-
-        $data = $request->validate([
-            'to' => 'required|email'
-        ]);
-
-        $to = $data['to'];
-        $dummy = new User([ 'name' => 'SK Test', 'email' => $to, 'barangay' => 'Test Barangay' ]);
-        $password = 'test-password';
-
-        try {
-            Mail::to($to)->send(new SKCreated($dummy, $password));
-            return response()->json(['status' => 'ok', 'message' => 'Mail sent (check your inbox or maildev).']);
-        } catch (\Exception $e) {
-            logger()->error('Mail test failed: ' . $e->getMessage());
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
-        }
-    }
 
           public function index()
     {

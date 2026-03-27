@@ -53,7 +53,7 @@
 
     </div>
 
-    <div class="overflow-x-auto">
+    <div class="datatable-scale overflow-x-auto">
         <table id="skTable" class="display w-full">
             <thead>
                 <tr>
@@ -82,7 +82,7 @@
                     <td class="text-center">
                         <button type="button"
                                 onclick="handleToggle({{ $sk->id }})"
-                                class="action-btn {{ $sk->is_disabled ? 'btn-enable' : 'btn-disable' }}">
+                                class="remove-btn {{ $sk->is_disabled ? 'btn-enable' : 'btn-disable' }}">
 
                             {{ $sk->is_disabled ? 'Enable Account' : 'Disable Account' }}
 
@@ -102,6 +102,7 @@
 <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
 <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
 <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
 
 <script>
 $(document).ready(function(){

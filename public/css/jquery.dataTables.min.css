@@ -797,3 +797,74 @@ html.dark .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
 html.dark .dataTables_wrapper .dataTables_paginate .paginate_button:active {
     background: #3a3a3a;
 }
+/* =====================================
+DATATABLES 80% SCALE
+===================================== */
+
+.datatable-scale {
+    transform: scale(0.8);
+    transform-origin: top left;
+    width: 125%; /* prevents layout shrink */
+}
+
+/* ensure wrapper behaves properly */
+
+.datatable-scale .dataTables_wrapper{
+    font-size:0.8em;
+}
+
+/* pagination buttons */
+
+.datatable-scale .dataTables_wrapper .dataTables_paginate .paginate_button{
+    padding:0.4em 0.8em;
+    min-width:1.2em;
+}
+
+/* filter input */
+
+.datatable-scale .dataTables_wrapper .dataTables_filter input{
+    padding:4px;
+    font-size:0.9em;
+}
+
+/* length dropdown */
+
+.datatable-scale .dataTables_wrapper .dataTables_length select{
+    padding:3px;
+    font-size:0.9em;
+}
+
+/* table header padding */
+
+.datatable-scale table.dataTable > thead > tr > th,
+.datatable-scale table.dataTable > thead > tr > td{
+    padding:8px;
+}
+
+/* table body */
+
+.datatable-scale table.dataTable tbody th,
+.datatable-scale table.dataTable tbody td{
+    padding:6px 8px;
+}
+
+/* compact table rows */
+
+.datatable-scale table.dataTable.compact thead th,
+.datatable-scale table.dataTable.compact thead td,
+.datatable-scale table.dataTable.compact tbody th,
+.datatable-scale table.dataTable.compact tbody td{
+    padding:3px;
+}
+
+/* loader animation slightly smaller */
+
+.datatable-scale div.dataTables_processing > div:last-child{
+    width:64px;
+    height:12px;
+}
+
+.datatable-scale div.dataTables_processing > div:last-child > div{
+    width:10px;
+    height:10px;
+}

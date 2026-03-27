@@ -8,7 +8,12 @@
         <div class="bg-white rounded-xl shadow p-6 relative">
 
             <!-- Sticky Save Button -->
+
+
             <div class="save-bar">
+                <a href="{{ route('youth.index') }}" class="cancel-btn">
+                    Cancel
+                </a>
                 <button form="youthForm" type="submit" class="save-btn">
                     Save Profile
                 </button>
@@ -29,8 +34,8 @@
 
                     <label class="save-btn cursor-pointer text-sm">
                         📷 Take / Upload Photo
-                        <input type="file" name="profile_photo" accept="image/jpeg,image/png" capture="environment" hidden
-                            onchange="previewPhoto(event)">
+                        <input type="file" name="profile_photo" accept="image/jpeg,image/png" capture="environment"
+                            hidden onchange="previewPhoto(event)">
                     </label>
 
                     <span class="text-xs text-gray-500">
@@ -101,7 +106,8 @@
                 @endphp
 
                 <div class="form-row">
-                    <select id="barangay" name="barangay" class="form-input" required {{ $user && $user->role === 'sk' ? 'disabled' : '' }}>
+                    <select id="barangay" name="barangay" class="form-input" required
+                        {{ $user && $user->role === 'sk' ? 'disabled' : '' }}>
 
                         <option value="" disabled class="bold">Barangay</option>
 
@@ -131,12 +137,15 @@
                         <option value="Roman Catholic" {{ old('religion') == 'Roman Catholic' ? 'selected' : '' }}>Roman
                             Catholic</option>
                         <option value="Baptist" {{ old('religion') == 'Baptist' ? 'selected' : '' }}>Baptist</option>
-                        <option value="Born Again Christian" {{ old('religion') == 'Born Again Christian' ? 'selected' : '' }}>Born Again Christian</option>
+                        <option value="Born Again Christian"
+                            {{ old('religion') == 'Born Again Christian' ? 'selected' : '' }}>Born Again Christian</option>
                         <option value="Iglesia ni Cristo" {{ old('religion') == 'Iglesia ni Cristo' ? 'selected' : '' }}>
                             Iglesia ni Cristo</option>
-                        <option value="Seventh-day Adventist" {{ old('religion') == 'Seventh-day Adventist' ? 'selected' : '' }}>Seventh-day Adventist
+                        <option value="Seventh-day Adventist"
+                            {{ old('religion') == 'Seventh-day Adventist' ? 'selected' : '' }}>Seventh-day Adventist
                         </option>
-                        <option value="Jehovah's Witnesses" {{ old('religion') == "Jehovah's Witnesses" ? 'selected' : '' }}>
+                        <option value="Jehovah's Witnesses"
+                            {{ old('religion') == "Jehovah's Witnesses" ? 'selected' : '' }}>
                             Jehovah's Witnesses</option>
                         <option value="Methodist" {{ old('religion') == 'Methodist' ? 'selected' : '' }}>Methodist
                         </option>
@@ -144,7 +153,8 @@
                         <option value="Anglican" {{ old('religion') == 'Anglican' ? 'selected' : '' }}>Anglican</option>
                         <option value="Pentecostal" {{ old('religion') == 'Pentecostal' ? 'selected' : '' }}>Pentecostal
                         </option>
-                        <option value="United Church of Christ in the Philippines (UCCP)" {{ old('religion') == 'United Church of Christ in the Philippines (UCCP)' ? 'selected' : '' }}>
+                        <option value="United Church of Christ in the Philippines (UCCP)"
+                            {{ old('religion') == 'United Church of Christ in the Philippines (UCCP)' ? 'selected' : '' }}>
                             United Church of Christ in the Philippines (UCCP)
                         </option>
 
@@ -196,8 +206,8 @@
 
                 <div class="form-row">
                     <!-- Skills Input -->
-                    <input type="text" name="skills" class="form-input" placeholder="Skills" value="{{ old('skills') }}"
-                        required>
+                    <input type="text" name="skills" class="form-input" placeholder="Skills"
+                        value="{{ old('skills') }}" required>
 
                     <!-- Preferred Skills Dropdown -->
                     <select name="preferred_skills" id="preferredSkillsSelect" class="form-input" required>
@@ -208,32 +218,38 @@
                         <option value="Housekeeping" {{ old('preferred_skills') == 'Housekeeping' ? 'selected' : '' }}>
                             Housekeeping
                         </option>
-                        <option value="Bread & Pastries Production" {{ old('preferred_skills') == 'Bread & Pastries Production' ? 'selected' : '' }}>Bread &
+                        <option value="Bread & Pastries Production"
+                            {{ old('preferred_skills') == 'Bread & Pastries Production' ? 'selected' : '' }}>Bread &
                             Pastries
                             Production</option>
                         <option value="Driving" {{ old('preferred_skills') == 'Driving' ? 'selected' : '' }}>Driving
                         </option>
-                        <option value="Automotive Servicing" {{ old('preferred_skills') == 'Automotive Servicing' ? 'selected' : '' }}>Automotive Servicing
+                        <option value="Automotive Servicing"
+                            {{ old('preferred_skills') == 'Automotive Servicing' ? 'selected' : '' }}>Automotive Servicing
                         </option>
                         <option value="Bookkeeping" {{ old('preferred_skills') == 'Bookkeeping' ? 'selected' : '' }}>
                             Bookkeeping
                         </option>
-                        <option value="Electrical Installation & Maintenance" {{ old('preferred_skills') == 'Electrical Installation & Maintenance' ? 'selected' : '' }}>
+                        <option value="Electrical Installation & Maintenance"
+                            {{ old('preferred_skills') == 'Electrical Installation & Maintenance' ? 'selected' : '' }}>
                             Electrical
                             Installation & Maintenance</option>
                         <option value="Plumbing" {{ old('preferred_skills') == 'Plumbing' ? 'selected' : '' }}>Plumbing
                         </option>
-                        <option value="Shielded Metal Arc Welding SMAW" {{ old('preferred_skills') == 'Shielded Metal Arc Welding SMAW' ? 'selected' : '' }}>Shielded
+                        <option value="Shielded Metal Arc Welding SMAW"
+                            {{ old('preferred_skills') == 'Shielded Metal Arc Welding SMAW' ? 'selected' : '' }}>Shielded
                             Metal Arc
                             Welding SMAW</option>
                         <option value="Tile Setting" {{ old('preferred_skills') == 'Tile Setting' ? 'selected' : '' }}>
                             Tile
                             Setting
                         </option>
-                        <option value="Food & Beverage Services" {{ old('preferred_skills') == 'Food & Beverage Services' ? 'selected' : '' }}>Food & Beverage
+                        <option value="Food & Beverage Services"
+                            {{ old('preferred_skills') == 'Food & Beverage Services' ? 'selected' : '' }}>Food & Beverage
                             Services
                         </option>
-                        <option value="Computer System Servicing" {{ old('preferred_skills') == 'Computer System Servicing' ? 'selected' : '' }}>Computer System
+                        <option value="Computer System Servicing"
+                            {{ old('preferred_skills') == 'Computer System Servicing' ? 'selected' : '' }}>Computer System
                             Servicing
                         </option>
                         <option value="Carpentry" {{ old('preferred_skills') == 'Carpentry' ? 'selected' : '' }}>Carpentry
@@ -242,7 +258,8 @@
                         </option>
                         <option value="Barista" {{ old('preferred_skills') == 'Barista' ? 'selected' : '' }}>Barista
                         </option>
-                        <option value="Massage Therapist" {{ old('preferred_skills') == 'Massage Therapist' ? 'selected' : '' }}>
+                        <option value="Massage Therapist"
+                            {{ old('preferred_skills') == 'Massage Therapist' ? 'selected' : '' }}>
                             Massage Therapist</option>
                         <option value="Caregiving" {{ old('preferred_skills') == 'Caregiving' ? 'selected' : '' }}>
                             Caregiving
@@ -292,8 +309,9 @@
                                 </td>
 
                                 <td>
-                                    <input type="number" class="form-input" name="family_members[0][age]" min="1" max="99"
-                                        inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                                    <input type="number" class="form-input" name="family_members[0][age]"
+                                        min="1" max="99" inputmode="numeric"
+                                        oninput="this.value=this.value.replace(/[^0-9]/g,'')">
                                 </td>
 
                                 <td>
@@ -328,12 +346,14 @@
                                 </td>
 
                                 <td>
-                                    <input class="form-input" name="family_members[0][occupation]" placeholder="Occupation">
+                                    <input class="form-input" name="family_members[0][occupation]"
+                                        placeholder="Occupation">
                                 </td>
 
                                 <td>
-                                    <input type="number" class="form-input" name="family_members[0][income]" min="0"
-                                        step="1" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+                                    <input type="number" class="form-input" name="family_members[0][income]"
+                                        min="0" step="1" inputmode="numeric"
+                                        oninput="this.value=this.value.replace(/[^0-9]/g,'')"
                                         placeholder="Monthly Income">
                                 </td>
 
@@ -381,66 +401,79 @@
                 </div>
             </form>
             <!-- PRIVACY MODAL -->
-            <div id="privacyModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center px-4">
+            <div id="privacyModal" class="privacy-overlay">
 
-                <div class="bg-white rounded-xl shadow-lg max-w-3xl w-full max-h-[85vh] overflow-hidden">
+                <div class="privacy-modal">
 
-                    <!-- Modal Header -->
-                    <div class="flex justify-between items-center px-6 py-4 border-b">
-                        <h3 class="text-lg font-bold">Terms & Conditions & Data Privacy Consent</h3>
-                        <button id="closePrivacyModal" class="text-gray-500 hover:text-black text-xl">
-                            &times;
-                        </button>
+                    <!-- Header -->
+                    <div class="privacy-header">
+                        <h3>
+                            Local Youth Development Office<br>
+                            <span>Data Privacy Consent & Terms of Agreement</span>
+                        </h3>
+                        <button id="closePrivacyModal" class="close-btn">&times;</button>
                     </div>
 
-                    <!-- Modal Body -->
-                    <div class="px-6 py-4 overflow-y-auto text-sm leading-relaxed space-y-4">
+                    <!-- Body -->
+                    <div class="privacy-body">
 
-                        <p>
-                            This form collects personal information in accordance with the
-                            <strong>Data Privacy Act of 2012 (Republic Act No. 10173)</strong>.
+                        <p class="bold">
+                            Republic of the Philippines<br>
+                            Municipality of Opol<br>
+                            Local Youth Development Office (LYDO)
                         </p>
 
                         <p>
-                            By submitting this form, you voluntarily provide accurate and truthful
-                            information for youth profiling, planning, and program development purposes
-                            of the Local Youth Development Office.
+                            In compliance with the <strong>Data Privacy Act of 2012 (RA 10173)</strong>,
+                            the Local Youth Development Office ensures that all personal information
+                            collected through this Youth Profiling System shall be handled with
+                            utmost confidentiality and security.
                         </p>
 
                         <p>
-                            The collected data may include but is not limited to:
+                            By proceeding, you voluntarily provide your personal information for
+                            official government purposes, including but not limited to:
                         </p>
 
-                        <ul class="list-disc ml-6 space-y-1">
+                        <ul>
+                            <li>Youth profiling and demographic analysis</li>
+                            <li>Program planning and policy development</li>
+                            <li>Delivery of youth-related services and interventions</li>
+                        </ul>
+
+                        <p>The data collected may include:</p>
+
+                        <ul>
                             <li>Personal identification details</li>
                             <li>Contact and address information</li>
-                            <li>Educational, employment, and skills data</li>
+                            <li>Educational and employment background</li>
                             <li>Household and family composition</li>
+                            <li>Skills, interests, and affiliations</li>
                         </ul>
 
                         <p>
-                            All information shall be treated with strict confidentiality and will only
-                            be accessed by authorized personnel. Data will not be shared without lawful
-                            basis and shall be stored securely.
+                            All collected data shall be stored securely and accessed only by
+                            authorized personnel. No information shall be disclosed without
+                            lawful basis or your consent, except as required by law.
                         </p>
 
                         <p>
-                            You have the right to access, correct, and request deletion of your data,
-                            subject to legal and administrative requirements.
+                            You have the right to access, correct, or request the deletion of
+                            your personal data, subject to applicable laws and regulations.
                         </p>
 
-                        <p class="font-semibold">
-                            By clicking “I Agree” and submitting this form, you confirm that you have
-                            read, understood, and consent to the collection and processing of your
+                        <p class="bold">
+                            By clicking “I Agree”, you confirm that you have read, understood,
+                            and voluntarily consent to the collection and processing of your
                             personal data.
                         </p>
+
                     </div>
 
-                    <!-- Modal Footer -->
-                    <div class="flex justify-end gap-3 px-6 py-4 border-t">
-                        <button id="closePrivacyModalBtn" class="px-4 py-2 rounded-lg border border-gray-300 text-sm">
-                            Close
-                        </button>
+                    <!-- Footer -->
+                    <div class="privacy-footer">
+                        <button id="agreePrivacy" class="agree-btn">I Agree</button>
+                        <button id="closePrivacyModalBtn" class="close-secondary">Close</button>
                     </div>
 
                 </div>

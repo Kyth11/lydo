@@ -36,7 +36,7 @@
 
                 <div class="form-grid">
                     <input type="date" name="start_date" class="form-input" required>
-                    <input type="date" name="end_date" class="form-input">
+                    <input type="date" name="end_date" class="form-input" required>
                 </div>
 
                 <!-- III. Scope -->

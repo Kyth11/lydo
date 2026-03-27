@@ -48,9 +48,14 @@ document.addEventListener("DOMContentLoaded", function () {
         setVal("edit_region", youth.region);
         setVal("edit_province", youth.province);
         setVal("edit_municipality", youth.municipality);
-        setVal("edit_barangay", youth.barangay);
         setVal("edit_purok_zone", youth.purok_zone);
         setVal("edit_home_address", youth.home_address);
+
+        /* BARANGAY (force select correct value) */
+        const barangaySelect = document.getElementById("edit_barangay");
+        if (barangaySelect) {
+            barangaySelect.value = youth.barangay ?? "";
+        }
 
         /* RELIGION */
         setVal("edit_religion", youth.religion);
@@ -88,9 +93,16 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        if (youth.birthday) {
-            document.getElementById("edit_birthday").value =
-                youth.birthday.split("T")[0];
+        /* BIRTHDAY */
+        const birthdayField = document.getElementById("edit_birthday");
+
+        if (birthdayField && youth.birthday) {
+            birthdayField.value = youth.birthday.split("T")[0];
+        }
+
+        /* Auto calculate age when modal loads */
+        if (typeof updateAge === "function") {
+            updateAge();
         }
         /* SK VOTER */
         document
@@ -348,4 +360,48 @@ document.addEventListener("DOMContentLoaded", function () {
         const el = document.getElementById(id);
         if (el) el.value = value ?? "";
     }
+    /* =====================================================
+   AGE CALCULATION (EDIT MODAL)
+===================================================== */
+
+    let birthdayInput = document.getElementById("edit_birthday");
+    let ageInput = document.getElementById("edit_age");
+
+    /* Calculate age */
+    function calculateAge(dateString) {
+        if (!dateString) return "";
+
+        const birth = new Date(dateString + "T00:00:00");
+        const today = new Date();
+
+        let age = today.getFullYear() - birth.getFullYear();
+        const monthDiff = today.getMonth() - birth.getMonth();
+
+        if (
+            monthDiff < 0 ||
+            (monthDiff === 0 && today.getDate() < birth.getDate())
+        ) {
+            age--;
+        }
+
+        return age;
+    }
+
+    /* Update age field */
+    function updateAge() {
+        if (!birthdayInput || !ageInput) return;
+
+        const age = calculateAge(birthdayInput.value);
+        ageInput.value = age;
+
+        /* Optional validation highlight */
+        if (age < 15 || age > 30) {
+            ageInput.style.borderColor = "#ef4444";
+        } else {
+            ageInput.style.borderColor = "";
+        }
+    }
+
+    /* Trigger when birthday changes */
+    birthdayInput?.addEventListener("change", updateAge);
 });
