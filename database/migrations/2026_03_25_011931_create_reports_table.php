@@ -13,12 +13,13 @@ return new class extends Migration {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->string('barangay');
-            $table->string('category');
+            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->text('description')->nullable();
             $table->json('files')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('status')->default('pending');
             $table->text('admin_comment')->nullable();
+            $table->boolean('is_late')->default(false);
             $table->timestamps();
         });
     }

@@ -87,6 +87,12 @@ function toggleBrgy(el) {
     if (!content) return;
 
     content.classList.toggle("active");
+
+    document.querySelectorAll(".brgy-title").forEach((h) => {
+        h.classList.remove("active-brgy");
+    });
+
+    el.classList.add("active-brgy");
 }
 
 /* =========================
@@ -124,7 +130,7 @@ function openFileModal(files) {
         if (!list.length) return "";
 
         let html = `<div class="file-section">`;
-        html +='<div class="event-divider"></div>';
+        html += '<div class="event-divider"></div>';
         html += `<h5 class="file-section-title">${title}</h5>`;
         html += `<div class="file-grid">`;
 
@@ -137,7 +143,7 @@ function openFileModal(files) {
             html += `
                 <div class="file-item" onclick="window.open('${url}', '_blank')">
                     ${content}
-   <p class="file-name">${generateFileName()}</p>
+<p class="file-name">${file.split("/").pop()}</p>
                 </div>
 
             `;
@@ -176,7 +182,7 @@ function openEditModal(report) {
     openModal("editModal");
 
     document.getElementById("editForm").action = `/sk/report/${report.id}`;
-    document.getElementById("editCategory").value = report.category;
+    document.getElementById("editCategory").value = report.category_id;
     document.getElementById("editDescription").value = report.description || "";
 
     existingFiles = report.files || [];
@@ -274,25 +280,25 @@ function openActionModal(id, status, comment) {
     // open modal
     modal.classList.add("active");
 
-    // set form action (IMPORTANT: matches your route)
+    // set form action (route must match Laravel)
     form.action = "/admin/report/update";
 
-    // set values
+    // assign values safely
     document.getElementById("reviewReportId").value = id;
-    document.getElementById("reviewStatus").value = status || "pending";
-    document.getElementById("reviewComment").value = comment || "";
+
+    document.getElementById("reviewStatus").value = status ?? "pending";
+
+    document.getElementById("reviewComment").value = comment ?? "";
 }
 
-
 document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".row-approved, .row-rejected").forEach(row => {
+    document.querySelectorAll(".row-approved, .row-rejected").forEach((row) => {
         row.style.animation = "flashFade 1.2s ease";
     });
 });
 
-
 function autoSubmit() {
-    document.getElementById('filterForm').submit();
+    document.getElementById("filterForm").submit();
 }
 
 // 🔍 SEARCH DELAY (LIKE DATATABLES)
@@ -308,12 +314,10 @@ if (searchInput) {
     });
 }
 
-
 document.addEventListener("DOMContentLoaded", function () {
-
     const deleteForms = document.querySelectorAll(".delete-form");
 
-    deleteForms.forEach(form => {
+    deleteForms.forEach((form) => {
         form.addEventListener("submit", function (e) {
             e.preventDefault();
 
@@ -326,7 +330,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 cancelButtonColor: "#6b7280",
                 confirmButtonText: "Yes, delete it",
                 cancelButtonText: "Cancel",
-                reverseButtons: true
+                reverseButtons: true,
             }).then((result) => {
                 if (result.isConfirmed) {
                     form.submit();
@@ -334,5 +338,4 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     });
-
 });

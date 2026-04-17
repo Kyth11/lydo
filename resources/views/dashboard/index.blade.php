@@ -11,10 +11,10 @@
         $isSK = $userBarangay !== null;
 
         /*
-|--------------------------------------------------------------------------
-| ANNOUNCEMENTS
-|--------------------------------------------------------------------------
-*/
+        |--------------------------------------------------------------------------
+        | ANNOUNCEMENTS
+        |--------------------------------------------------------------------------
+        */
 
         $announcements = \App\Models\Announcement::when($isSK, function ($q) use ($userBarangay) {
             $q->where(function ($query) use ($userBarangay) {
@@ -25,10 +25,10 @@
             ->get();
 
         /*
-|--------------------------------------------------------------------------
-| BARANGAY DATA FILTER
-|--------------------------------------------------------------------------
-*/
+        |--------------------------------------------------------------------------
+        | BARANGAY DATA FILTER
+        |--------------------------------------------------------------------------
+        */
 
         $filteredBarangayData = $isSK
             ? $barangayGenderData->where('barangay', $userBarangay)->values()
@@ -38,8 +38,8 @@
 
 
     {{-- =========================
-ANNOUNCEMENT STRIP
-========================= --}}
+    ANNOUNCEMENT STRIP
+    ========================= --}}
 
     @if ($announcements->count())
 
@@ -139,18 +139,13 @@ ANNOUNCEMENT STRIP
                         </div>
 
                         <div class="stat-box bg-blue-50">
-                            <div class="stat-text">Age 18–21</div>
-                            <div class="stat-count text-blue-600">{{ $ageGroups['18-21'] ?? 0 }}</div>
-                        </div>
-
-                        <div class="stat-box bg-purple-50">
-                            <div class="stat-text">Age 22–25</div>
-                            <div class="stat-count text-purple-600">{{ $ageGroups['22-25'] ?? 0 }}</div>
+                            <div class="stat-text">Age 18–24</div>
+                            <div class="stat-count text-blue-600">{{ $ageGroups['18-24'] ?? 0 }}</div>
                         </div>
 
                         <div class="stat-box bg-orange-50">
-                            <div class="stat-text">Age 26–30</div>
-                            <div class="stat-count text-orange-600">{{ $ageGroups['26-30'] ?? 0 }}</div>
+                            <div class="stat-text">Age 25–30</div>
+                            <div class="stat-count text-orange-600">{{ $ageGroups['25-30'] ?? 0 }}</div>
                         </div>
 
                     </div>
@@ -224,17 +219,19 @@ ANNOUNCEMENT STRIP
                 Gender % per Barangay
             </h3>
 
-            <div class="barangay-row border-bottom-strong">
+            @if(!$isSK)
+                <div class="barangay-row border-bottom-strong">
 
-                <div class="barangay-name font-bold text-indigo-600">
-                    All Barangay
+                    <div class="barangay-name font-bold text-indigo-600">
+                        All Barangay
+                    </div>
+
+                    <div class="chart-wrapper">
+                        <canvas id="pieChartAll"></canvas>
+                    </div>
+
                 </div>
-
-                <div class="chart-wrapper">
-                    <canvas id="pieChartAll"></canvas>
-                </div>
-
-            </div>
+            @endif
 
 
             <div class="card-content scroll-area">

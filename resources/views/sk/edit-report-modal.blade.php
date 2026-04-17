@@ -23,17 +23,17 @@
 
             <div class="form-grid">
                 <select name="category" id="editCategory" class="form-input">
-                    <option>CBYDP (Comprehensive Barnagay Youth Development Plan)</option>
-                    <option>ABYIP (Annual Barangay Youth Improvement Plan)</option>
-                    <option>SK Annual Budget</option>
-                    <option>Statement of Reciepts</option>
-                    <option>Katipunan ng Kabataan (KK) Assembly Reports</option>
-                    <option>Linggo ng Kabataan Reports</option>
-                    <option>Accomplishment Reports</option>
-                    <option>SK Resolution and Ordinances</option>
-                    <option>Attendance and Minutes of SK Meetings</option>
-                    <option>M & E</option>
-                    <option>Special Reports</option>
+                    <option value="CBYDP (Comprehensive Barangay Youth Development Plan)">CBYDP (Comprehensive Barangay Youth Development Plan)</option>
+                    <option value="ABYIP (Annual Barangay Youth Improvement Plan)">ABYIP (Annual Barangay Youth Improvement Plan)</option>
+                    <option value="SK Annual Budget">SK Annual Budget</option>
+                    <option value="Statement of Receipts">Statement of Receipts</option>
+                    <option value="Katipunan ng Kabataan (KK) Assembly Reports">Katipunan ng Kabataan (KK) Assembly Reports</option>
+                    <option value="Linggo ng Kabataan Reports">Linggo ng Kabataan Reports</option>
+                    <option value="Accomplishment Reports">Accomplishment Reports</option>
+                    <option value="SK Resolution and Ordinances">SK Resolution and Ordinances</option>
+                    <option value="Attendance and Minutes of SK Meetings">Attendance and Minutes of SK Meetings</option>
+                    <option value="M & E">M & E</option>
+                    <option value="Special Reports">Special Reports</option>
                 </select>
 
                 <textarea name="description" id="editDescription" class="form-input"

@@ -3,18 +3,19 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\BarangayPopulationController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventImageController;
 use App\Http\Controllers\PublicYouthController;
 use App\Http\Controllers\SKController;
+use App\Http\Controllers\SkMonitoringController;
 use App\Http\Controllers\YouthController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SkMonitoringController;
 
 /*
 |--------------------------------------------------------------------------
@@ -237,3 +238,29 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/sk/report/{id}', [SkMonitoringController::class, 'update'])
         ->name('sk.report.update');
 });
+
+// =========================
+// REPORTS (ADMIN + SK)
+// =========================
+Route::get('/admin/monitoring', [SkMonitoringController::class, 'index'])
+    ->name('admin.monitoring');
+
+// =========================
+// CATEGORY PAGE
+// =========================
+Route::get('/admin/categories', [CategoryController::class, 'index'])
+    ->name('admin.categories.index');
+
+Route::post('/admin/categories', [CategoryController::class, 'store'])
+    ->name('admin.categories.store');
+
+Route::post('/admin/categories/update', [CategoryController::class, 'update'])
+    ->name('admin.categories.update');
+
+Route::post('/admin/categories/archive/{id}', [CategoryController::class, 'archive'])
+    ->name('admin.categories.archive');
+Route::delete('/admin/categories/delete/{id}', [CategoryController::class, 'destroy'])
+    ->name('admin.categories.delete');
+// DEADLINE (single deadline per category)
+Route::post('/categories/deadline', [CategoryController::class, 'storeDeadline'])
+    ->name('categories.deadline.store');

@@ -130,12 +130,10 @@ class DashboardController extends Controller
 
                 if ($age >= 15 && $age <= 17) {
                     return '15-17';
-                } elseif ($age >= 18 && $age <= 21) {
-                    return '18-21';
-                } elseif ($age >= 22 && $age <= 25) {
-                    return '22-25';
-                } elseif ($age >= 26 && $age <= 30) {
-                    return '26-30';
+                } elseif ($age >= 18 && $age <= 24) {
+                    return '18-24';
+                } elseif ($age >= 25 && $age <= 30) {
+                    return '25-30';
                 }
             })
             ->map(fn($group) => $group->count());

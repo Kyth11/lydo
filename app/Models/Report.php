@@ -9,7 +9,7 @@ class Report extends Model
     protected $fillable = [
         'user_id',
         'barangay',
-        'category',
+        'category_id', // ✅ MUST BE HERE
         'description',
         'files',
         'status',
@@ -24,5 +24,14 @@ class Report extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+    public function deadline()
+    {
+        return $this->belongsTo(CategoryDeadline::class, 'category_deadline_id');
     }
 }
