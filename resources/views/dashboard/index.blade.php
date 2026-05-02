@@ -3,6 +3,10 @@
 @section('page-title', 'Dashboard')
 @section('page-desc', 'Overview of youth profiling statistics')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/dashboard-index.css') }}">
+@endpush
+
 @section('content')
 
     @php
@@ -134,16 +138,19 @@
                     <div class="age-group-grid">
 
                         <div class="stat-box bg-green-50">
+                            <div class="stat-text" style="margin-top: 5px !important;">Child Youth</div>
                             <div class="stat-text">Age 15–17</div>
                             <div class="stat-count text-green-600">{{ $ageGroups['15-17'] ?? 0 }}</div>
                         </div>
 
                         <div class="stat-box bg-blue-50">
+                            <div class="stat-text" style="margin-top: 5px !important;">Core Youth</div>
                             <div class="stat-text">Age 18–24</div>
                             <div class="stat-count text-blue-600">{{ $ageGroups['18-24'] ?? 0 }}</div>
                         </div>
 
                         <div class="stat-box bg-orange-50">
+                            <div class="stat-text" style="margin-top: 5px !important;">Young Adult</div>
                             <div class="stat-text">Age 25–30</div>
                             <div class="stat-count text-orange-600">{{ $ageGroups['25-30'] ?? 0 }}</div>
                         </div>
@@ -162,7 +169,7 @@
                 <div class="event-divider"></div>
 
                 <h3 class="card-title mt-6 mb-0">
-                    Youth Distribution per Barangay
+                    YOUTH DISTRIBUTION PER BARANGAY
                 </h3>
 
                 <em class="text-xs text-center text-gray-500">
@@ -216,14 +223,14 @@
         <div class="card equal-card">
 
             <h3 class="card-title">
-                Gender % per Barangay
+                GENDER % PER BARANGAY
             </h3>
 
             @if(!$isSK)
                 <div class="barangay-row border-bottom-strong">
 
                     <div class="barangay-name font-bold text-indigo-600">
-                        All Barangay
+                        ALL BARANGAY
                     </div>
 
                     <div class="chart-wrapper">
@@ -240,7 +247,7 @@
                     <div class="barangay-row">
 
                         <div class="barangay-name">
-                            {{ $data['barangay'] }}
+                            {{ strtoupper($data['barangay']) }}
                         </div>
 
                         <div class="chart-wrapper">
@@ -256,7 +263,7 @@
             <div class="event-divider"></div>
 
             <h3 class="card-title">
-                Barangay Profiling Coverage
+                BARANGAY PROFILING COVERAGE
             </h3>
 
             <div class="chart-area-lg">
@@ -267,34 +274,19 @@
 
     </div>
 
-
-    <link rel="stylesheet" href="{{ asset('css/dashboard-index.css') }}">
+    @push('scripts')
     <script src="{{ asset('js/chart.js') }}"></script>
-
     <script>
         window.dashboardData = {
-
-            barangayLabels: @json($filteredBarangayData->pluck('barangay')),
-
+            barangayLabels: @json($filteredBarangayData->pluck('barangay')->map(fn($v) => strtoupper($v))),
             maleData: @json($filteredBarangayData->pluck('male')->map(fn($v) => (int) $v)),
-
             femaleData: @json($filteredBarangayData->pluck('female')->map(fn($v) => (int) $v)),
-
             totalData: @json($filteredBarangayData->map(fn($v) => (int) $v['male'] + (int) $v['female'])),
-
             maleTotal: {{ (int) $male }},
             femaleTotal: {{ (int) $female }},
-
-            barangayGenderData: @json($filteredBarangayData),
-
-            totalPopulation: {{ $totalPopulation }},
-            totalProfiles: {{ $totalProfiles }},
-
-            barangayCoverage: @json($barangayCoverage)
-
+            totalYouth: {{ (int) $total }}
         };
     </script>
-
     <script src="{{ asset('js/dashboard-index.js') }}"></script>
-
+    @endpush
 @endsection

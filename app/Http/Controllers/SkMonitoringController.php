@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Models\Report;
 use App\Models\Category;
+use App\Models\NudgeNotification;
 
 class SkMonitoringController extends Controller
 {
     public function index(Request $request)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         // =========================
         // ADMIN VIEW
@@ -18,11 +21,6 @@ class SkMonitoringController extends Controller
         if ($user->isAdmin()) {
 
             $query = Report::with('category');
-
-            // SEARCH
-            if ($request->search) {
-                $query->where('description', 'like', '%' . $request->search . '%');
-            }
 
             // FILTERS
             if ($request->barangay) {
@@ -37,24 +35,27 @@ class SkMonitoringController extends Controller
                 $query->where('category_id', $request->category);
             }
 
-            if ($request->date) {
-                $query->whereDate('created_at', $request->date);
+            if ($request->month) {
+                $query->whereMonth('created_at', $request->month);
+            }
+
+            if ($request->year) {
+                $query->whereYear('created_at', $request->year);
             }
 
             // ONLY LATEST REPORT PER CATEGORY + BARANGAY
             $reports = $query->latest()
                 ->get()
                 ->groupBy(fn($r) => $r->barangay . '-' . $r->category_id)
-                ->map(fn($group) => $group->sortByDesc('version')->first());
+                ->map(fn($group) => $group->first());
 
-            $barangays = Report::select('barangay')->distinct()->pluck('barangay');
+            $barangays = DB::table('barangay_populations')->orderBy('barangay')->pluck('barangay');
 
-            $categories = Category::all();
+            $categories = Category::where('is_active', true)->get();
 
             // =========================
             // DURATIONS (ONLY UNIQUE + VALID)
             // =========================
-            $categories = Category::all();
 
             // Build category durations map
             $categoryDurations = $categories->mapWithKeys(function ($cat) {
@@ -105,13 +106,29 @@ class SkMonitoringController extends Controller
         // =========================
         if ($user->role === 'sk') {
 
-            $reports = Report::with('category')
-                ->where('barangay', $user->barangay)
-                ->latest()
+            $query = Report::with('category')
+                ->where('barangay', $user->barangay);
+
+            // STATUS FILTER
+            if ($request->status) {
+                $query->where('status', $request->status);
+            }
+
+            // MONTH FILTER
+            if ($request->month) {
+                $query->whereMonth('created_at', $request->month);
+            }
+
+            // YEAR FILTER
+            if ($request->year) {
+                $query->whereYear('created_at', $request->year);
+            }
+
+            $reports = $query->latest()
                 ->get()
                 ->groupBy(fn($report) => $report->category->name ?? 'No Category');
 
-            $categories = Category::all();
+            $categories = Category::where('is_active', true)->get();
 
             return view('sk.monitoring', compact('reports', 'categories'));
         }
@@ -143,22 +160,7 @@ class SkMonitoringController extends Controller
             }
         }
 
-        $user = auth()->user();
-
-        // 🔥 CHECK EXISTING REPORT (same barangay + category)
-        $existingReport = Report::where('barangay', $user->barangay)
-            ->where('category_id', $request->category_id)
-            ->latest()
-            ->first();
-
-        // 🔥 VERSIONING LOGIC
-        $version = 1;
-
-        if ($existingReport) {
-            $version = $existingReport->version + 1;
-
-            // OPTIONAL: store previous version as history (if you add history table later)
-        }
+        $user = Auth::user();
 
         // 🔥 DEADLINE CHECK
         $category = Category::find($request->category_id);
@@ -168,22 +170,22 @@ class SkMonitoringController extends Controller
             $isLate = true;
         }
 
-        // 🔥 CREATE NEW VERSION
+        // 🔥 CREATE REPORT
+        $user = Auth::user();
         Report::create([
             'user_id' => $user->id,
             'barangay' => $user->barangay,
             'category_id' => $request->category_id,
             'description' => $request->description,
             'files' => $paths,
-            'version' => $version,      // ✅ VERSION COLUMN
             'is_late' => $isLate        // ✅ LATE FLAG
         ]);
 
         return back()->with(
             $isLate ? 'warning' : 'success',
             $isLate
-            ? "Deadline is passed, it will be marked late (v{$version})"
-            : "Report submitted successfully (v{$version})"
+            ? "Deadline is passed, it will be marked late"
+            : "Report submitted successfully"
         );
     }
 
@@ -215,7 +217,7 @@ class SkMonitoringController extends Controller
     {
         $report = Report::findOrFail($id);
 
-        if ($report->user_id !== auth()->id()) {
+        if ($report->user_id !== Auth::user()->id) {
             abort(403);
         }
 
@@ -231,7 +233,7 @@ class SkMonitoringController extends Controller
     {
         $report = Report::findOrFail($id);
 
-        if ($report->user_id !== auth()->id()) {
+        if ($report->user_id !== Auth::user()->id) {
             abort(403);
         }
 
@@ -274,13 +276,144 @@ class SkMonitoringController extends Controller
         return back()->with('success', 'Report updated successfully');
     }
 
-    public function versions(Request $request)
+    // =========================
+    // SEND NUDGE
+    // =========================
+    public function sendNudge(Request $request)
     {
-        $reports = Report::where('category_id', $request->category)
-            ->where('barangay', $request->barangay)
-            ->orderBy('version')
+        if (!Auth::user()->isAdmin()) {
+            abort(403);
+        }
+
+        $request->validate([
+            'barangays' => 'required|array',
+            'barangays.*' => 'string',
+            'category_ids' => 'required|array',
+            'category_ids.*' => 'exists:categories,id',
+            'message' => 'nullable|string',
+        ]);
+
+        foreach ($request->barangays as $barangay) {
+            NudgeNotification::create([
+                'admin_id' => Auth::id(),
+                'barangay' => $barangay,
+                'category_ids' => $request->category_ids,
+                'message' => $request->message,
+            ]);
+        }
+
+        return back()->with('success', 'Nudge sent successfully');
+    }
+
+    // =========================
+    // GET NUDGES
+    // =========================
+    public function getNudges()
+    {
+        $user = Auth::user();
+
+        if ($user->role !== 'sk') {
+            return response()->json([]);
+        }
+
+        $nudges = NudgeNotification::where('barangay', $user->barangay)
+            ->where('created_at', '>=', now()->subDay())
+            ->where('is_cleared', false)
+            ->latest()
+            ->limit(10)
             ->get();
 
-        return view('admin.report-versions', compact('reports'));
+        // Split categories into separate notifications
+        $flattenedNudges = [];
+        foreach ($nudges as $nudge) {
+            foreach ($nudge->category_ids as $categoryId) {
+                $category = Category::find($categoryId);
+                
+                // Calculate duration label
+                $durationLabel = '';
+                if ($category && $category->start_date && $category->end_date) {
+                    $start = \Carbon\Carbon::parse($category->start_date);
+                    $end = \Carbon\Carbon::parse($category->end_date);
+                    
+                    if ($start->year === $end->year) {
+                        if ($start->month === $end->month) {
+                            $durationLabel = $start->format('F');
+                        } else {
+                            $durationLabel = $start->format('F') . '-' . $end->format('F');
+                        }
+                    } else {
+                        $durationLabel = $start->format('Y') . '-' . $end->format('Y');
+                    }
+                }
+                
+                $flattenedNudges[] = [
+                    'id' => $nudge->id,
+                    'category_id' => $categoryId,
+                    'category_name' => $category ? $category->name : 'Unknown Category',
+                    'duration' => $durationLabel,
+                    'message' => $nudge->message,
+                    'created_at' => $nudge->created_at,
+                ];
+            }
+        }
+
+        return response()->json($flattenedNudges);
     }
-}
+
+    // =========================
+    // CLEAR NUDGE
+    // =========================
+    public function clearNudge($id)
+    {
+        $user = Auth::user();
+
+        if ($user->role !== 'sk') {
+            abort(403);
+        }
+
+        $nudge = NudgeNotification::where('id', $id)
+            ->where('barangay', $user->barangay)
+            ->firstOrFail();
+
+        $nudge->update(['is_cleared' => true]);
+
+        return response()->json(['success' => true]);
+    }
+
+    // =========================
+    // CLEAR ALL NUDGES
+    // =========================
+    public function clearAllNudges()
+    {
+        $user = Auth::user();
+
+        if ($user->role !== 'sk') {
+            abort(403);
+        }
+
+        NudgeNotification::where('barangay', $user->barangay)
+            ->where('is_cleared', false)
+            ->update(['is_cleared' => true]);
+
+        return response()->json(['success' => true]);
+    }
+
+    // =========================
+    // CHECK REPORT EXISTS
+    // =========================
+    public function checkReport($categoryId)
+    {
+        $user = Auth::user();
+
+        if ($user->role !== 'sk') {
+            abort(403);
+        }
+
+        $exists = Report::where('user_id', $user->id)
+            ->where('category_id', $categoryId)
+            ->exists();
+
+        return response()->json(['exists' => $exists]);
+    }
+
+    }

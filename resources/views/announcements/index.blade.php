@@ -3,6 +3,12 @@
 @section('page-title', 'Announcements')
 @section('page-desc', 'Manage announcements')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/ann-index.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
+@endpush
+
 @section('content')
 
     <div class="max-w-7xl mx-auto px-4">
@@ -20,15 +26,15 @@
 
             <!-- Custom Barangay Filter -->
             <div class="mb-4 flex items-center gap-3">
-                <label class="font-semibold text-sm">Filter by Barangay:</label>
+                <label class="font-semibold text-sm">FILTER BY BARANGAY:</label>
                 <select id="barangayFilter" style="padding-right: 50px" class="border rounded-md px-3 py-2 text-sm">
-                    <option value="">All Barangays</option>
+                    <option value="">ALL BARANGAYS</option>
                     @php
                         $allBarangays = collect($announcements)->pluck('barangay')->flatten()->unique()->sort();
                     @endphp
 
                     @foreach ($allBarangays as $b)
-                        <option value="{{ $b }}">{{ $b }}</option>
+                        <option value="{{ $b }}">{{ strtoupper($b) }}</option>
                     @endforeach
                 </select>
             </div>
@@ -55,11 +61,11 @@
 
                                 <td>
                                     @if ($a->for_all_barangays)
-                                        All Barangays
+                                        ALL BARANGAYS
                                     @elseif(is_array($a->barangay))
-                                        {{ implode(', ', $a->barangay) }}
+                                        {{ implode(', ', array_map('strtoupper', (array) $a->barangay)) }}
                                     @else
-                                        {{ $a->barangay }}
+                                        {{ strtoupper($a->barangay) }}
                                     @endif
                                 </td>
 
@@ -101,23 +107,11 @@
 
     </div>
 
-
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" href="{{ asset('css/jquery.dataTables.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/ann-index.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
-
-    <!-- jQuery -->
+    @push('scripts')
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
-
-    <!-- DataTables JS -->
-
-
     <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('js/youth-index.js') }}"></script>
     <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
-
-
     <script>
         $(document).ready(function () {
 
@@ -168,5 +162,5 @@
 
         });
     </script>
-
+    @endpush
 @endsection

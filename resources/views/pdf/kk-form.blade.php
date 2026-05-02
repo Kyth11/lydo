@@ -183,8 +183,8 @@
             </td>
             </tr>
             <tr>
-                <td class="label">Barangay:</td>
-                <td>{{ $youth->barangay }}</td>
+                <td class="label">BARANGAY:</td>
+                <td>{{ strtoupper($youth->barangay) }}</td>
             </tr>
         </table>
 

@@ -3,6 +3,11 @@
 @section('page-title', 'Add Announcement')
 @section('page-desc', 'Create a new public announcement')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/ann-create.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
+@endpush
+
 @section('content')
 
     <div class="max-w-4xl mx-auto px-3">
@@ -125,8 +130,5 @@
             barangayContainer.appendChild(wrapper);
         }
     </script>
-
-
-    <link rel="stylesheet" href="{{ asset('css/ann-create.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
+    @endpush
 @endsection

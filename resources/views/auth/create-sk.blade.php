@@ -27,12 +27,13 @@
 
                 <!-- STICKY SAVE BAR -->
                 <div class="save-bar">
-                    <button type="submit" class="save-btn">
-                        Create SK Account
-                    </button>
                     <a href="{{ route('dashboard') }}" class="delete-btn">
                         Cancel
                     </a>
+                    <button type="submit" class="save-btn">
+                        Create SK Account
+                    </button>
+
 
                 </div>
 
@@ -43,14 +44,18 @@
                     <div>
                         <label class="admin-label">Full Name</label>
                         <input name="name" type="text" value="{{ old('name') }}" class="admin-input" required>
-                        @error('name') <div class="error-text">{{ $message }}</div> @enderror
+                        @error('name')
+                            <div class="error-text">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- EMAIL -->
                     <div>
                         <label class="admin-label">Email Address</label>
                         <input name="email" type="email" value="{{ old('email') }}" class="admin-input" required>
-                        @error('email') <div class="error-text">{{ $message }}</div> @enderror
+                        @error('email')
+                            <div class="error-text">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- BARANGAY -->
@@ -58,13 +63,15 @@
                         <label class="admin-label">Barangay</label>
                         <select name="barangay" class="admin-input" required>
                             <option value="">Select Barangay</option>
-                            @foreach(['Awang', 'Bagocboc', 'Barra', 'Bonbon', 'Cauyunan', 'Igpit', 'Limunda', 'Luyong Bonbon', 'Malanang', 'Nangcaon', 'Patag', 'Poblacion', 'Taboc', 'Tingalan'] as $b)
+                            @foreach (['AWANG', 'BAGOCBOC', 'BARRA', 'BONBON', 'CAUYUNAN', 'IGPIT', 'LIMUNDA', 'LUYONG BONBON', 'MALANANG', 'NANGCAON', 'PATAG', 'POBLACION', 'TABOC', 'TINGALAN'] as $b)
                                 <option value="{{ $b }}" {{ old('barangay') === $b ? 'selected' : '' }}>
                                     {{ $b }}
                                 </option>
                             @endforeach
                         </select>
-                        @error('barangay') <div class="error-text">{{ $message }}</div> @enderror
+                        @error('barangay')
+                            <div class="error-text">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- PASSWORD -->
@@ -81,7 +88,9 @@
                             Leave blank to auto-generate a secure password.
                         </p>
 
-                        @error('password') <div class="error-text">{{ $message }}</div> @enderror
+                        @error('password')
+                            <div class="error-text">{{ $message }}</div>
+                        @enderror
                     </div>
 
                 </div>

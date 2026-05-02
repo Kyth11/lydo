@@ -11,6 +11,7 @@ class Category extends Model
         'end_date',
         'deadline',
         'is_archived',
+        'is_active',
     ];
 
     public function reports()

@@ -9,16 +9,19 @@ class Report extends Model
     protected $fillable = [
         'user_id',
         'barangay',
-        'category_id', // ✅ MUST BE HERE
+        'category_id',
         'description',
         'files',
         'status',
-        'admin_comment'
+        'admin_comment',
+        'is_late',
+        'is_edited'
     ];
 
     protected $casts = [
         'files' => 'array',
-        'is_edited' => 'boolean'
+        'is_edited' => 'boolean',
+        'is_late' => 'boolean'
     ];
 
     public function user()
@@ -30,8 +33,4 @@ class Report extends Model
     {
         return $this->belongsTo(Category::class);
     }
-    public function deadline()
-    {
-        return $this->belongsTo(CategoryDeadline::class, 'category_deadline_id');
     }
-}

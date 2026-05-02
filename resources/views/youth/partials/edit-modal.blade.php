@@ -23,7 +23,7 @@
             <!-- PROFILE PHOTO -->
             <div class="flex flex-col items-center gap-3 mb-6">
                 <div class="profile-photo-wrapper">
-                    <img id="editPhotoPreview" src="{{ asset('images/avatar.png') }}">
+                    <img id="editPhotoPreview" src="{{ asset('images/Avatar.png') }}">
                 </div>
 
                 <label class="save-btn cursor-pointer text-sm">
@@ -35,97 +35,97 @@
 
             <!-- NAME -->
             <div class="form-row">
-                <input id="edit_first_name" name="first_name" class="form-input" placeholder="First Name" required>
-                <input id="edit_middle_name" name="middle_name" class="form-input" placeholder="Middle Name">
-                <input id="edit_last_name" name="last_name" class="form-input" placeholder="Last Name" required>
+                <input id="edit_first_name" name="first_name" class="form-input" placeholder="FIRST NAME" required>
+                <input id="edit_middle_name" name="middle_name" class="form-input" placeholder="MIDDLE NAME">
+                <input id="edit_last_name" name="last_name" class="form-input" placeholder="LAST NAME" required>
             </div>
 
             <!-- BASIC INFO -->
             <div class="form-row">
                 <select id="edit_sex" name="sex" class="form-input" required>
-                    <option value="">Sex</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
+                    <option value="">SEX</option>
+                    <option value="Male">MALE</option>
+                    <option value="Female">FEMALE</option>
                 </select>
 
                 <select id="edit_gender" name="gender" class="form-input" required>
-                    <option value="">Gender</option>
+                    <option value="">GENDER</option>
                     <option value="LGBTQAI+">LGBTQAI+</option>
-                    <option value="Prefer not to say">Prefer not to say</option>
+                    <option value="Prefer not to say">PREFER NOT TO SAY</option>
                 </select>
 
                 <input id="edit_birthday" type="date" name="birthday" class="form-input">
                 <input id="edit_age" type="number" name="age" class="form-input" readonly>
 
                 <select id="edit_civil_status" name="civil_status" class="form-input" required>
-                    <option value="">Civil Status</option>
-                    <option value="Single">Single</option>
-                    <option value="Married">Married</option>
-                    <option value="Widowed">Widowed</option>
-                    <option value="Separated">Separated</option>
-                    <option value="Live-in">Live-in</option>
+                    <option value="">CIVIL STATUS</option>
+                    <option value="SINGLE">SINGLE</option>
+                    <option value="MARRIED">MARRIED</option>
+                    <option value="WIDOWED">WIDOWED</option>
+                    <option value="SEPARATED">SEPARATED</option>
+                    <option value="LIVE-IN">LIVE-IN</option>
                 </select>
             </div>
 
             <!-- LOCATION -->
             <div class="form-row">
-                <input id="edit_region" name="region" class="form-input" placeholder="Region">
-                <input id="edit_province" name="province" class="form-input" placeholder="Province">
-                <input id="edit_municipality" name="municipality" class="form-input" placeholder="Municipality">
+                <input id="edit_region" name="region" class="form-input" placeholder="REGION" readonly>
+                <input id="edit_province" name="province" class="form-input" placeholder="PROVINCE" readonly>
+                <input id="edit_municipality" name="municipality" class="form-input" placeholder="MUNICIPALITY" readonly>
             </div>
 
             <div class="form-row">
-                <select id="edit_barangay" name="barangay" class="form-input" placeholder="Barangay">
+                <select id="edit_barangay" name="barangay" class="form-input" placeholder="BARANGAY">
 
-                        <option value="" disabled class="bold">Barangay</option>
+                        <option value="" disabled class="bold">BARANGAY</option>
 
-                        @foreach (['Awang', 'Bagocboc', 'Barra', 'Bonbon', 'Cauyunan', 'Igpit', 'Limunda', 'Luyong Bonbon', 'Malanang', 'Nangcaon', 'Patag', 'Poblacion', 'Taboc', 'Tingalan'] as $b)
+                        @foreach (['AWANG', 'BAGOCBOC', 'BARRA', 'BONBON', 'CAUYUNAN', 'IGPIT', 'LIMUNDA', 'LUYONG BONBON', 'MALANANG', 'NANGCAON', 'PATAG', 'POBLACION', 'TABOC', 'TINGALAN'] as $b)
                             <option value="{{ $b }}">
                                 {{ $b }}
                             </option>
                         @endforeach
                     </select>
 
-                <input id="edit_purok_zone" name="purok_zone" class="form-input" placeholder="Purok / Zone">
-                <input id="edit_home_address" name="home_address" class="form-input" placeholder="Home Address"
+                <input id="edit_purok_zone" name="purok_zone" class="form-input" placeholder="PUROK / ZONE">
+                <input id="edit_home_address" name="home_address" class="form-input" placeholder="HOME ADDRESS"
                     readonly>
             </div>
 
             <!-- RELIGION -->
             <div class="form-row">
                 <select name="religion" id="edit_religion" class="form-input" required>
-                    <option value="">Religion</option>
-                    <option value="Roman Catholic">Roman Catholic</option>
-                    <option value="Baptist">Baptist</option>
-                    <option value="Born Again Christian">Born Again Christian</option>
-                    <option value="Iglesia ni Cristo">Iglesia ni Cristo</option>
-                    <option value="Seventh-day Adventist">Seventh-day Adventist</option>
-                    <option value="Jehovah's Witnesses">Jehovah's Witnesses</option>
-                    <option value="Methodist">Methodist</option>
-                    <option value="Lutheran">Lutheran</option>
-                    <option value="Anglican">Anglican</option>
-                    <option value="Pentecostal">Pentecostal</option>
-                    <option value="United Church of Christ in the Philippines (UCCP)">
-                        United Church of Christ in the Philippines (UCCP)
+                    <option value="">RELIGION</option>
+                    <option value="ROMAN CATHOLIC">ROMAN CATHOLIC</option>
+                    <option value="BAPTIST">BAPTIST</option>
+                    <option value="BORN AGAIN CHRISTIAN">BORN AGAIN CHRISTIAN</option>
+                    <option value="IGLESIA NI CRISTO">IGLESIA NI CRISTO</option>
+                    <option value="SEVENTH-DAY ADVENTIST">SEVENTH-DAY ADVENTIST</option>
+                    <option value="JEHOVAH'S WITNESSES">JEHOVAH'S WITNESSES</option>
+                    <option value="METHODIST">METHODIST</option>
+                    <option value="LUTHERAN">LUTHERAN</option>
+                    <option value="ANGLICAN">ANGLICAN</option>
+                    <option value="PENTECOSTAL">PENTECOSTAL</option>
+                    <option value="UNITED CHURCH OF CHRIST IN THE PHILIPPINES (UCCP)">
+                        UNITED CHURCH OF CHRIST IN THE PHILIPPINES (UCCP)
                     </option>
-                    <option value="Islam">Islam</option>
-                    <option value="Others">Others</option>
+                    <option value="ISLAM">ISLAM</option>
+                    <option value="OTHERS">OTHERS</option>
                 </select>
 
                 <input type="text" name="religion_other" id="edit_religion_other" class="form-input"
-                    placeholder="Please specify religion" style="display:none;">
+                    placeholder="PLEASE SPECIFY RELIGION" style="display:none;">
             </div>
 
             <!-- EDUCATION -->
             <select id="edit_education" name="education" class="form-input" required>
-                <option value="">Education Last Attended</option>
-                <option value="Elementary Level">Elementary Level</option>
-                <option value="Elementary Graduate">Elementary Graduate</option>
-                <option value="High School Level">High School Level</option>
-                <option value="High School Graduate">High School Graduate</option>
-                <option value="College Level">College Level</option>
-                <option value="College Graduate">College Graduate</option>
-                <option value="Vocational">Vocational</option>
+                <option value="">EDUCATION LAST ATTENDED</option>
+                <option value="ELEMENTARY LEVEL">ELEMENTARY LEVEL</option>
+                <option value="ELEMENTARY GRADUATE">ELEMENTARY GRADUATE</option>
+                <option value="HIGH SCHOOL LEVEL">HIGH SCHOOL LEVEL</option>
+                <option value="HIGH SCHOOL GRADUATE">HIGH SCHOOL GRADUATE</option>
+                <option value="COLLEGE LEVEL">COLLEGE LEVEL</option>
+                <option value="COLLEGE GRADUATE">COLLEGE GRADUATE</option>
+                <option value="VOCATIONAL">VOCATIONAL</option>
             </select>
 
 
@@ -133,36 +133,36 @@
             <!-- SKILLS -->
             <div class="form-row">
 
-                <input id="edit_skills" name="skills" class="form-input" placeholder="Skills">
+                <input id="edit_skills" name="skills" class="form-input" placeholder="SKILLS">
 
                 <select id="edit_preferred_skills" name="preferred_skills" class="form-input">
 
-                    <option value="" disabled>Preferred Skills</option>
+                    <option value="" disabled>PREFERRED SKILLS</option>
 
-                    <option value="Housekeeping">Housekeeping</option>
-                    <option value="Bread & Pastries Production">Bread & Pastries Production</option>
-                    <option value="Driving">Driving</option>
-                    <option value="Automotive Servicing">Automotive Servicing</option>
-                    <option value="Bookkeeping">Bookkeeping</option>
-                    <option value="Electrical Installation & Maintenance">Electrical Installation & Maintenance</option>
-                    <option value="Plumbing">Plumbing</option>
-                    <option value="Shielded Metal Arc Welding SMAW">Shielded Metal Arc Welding SMAW</option>
-                    <option value="Tile Setting">Tile Setting</option>
-                    <option value="Food & Beverage Services">Food & Beverage Services</option>
-                    <option value="Computer System Servicing">Computer System Servicing</option>
-                    <option value="Carpentry">Carpentry</option>
-                    <option value="Masonry">Masonry</option>
-                    <option value="Barista">Barista</option>
-                    <option value="Massage Therapist">Massage Therapist</option>
-                    <option value="Caregiving">Caregiving</option>
-                    <option value="Dressmaking">Dressmaking</option>
-                    <option value="Tailoring">Tailoring</option>
-                    <option value="Others">Others (Specify)</option>
+                    <option value="HOUSEKEEPING">HOUSEKEEPING</option>
+                    <option value="BREAD & PASTRIES PRODUCTION">BREAD & PASTRIES PRODUCTION</option>
+                    <option value="DRIVING">DRIVING</option>
+                    <option value="AUTOMOTIVE SERVICING">AUTOMOTIVE SERVICING</option>
+                    <option value="BOOKKEEPING">BOOKKEEPING</option>
+                    <option value="ELECTRICAL INSTALLATION & MAINTENANCE">ELECTRICAL INSTALLATION & MAINTENANCE</option>
+                    <option value="PLUMBING">PLUMBING</option>
+                    <option value="SHIELDED METAL ARC WELDING SMAW">SHIELDED METAL ARC WELDING SMAW</option>
+                    <option value="TILE SETTING">TILE SETTING</option>
+                    <option value="FOOD & BEVERAGE SERVICES">FOOD & BEVERAGE SERVICES</option>
+                    <option value="COMPUTER SYSTEM SERVICING">COMPUTER SYSTEM SERVICING</option>
+                    <option value="CARPENTRY">CARPENTRY</option>
+                    <option value="MASONRY">MASONRY</option>
+                    <option value="BARISTA">BARISTA</option>
+                    <option value="MASSAGE THERAPIST">MASSAGE THERAPIST</option>
+                    <option value="CAREGIVING">CAREGIVING</option>
+                    <option value="DRESSMAKING">DRESSMAKING</option>
+                    <option value="TAILORING">TAILORING</option>
+                    <option value="OTHERS">OTHERS (SPECIFY)</option>
 
                 </select>
 
                 <input id="edit_preferred_skills_other" name="preferred_skills_other" class="form-input"
-                    placeholder="Specify preferred skill" style="display:none;">
+                    placeholder="SPECIFY PREFERRED SKILL" style="display:none;">
 
             </div>
 
@@ -171,55 +171,55 @@
             <div class="form-row">
 
                 <input id="edit_source_of_income" name="source_of_income" class="form-input"
-                    placeholder="Source of Income">
+                    placeholder="SOURCE OF INCOME">
 
                 <input id="edit_contact_number" name="contact_number" class="form-input" type="number"
-                    placeholder="Contact Number">
+                    placeholder="CONTACT NUMBER">
 
             </div>
 
             <!-- SK VOTER -->
             <div class="form-row">
-                <label>Are you a Registered SK Voter?</label>
+                <label>ARE YOU A REGISTERED SK VOTER?</label>
 
                 <label>
                     <input type="radio" name="is_sk_voter" value="Yes" id="edit_is_sk_voter_yes">
-                    Yes
+                    YES
                 </label>
 
                 <label>
                     <input type="radio" name="is_sk_voter" value="No" id="edit_is_sk_voter_no">
-                    No
+                    NO
                 </label>
             </div>
 
             <!-- YOUTH CLASSIFICATION -->
             <div class="form-row">
-                <label>Youth Classification:</label>
+                <label>YOUTH CLASSIFICATION:</label>
 
                 <label>
                     <input type="checkbox" id="edit_is_osy" name="is_osy">
-                    Out-of-School Youth
+                    OUT-OF-SCHOOL YOUTH
                 </label>
 
                 <label>
                     <input type="checkbox" id="edit_is_isy" name="is_isy">
-                    In-School Youth
+                    IN-SCHOOL YOUTH
                 </label>
 
                 <label>
                     <input type="checkbox" id="edit_is_4ps" name="is_4ps">
-                    4Ps
+                    4PS
                 </label>
 
                 <label>
                     <input type="checkbox" id="edit_is_ip" name="is_ip">
-                    Indigenous People (IP)
+                    INDIGENOUS PEOPLE (IP)
                 </label>
 
                 <label>
                     <input type="checkbox" id="edit_is_pwd" name="is_pwd">
-                    Person With Disability
+                    PERSON WITH DISABILITY
                 </label>
 
             </div>
@@ -228,38 +228,38 @@
             <!-- WORK CLASSIFICATION -->
             <div class="form-row">
 
-                <label>Work Classification:</label>
+                <label>WORK CLASSIFICATION:</label>
 
                 <label>
                     <input type="checkbox" id="edit_is_unemployed" name="is_unemployed">
-                    Unemployed Youth
+                    UNEMPLOYED YOUTH
                 </label>
 
                 <label>
                     <input type="checkbox" id="edit_is_employed" name="is_employed">
-                    Employed Youth
+                    EMPLOYED YOUTH
                 </label>
 
                 <label>
                     <input type="checkbox" id="edit_is_self_employed" name="is_self_employed">
-                    Self-Employed Youth
+                    SELF-EMPLOYED YOUTH
                 </label>
 
             </div>
 
             <!-- II. Family Composition -->
-            <h4 class="bold mt-6 mb-2">II. Family Composition</h4>
+            <h4 class="bold mt-6 mb-2">II. FAMILY COMPOSITION</h4>
 
             <div class="family-wrapper">
                 <table class="family-table">
                     <thead>
                         <tr>
-                            <th>Family Member</th>
-                            <th>Age</th>
-                            <th>Relationship</th>
-                            <th>Educational Attainment</th>
-                            <th>Occupation</th>
-                            <th>Income</th>
+                            <th>FAMILY MEMBER</th>
+                            <th>AGE</th>
+                            <th>RELATIONSHIP</th>
+                            <th>EDUCATIONAL ATTAINMENT</th>
+                            <th>OCCUPATION</th>
+                            <th>INCOME</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -267,7 +267,7 @@
                     <tbody id="editFamilyBody">
                         <tr>
                             <td>
-                                <input class="form-input" name="family_members[0][name]" placeholder="Full Name">
+                                <input class="form-input" name="family_members[0][name]" placeholder="FULL NAME">
                             </td>
 
                             <td>
@@ -277,43 +277,43 @@
 
                             <td>
                                 <select name="family_members[0][relationship]" class="form-input">
-                                    <option value="" disabled selected>Relationship</option>
-                                    <option>Mother</option>
-                                    <option>Father</option>
-                                    <option>Brother</option>
-                                    <option>Sister</option>
-                                    <option>Grandparent</option>
-                                    <option>Aunt</option>
-                                    <option>Uncle</option>
-                                    <option>Cousin</option>
-                                    <option>Spouse</option>
+                                    <option value="" disabled selected>RELATIONSHIP</option>
+                                    <option>MOTHER</option>
+                                    <option>FATHER</option>
+                                    <option>BROTHER</option>
+                                    <option>SISTER</option>
+                                    <option>GRANDPARENT</option>
+                                    <option>AUNT</option>
+                                    <option>UNCLE</option>
+                                    <option>COUSIN</option>
+                                    <option>SPOUSE</option>
                                 </select>
                             </td>
 
                             <td>
                                 <select name="family_members[0][education]" class="form-input">
-                                    <option value="" disabled selected>Education</option>
-                                    <option>None</option>
-                                    <option>Pre-School</option>
-                                    <option>Kindergarten</option>
-                                    <option>Elementary Level</option>
-                                    <option>Elementary Graduate</option>
-                                    <option>High School Level</option>
-                                    <option>High School Graduate</option>
-                                    <option>College Level</option>
-                                    <option>College Graduate</option>
-                                    <option>Vocational</option>
+                                    <option value="" disabled selected>EDUCATION</option>
+                                    <option>NONE</option>
+                                    <option>PRE-SCHOOL</option>
+                                    <option>KINDERGARTEN</option>
+                                    <option>ELEMENTARY LEVEL</option>
+                                    <option>ELEMENTARY GRADUATE</option>
+                                    <option>HIGH SCHOOL LEVEL</option>
+                                    <option>HIGH SCHOOL GRADUATE</option>
+                                    <option>COLLEGE LEVEL</option>
+                                    <option>COLLEGE GRADUATE</option>
+                                    <option>VOCATIONAL</option>
                                 </select>
                             </td>
 
                             <td>
-                                <input class="form-input" name="family_members[0][occupation]" placeholder="Occupation">
+                                <input class="form-input" name="family_members[0][occupation]" placeholder="OCCUPATION">
                             </td>
 
                             <td>
                                 <input type="number" class="form-input" name="family_members[0][income]" min="0"
                                     step="1" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-                                    placeholder="Monthly Income">
+                                    placeholder="MONTHLY INCOME">
                             </td>
 
                             <td></td>
@@ -322,16 +322,16 @@
                 </table>
 
                 <button type="button" id="addEditFamilyRow" class="save-btn mt-3">
-                    + Add Family Member
+                    + ADD FAMILY MEMBER
                 </button>
             </div>
 
-            <h4 class="bold mt-6 mb-2">III. Attachments</h4>
+            <h4 class="bold mt-6 mb-2">III. ATTACHMENTS</h4>
 
             <div class="attachment-wrapper">
 
                 <!-- ================= EXISTING ================= -->
-                <h5 class="text-sm font-semibold mb-2">Saved Attachments</h5>
+                <h5 class="text-sm font-semibold mb-2">SAVED ATTACHMENTS</h5>
 
                 <div id="existingAttachments" class="attachment-preview-grid mb-4">
                 </div>
@@ -340,16 +340,16 @@
                 <hr class="my-4 border-gray-300">
 
                 <!-- ================= NEW UPLOAD ================= -->
-                <h5 class="text-sm font-semibold mb-2">Add New Attachments</h5>
+                <h5 class="text-sm font-semibold mb-2">ADD NEW ATTACHMENTS</h5>
 
                 <label class="save-btn cursor-pointer text-sm">
-                    📎 Add More Attachments
+                    📎 ADD MORE ATTACHMENTS
                     <input type="file" id="editAttachments" name="attachments[]" accept="image/jpeg,image/png,image/jpg"
                         multiple hidden>
                 </label>
 
                 <small class="text-gray-500 block mt-2">
-                    Upload multiple JPG/PNG images (Max 4MB each)
+                    UPLOAD MULTIPLE JPG/PNG IMAGES (MAX 4MB EACH)
                 </small>
 
                 <div id="editAttachmentPreview" class="attachment-preview-grid mt-3">
@@ -366,3 +366,13 @@
 <link rel="stylesheet" href="{{ asset('css/youth-edit.css') }}">
 <link rel="stylesheet" href="{{ asset('css/youth-index.css') }}">
 <script src="{{ asset('js/youth-edit.js') }}" defer></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const textInputs = document.querySelectorAll('input:not([type="number"]):not([type="date"]):not([type="file"]):not([type="checkbox"]):not([type="radio"]):not([type="hidden"])');
+        textInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                this.value = this.value.toUpperCase();
+            });
+        });
+    });
+</script>

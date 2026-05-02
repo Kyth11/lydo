@@ -106,8 +106,8 @@ class YouthController extends Controller
         // PROFILES PER BARANGAY
         // ===============================
         $barangayProfiles = Youth::where('is_archived', 0)
-            ->select('barangay', DB::raw('COUNT(*) as total'))
-            ->groupBy('barangay')
+            ->select(DB::raw('UPPER(barangay) as barangay'), DB::raw('COUNT(*) as total'))
+            ->groupBy(DB::raw('UPPER(barangay)'))
             ->pluck('total', 'barangay')
             ->toArray();
 
@@ -159,7 +159,7 @@ class YouthController extends Controller
 
         // 🔒 Force SK barangay
         if ($user && $user->role === 'sk') {
-            $data['barangay'] = $user->barangay;
+            $data['barangay'] = strtoupper($user->barangay);
         }
         // 📸 Handle Profile Photo
         if ($request->hasFile('profile_photo')) {
@@ -209,7 +209,7 @@ class YouthController extends Controller
             }
         }
 
-        return back()->with('success', 'Profile saved.');
+        return redirect()->route('youth.index')->with('success', 'Profile saved.');
     }
 
     /**
@@ -223,8 +223,13 @@ class YouthController extends Controller
         if ($youth->barangay !== $request->barangay) {
             $youth->previous_barangay = $youth->barangay;
         }
-        if ($user && $user->role === 'sk' && $youth->barangay !== $user->barangay) {
+        if ($user && $user->role === 'sk' && strtoupper($youth->barangay) !== strtoupper($user->barangay)) {
             abort(403);
+        }
+
+        // 🔒 Force SK barangay to uppercase
+        if ($user && $user->role === 'sk') {
+            $data['barangay'] = strtoupper($user->barangay);
         }
 
         $data = $request->validate([
@@ -391,12 +396,15 @@ class YouthController extends Controller
             abort(403);
         }
 
-        if ($user->action_protection) {
+        $adminProtection = \App\Models\User::where('role', 'admin')
+            ->value('action_protection');
+
+        if ($adminProtection) {
             if (
                 !$request->filled('password') ||
                 !Hash::check($request->password, $user->password)
             ) {
-                return back()->with('error', 'Incorrect admin password.');
+                return back()->with('error', 'Incorrect password. Admin verification required.');
             }
         }
 

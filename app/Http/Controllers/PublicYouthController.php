@@ -38,6 +38,10 @@ class PublicYouthController extends Controller
             'purok_zone' => 'nullable|string',
         ]);
         $validated['age'] = \Carbon\Carbon::parse($request->birthday)->age;
+        
+        // 🔒 Force barangay to uppercase for consistency
+        $validated['barangay'] = strtoupper($validated['barangay']);
+        
         // Boolean fields
         $validated['is_osy'] = $request->has('is_osy');
         $validated['is_isy'] = $request->has('is_isy');

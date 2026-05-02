@@ -16,20 +16,20 @@ class AnnouncementController extends Controller
     public function create()
     {
         $barangays = [
-            'Awang',
-            'Bagocboc',
-            'Barra',
-            'Bonbon',
-            'Cauyunan',
-            'Igpit',
-            'Limunda',
-            'Luyong Bonbon',
-            'Malanang',
-            'Nangcaon',
-            'Patag',
-            'Poblacion',
-            'Taboc',
-            'Tingalan'
+            'AWANG',
+            'BAGOCBOC',
+            'BARRA',
+            'BONBON',
+            'CAUYUNAN',
+            'IGPIT',
+            'LIMUNDA',
+            'LUYONG BONBON',
+            'MALANANG',
+            'NANGCAON',
+            'PATAG',
+            'POBLACION',
+            'TABOC',
+            'TINGALAN'
         ];
 
         return view('announcements.create', compact('barangays'));
@@ -64,20 +64,20 @@ class AnnouncementController extends Controller
     public function edit(Announcement $announcement)
     {
         $barangays = [
-            'Awang',
-            'Bagocboc',
-            'Barra',
-            'Bonbon',
-            'Cauyunan',
-            'Igpit',
-            'Limunda',
-            'Luyong Bonbon',
-            'Malanang',
-            'Nangcaon',
-            'Patag',
-            'Poblacion',
-            'Taboc',
-            'Tingalan'
+            'AWANG',
+            'BAGOCBOC',
+            'BARRA',
+            'BONBON',
+            'CAUYUNAN',
+            'IGPIT',
+            'LIMUNDA',
+            'LUYONG BONBON',
+            'MALANANG',
+            'NANGCAON',
+            'PATAG',
+            'POBLACION',
+            'TABOC',
+            'TINGALAN'
         ];
 
         return view('announcements.edit', compact('announcement', 'barangays'));
@@ -119,9 +119,9 @@ class AnnouncementController extends Controller
     public function welcome()
 {
     $barangays = [
-        'Awang','Bagocboc','Barra','Bonbon','Cauyunan','Igpit',
-        'Limunda','Luyong Bonbon','Malanang','Nangcaon',
-        'Patag','Poblacion','Taboc','Tingalan'
+        'AWANG','BAGOCBOC','BARRA','BONBON','CAUYUNAN','IGPIT',
+        'LIMUNDA','LUYONG BONBON','MALANANG','NANGCAON',
+        'PATAG','POBLACION','TABOC','TINGALAN'
     ];
 
     $selectedBarangay = request('barangay');
@@ -131,7 +131,7 @@ class AnnouncementController extends Controller
     if ($selectedBarangay) {
         $query->where(function ($q) use ($selectedBarangay) {
             $q->where('for_all_barangays', true)
-              ->orWhereJsonContains('barangay', $selectedBarangay);
+              ->orWhereJsonContains('barangay', strtoupper($selectedBarangay));
         });
     }
 

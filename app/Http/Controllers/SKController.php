@@ -92,6 +92,29 @@ class SKController extends Controller
 
         return back()->with('success', 'SK account status updated.');
     }
+
+    public function testMail(Request $request)
+    {
+        if (!Auth::user() || !Auth::user()->isAdmin()) {
+            abort(403);
+        }
+
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        try {
+            Mail::raw('This is a test email from your Laravel application on Hostinger. If you receive this, your email configuration is working correctly!', function ($message) use ($request) {
+                $message->to($request->email)
+                    ->subject('Test Email - Hostinger Mail Configuration')
+                    ->from(config('mail.from.address'), config('mail.from.name'));
+            });
+
+            return back()->with('success', 'Test email sent successfully to ' . $request->email);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to send test email: ' . $e->getMessage());
+        }
+    }
 }
 
 

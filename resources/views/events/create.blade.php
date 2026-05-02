@@ -3,12 +3,12 @@
 @section('page-title', 'Create Event')
 @section('page-desc', 'Add a new event')
 
-@section('content')
-
+@push('styles')
     <link rel="stylesheet" href="{{ asset('css/event-forms.css') }}">
     <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@endpush
 
+@section('content')
     <div class="event-form-container">
 
         <div class="action-bar">
@@ -36,41 +36,47 @@
 
             <div class="event-divider"></div>
 
-            {{-- Event Type --}}
-            <div class="form-group">
-                <label>Event Type</label>
-                <select name="status" required>
-                    <option value="upcoming">Upcoming Event</option>
-                    <option value="past">Past Event</option>
-                </select>
+            <div class="form-row">
+                {{-- Event Type --}}
+                <div class="form-group">
+                    <label>Event Type</label>
+                    <select name="status" required>
+                        <option value="upcoming">Upcoming Event</option>
+                        <option value="past">Past Event</option>
+                    </select>
+                </div>
+
+                {{-- Title --}}
+                <div class="form-group">
+                    <label>Event Title</label>
+                    <input type="text" name="title" required>
+                </div>
             </div>
 
-            {{-- Title --}}
-            <div class="form-group">
-                <label>Event Title</label>
-                <input type="text" name="title" required>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Start Date</label>
+                    <input type="date" name="start_date" required>
+                </div>
+
+                <div class="form-group">
+                    <label>End Date</label>
+                    <input type="date" name="end_date" required>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>Start Date</label>
-                <input type="date" name="start_date" required>
-            </div>
+            <div class="form-row">
+                {{-- Location --}}
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" name="location" required>
+                </div>
 
-            <div class="form-group">
-                <label>End Date</label>
-                <input type="date" name="end_date" required>
-            </div>
-
-            {{-- Location --}}
-            <div class="form-group">
-                <label>Location</label>
-                <input type="text" name="location" required>
-            </div>
-
-            {{-- Description --}}
-            <div class="form-group">
-                <label>Description</label>
-                <textarea name="description" rows="5" required></textarea>
+                {{-- Description --}}
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" rows="5" required></textarea>
+                </div>
             </div>
 
         </form>
@@ -171,4 +177,7 @@
         </script>
     @endif
 
+    @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @endpush
 @endsection

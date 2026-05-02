@@ -79,6 +79,22 @@ function closeModal(id) {
     document.getElementById(id)?.classList.remove("active");
 }
 
+function closeEditModal() {
+    // Reset form to prevent validation alerts
+    const form = document.getElementById("editForm");
+    if (form) {
+        form.reset();
+    }
+
+    // Close the modal
+    closeModal("editModal");
+}
+
+function closeReportModal() {
+    // Just close the modal without any form manipulation
+    closeModal("reportModal");
+}
+
 /* =========================
    ADMIN TOGGLE (FIXED)
 ========================= */
@@ -152,17 +168,6 @@ function openFileModal(files) {
         html += `</div></div>`;
         return html;
     }
-    let dailyCounter = 1;
-
-    function generateFileName() {
-        const now = new Date();
-
-        const month = String(now.getMonth() + 1).padStart(2, "0");
-        const day = String(now.getDate()).padStart(2, "0");
-        const increment = String(dailyCounter++).padStart(3, "0");
-
-        return `att${month}${day}${increment}`;
-    }
     // 🔥 STACKED OUTPUT
 
     preview.innerHTML =
@@ -215,14 +220,16 @@ function removeExistingFile(index) {
     renderExistingFiles();
 }
 
-const editInput = document.getElementById("editFileInput");
+document.addEventListener("DOMContentLoaded", function () {
+    const editInput = document.getElementById("editFileInput");
 
-if (editInput) {
-    editInput.addEventListener("change", function (e) {
-        selectedEditFiles = Array.from(e.target.files);
-        renderEditPreview();
-    });
-}
+    if (editInput) {
+        editInput.addEventListener("change", function (e) {
+            selectedEditFiles = Array.from(e.target.files);
+            renderEditPreview();
+        });
+    }
+});
 
 function renderEditPreview() {
     const preview = document.getElementById("editPreview");
@@ -297,22 +304,72 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-function autoSubmit() {
+function applyFilters() {
     document.getElementById("filterForm").submit();
 }
 
-// 🔍 SEARCH DELAY (LIKE DATATABLES)
-let typingTimer;
-const searchInput = document.getElementById("searchInput");
+function clearFilters() {
+    const form = document.getElementById("filterForm");
+    if (!form) return;
 
-if (searchInput) {
-    searchInput.addEventListener("keyup", function () {
-        clearTimeout(typingTimer);
-        typingTimer = setTimeout(() => {
-            autoSubmit();
-        }, 500);
+    // Clear all select and input fields
+    form.querySelectorAll('select, input[type="date"]').forEach(field => {
+        field.value = '';
     });
+
+    // Submit the form to reload with cleared filters
+    form.submit();
 }
+
+/* =========================
+   NUDGE FORM VALIDATION
+========================= */
+document.addEventListener("DOMContentLoaded", function() {
+    const nudgeForm = document.getElementById("nudgeForm");
+    if (nudgeForm) {
+        nudgeForm.addEventListener("submit", function(e) {
+            const barangayCheckboxes = document.querySelectorAll(".barangay-checkbox:checked");
+            const categoryCheckboxes = document.querySelectorAll(".category-checkbox:checked");
+
+            if (barangayCheckboxes.length === 0) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: "warning",
+                    title: "Select Barangay",
+                    text: "Please select at least one barangay",
+                    confirmButtonColor: "#4f46e5"
+                });
+                return false;
+            }
+
+            if (categoryCheckboxes.length === 0) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: "warning",
+                    title: "Select Category",
+                    text: "Please select at least one category",
+                    confirmButtonColor: "#4f46e5"
+                });
+                return false;
+            }
+        });
+    }
+});
+
+// 🔍 SEARCH DELAY (LIKE DATATABLES)
+document.addEventListener("DOMContentLoaded", function () {
+    let typingTimer;
+    const searchInput = document.getElementById("searchInput");
+
+    if (searchInput) {
+        searchInput.addEventListener("keyup", function () {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(() => {
+                applyFilters();
+            }, 500);
+        });
+    }
+});
 
 document.addEventListener("DOMContentLoaded", function () {
     const deleteForms = document.querySelectorAll(".delete-form");

@@ -20,20 +20,20 @@ return new class extends Migration
         });
 
         DB::table('barangay_populations')->insert([
-            ['barangay' => 'Awang', 'population' => 0],
-            ['barangay' => 'Bagocboc', 'population' => 0],
-            ['barangay' => 'Barra', 'population' => 0],
-            ['barangay' => 'Bonbon', 'population' => 0],
-            ['barangay' => 'Cauyunan', 'population' => 0],
-            ['barangay' => 'Igpit', 'population' => 0],
-            ['barangay' => 'Limunda', 'population' => 0],
-            ['barangay' => 'Luyong Bonbon', 'population' => 0],
-            ['barangay' => 'Malanang', 'population' => 0],
-            ['barangay' => 'Nangcaon', 'population' => 0],
-            ['barangay' => 'Patag', 'population' => 0],
-            ['barangay' => 'Poblacion', 'population' => 0],
-            ['barangay' => 'Taboc', 'population' => 0],
-            ['barangay' => 'Tingalan', 'population' => 0],
+            ['barangay' => 'AWANG', 'population' => 0],
+            ['barangay' => 'BAGOCBOC', 'population' => 0],
+            ['barangay' => 'BARRA', 'population' => 0],
+            ['barangay' => 'BONBON', 'population' => 0],
+            ['barangay' => 'CAUYUNAN', 'population' => 0],
+            ['barangay' => 'IGPIT', 'population' => 0],
+            ['barangay' => 'LIMUNDA', 'population' => 0],
+            ['barangay' => 'LUYONG BONBON', 'population' => 0],
+            ['barangay' => 'MALANANG', 'population' => 0],
+            ['barangay' => 'NANGCAON', 'population' => 0],
+            ['barangay' => 'PATAG', 'population' => 0],
+            ['barangay' => 'POBLACION', 'population' => 0],
+            ['barangay' => 'TABOC', 'population' => 0],
+            ['barangay' => 'TINGALAN', 'population' => 0],
         ]);
     }
 

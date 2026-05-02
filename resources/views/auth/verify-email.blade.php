@@ -28,4 +28,38 @@
             </button>
         </form>
     </div>
+
+    <style>
+        /* =========================
+           MOBILE RESPONSIVE
+        ========================= */
+        @media (max-width: 768px) {
+            .mt-4 {
+                flex-direction: column !important;
+                gap: 1rem !important;
+                align-items: stretch !important;
+            }
+
+            form {
+                width: 100% !important;
+            }
+
+            button {
+                width: 100% !important;
+                padding: 0.75rem 1rem !important;
+                font-size: 14px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mb-4 {
+                font-size: 13px !important;
+                line-height: 1.5 !important;
+            }
+
+            .text-green-600 {
+                font-size: 12px !important;
+            }
+        }
+    </style>
 </x-guest-layout>

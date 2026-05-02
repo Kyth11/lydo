@@ -24,4 +24,42 @@
             </x-primary-button>
         </div>
     </form>
+
+    <style>
+        /* =========================
+           MOBILE RESPONSIVE
+        ========================= */
+        @media (max-width: 768px) {
+            .mb-4 {
+                font-size: 14px !important;
+                line-height: 1.5 !important;
+            }
+
+            input {
+                font-size: 14px !important;
+                padding: 0.5rem !important;
+            }
+
+            .flex.justify-end {
+                justify-content: stretch !important;
+            }
+
+            button {
+                width: 100% !important;
+                padding: 0.75rem 1rem !important;
+                font-size: 14px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mb-4 {
+                font-size: 13px !important;
+            }
+
+            form {
+                max-width: 320px !important;
+                margin: 0 auto !important;
+            }
+        }
+    </style>
 </x-guest-layout>

@@ -46,7 +46,7 @@
                             <label class="form-label">Barangay</label>
                             <select name="barangay" class="form-input w-full">
                                 <option value="" class="bold">Select Barangay</option>
-                                @foreach(['Awang', 'Bagocboc', 'Barra', 'Bonbon', 'Cauyunan', 'Igpit', 'Limunda', 'Luyong Bonbon', 'Malanang', 'Nangcaon', 'Patag', 'Poblacion', 'Taboc', 'Tingalan'] as $b)
+                                @foreach(['AWANG', 'BAGOCBOC', 'BARRA', 'BONBON', 'CAUYUNAN', 'IGPIT', 'LIMUNDA', 'LUYONG BONBON', 'MALANANG', 'NANGCAON', 'PATAG', 'POBLACION', 'TABOC', 'TINGALAN'] as $b)
                                     <option value="{{ $b }}" @selected(old('barangay', $user->barangay) === $b)>
                                         {{ $b }}
                                     </option>

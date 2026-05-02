@@ -120,9 +120,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/admin/toggle-protection', function (Request $request) {
 
-        $user = auth()->user();
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
 
-        if (!$user->isAdmin()) {
+        if (!$user instanceof User || !$user->isAdmin()) {
             abort(403);
         }
 
@@ -145,9 +146,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/admin/toggle-kk-register', function (Request $request) {
 
-        $admin = auth()->user();
+        /** @var \App\Models\User|null $admin */
+        $admin = Auth::user();
 
-        if (!$admin || !$admin->isAdmin()) {
+        if (!$admin instanceof User || !$admin->isAdmin()) {
             return response()->json(['success' => false]);
         }
 
@@ -189,7 +191,7 @@ Route::middleware(['auth'])->group(function () {
 
     })->name('mail.preview.sk');
 
-    Route::get('/mail/test', [SKController::class, 'testMail'])
+    Route::post('/mail/test', [SKController::class, 'testMail'])
         ->name('mail.test');
 
 });
@@ -237,13 +239,19 @@ Route::middleware(['auth'])->group(function () {
         ->name('sk.report.delete');
     Route::put('/sk/report/{id}', [SkMonitoringController::class, 'update'])
         ->name('sk.report.update');
+
+    Route::post('/admin/nudge', [SkMonitoringController::class, 'sendNudge'])
+        ->name('admin.nudge.send');
+    Route::get('/sk/nudges', [SkMonitoringController::class, 'getNudges'])
+        ->name('sk.nudges.get');
+    Route::post('/sk/nudges/clear/{id}', [SkMonitoringController::class, 'clearNudge'])
+        ->name('sk.nudges.clear');
+    Route::post('/sk/nudges/clear-all', [SkMonitoringController::class, 'clearAllNudges'])
+        ->name('sk.nudges.clear-all');
+    Route::get('/sk/check-report/{categoryId}', [SkMonitoringController::class, 'checkReport'])
+        ->name('sk.report.check');
 });
 
-// =========================
-// REPORTS (ADMIN + SK)
-// =========================
-Route::get('/admin/monitoring', [SkMonitoringController::class, 'index'])
-    ->name('admin.monitoring');
 
 // =========================
 // CATEGORY PAGE
@@ -259,6 +267,8 @@ Route::post('/admin/categories/update', [CategoryController::class, 'update'])
 
 Route::post('/admin/categories/archive/{id}', [CategoryController::class, 'archive'])
     ->name('admin.categories.archive');
+Route::post('/admin/categories/toggle/{id}', [CategoryController::class, 'toggle'])
+    ->name('admin.categories.toggle');
 Route::delete('/admin/categories/delete/{id}', [CategoryController::class, 'destroy'])
     ->name('admin.categories.delete');
 // DEADLINE (single deadline per category)

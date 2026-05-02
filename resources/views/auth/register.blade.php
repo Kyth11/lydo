@@ -135,6 +135,69 @@
             background: rgba(0,0,0,0.25);
         }
         .min-h-screen { background: transparent !important; }
+
+        /* =========================
+           MOBILE RESPONSIVE
+        ========================= */
+        @media (max-width: 768px) {
+            form {
+                max-width: 350px !important;
+                margin: 0 auto !important;
+                padding: 1.5rem !important;
+            }
+
+            h2 {
+                font-size: 20px !important;
+            }
+
+            p {
+                font-size: 14px !important;
+            }
+
+            input,
+            .password-input {
+                font-size: 14px !important;
+                padding: 0.5rem !important;
+            }
+
+            .password-eye {
+                right: 0.5rem !important;
+            }
+
+            .caps-toast {
+                font-size: 0.7rem !important;
+                top: -2rem !important;
+            }
+
+            .flex.justify-between {
+                flex-direction: column !important;
+                gap: 1rem !important;
+                align-items: stretch !important;
+            }
+
+            button,
+            a {
+                width: 100% !important;
+                text-align: center !important;
+                padding: 0.75rem 1rem !important;
+                font-size: 14px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            form {
+                max-width: 300px !important;
+                padding: 1.2rem !important;
+            }
+
+            h2 {
+                font-size: 18px !important;
+            }
+
+            p {
+                font-size: 13px !important;
+            }
+        }
     </style>
 
     <script>

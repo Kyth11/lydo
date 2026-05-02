@@ -151,6 +151,40 @@
     translate: 0 -2px !important;
     transition: 0.2s ease-in-out !important;
 }
+
+.btn-enable {
+    background: #ffffff !important;
+    border: 2px solid #22c55e !important;
+    color: #22c55e !important;
+    padding: 0.55rem 1.5rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+}
+
+.btn-enable:hover {
+    background: #22c55e !important;
+    color: white !important;
+    translate: 0 -2px !important;
+    transition: 0.2s ease-in-out !important;
+}
+
+.btn-disable {
+    background: #ffffff !important;
+    border: 2px solid #ef4444 !important;
+    color: #ef4444 !important;
+    padding: 0.55rem 1.5rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+}
+
+.btn-disable:hover {
+    background: #ef4444 !important;
+    color: white !important;
+    translate: 0 -2px !important;
+    transition: 0.2s ease-in-out !important;
+}
 .active-btn {
     background: #ffffff !important;
     border: 2px solid #22c55e !important;
@@ -211,6 +245,41 @@
     translate: 0 -2px !important;
     transition: all 0.3s ease !important;
 }
+
+.apply-btn {
+    background: #ffffff !important;
+    border: 2px solid #63acff !important;
+    color: #63acff !important;
+    padding: 0.55rem 1.5rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+}
+
+.apply-btn:hover {
+    background: #63acff !important;
+    color: white !important;
+    translate: 0 -2px !important;
+    transition: all 0.3s ease !important;
+}
+
+.clear-btn {
+    background: #ffffff !important;
+    border: 2px solid #f48181 !important;
+    color: #f48181 !important;
+    padding: 0.55rem 1.5rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+}
+
+.clear-btn:hover {
+    background: #f48181 !important;
+    color: white !important;
+    translate: 0 -2px !important;
+    transition: all 0.3s ease !important;
+}
+
 /* =========================
    MOBILE BUTTON RESPONSIVE
    ========================= */
@@ -229,7 +298,8 @@
     .delete-btn,
     .cancel-btn,
     .archive-btn,
-    .active-btn {
+    .active-btn,
+    .transfer-btn {
         width: 100% !important;
         text-align: center !important;
         font-size: 11px !important;

@@ -3,11 +3,9 @@
 @section('page-title', 'Manage SK Accounts')
 @section('page-desc', 'Enable or disable SK user accounts')
 
-@section('content')
-
+@push('styles')
 <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
 <link rel="stylesheet" href="{{ asset('css/jquery.dataTables.min.css') }}">
-
 <style>
 .action-btn{
     display:inline-block;
@@ -35,7 +33,9 @@
     box-shadow:0 8px 20px rgba(0,0,0,.15);
 }
 </style>
+@endpush
 
+@section('content')
 <div class="max-w-6xl mx-auto px-4 space-y-6">
 
 <div class="bg-white rounded-xl shadow p-6 relative">
@@ -59,7 +59,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Barangay</th>
+                    <th>BARANGAY</th>
                     <th>Status</th>
                     <th class="text-center">Action</th>
                 </tr>
@@ -70,7 +70,7 @@
                 <tr>
                     <td>{{ $sk->name }}</td>
                     <td>{{ $sk->email }}</td>
-                    <td>{{ $sk->barangay }}</td>
+                    <td>{{ strtoupper($sk->barangay) }}</td>
                     <td>
                         @if($sk->is_disabled)
                             <span style="color:#dc2626;font-weight:600;">Disabled</span>
@@ -82,7 +82,7 @@
                     <td class="text-center">
                         <button type="button"
                                 onclick="handleToggle({{ $sk->id }})"
-                                class="remove-btn {{ $sk->is_disabled ? 'btn-enable' : 'btn-disable' }}">
+                                class="remove-btn {{ $sk->is_disabled ? 'btn-enable edit-btn' : 'btn-disable' }}">
 
                             {{ $sk->is_disabled ? 'Enable Account' : 'Disable Account' }}
 
@@ -98,11 +98,10 @@
 </div>
 </div>
 
-<!-- ✅ Scripts (Remove defer to avoid race condition) -->
+@push('scripts')
 <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
 <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
 <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
-<link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
 
 <script>
 $(document).ready(function(){
@@ -147,5 +146,5 @@ function handleToggle(id){
     );
 }
 </script>
-
+@endpush
 @endsection

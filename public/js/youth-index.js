@@ -109,21 +109,34 @@ function handleRestore(id, protectedMode) {
 }
 
 function handleDelete(id, protectedMode) {
-    Swal.fire({
-        title: "Permanently delete this profile?",
-        text: "This action cannot be undone.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#ef4444",
-        confirmButtonText: "Yes, delete permanently",
-    }).then((result) => {
-        if (!result.isConfirmed) return;
+    if (!protectedMode) {
+        Swal.fire({
+            title: "Permanently delete this profile?",
+            text: "This action cannot be undone.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#ef4444",
+            confirmButtonText: "Yes, delete permanently",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                submitProtectedAction(`/youth/${id}/delete`);
+            }
+        });
+        return;
+    }
 
-        if (!protectedMode) {
-            submitProtectedAction(`/youth/${id}/delete`);
-            return;
-        }
-
+    // Use styled admin password modal if available (admin users)
+    if (typeof showAdminPasswordModal === 'function') {
+        showAdminPasswordModal(
+            'Admin Verification Required',
+            'Confirm Permanent Deletion',
+            '#ef4444',
+            function(password) {
+                submitProtectedAction(`/youth/${id}/delete`, password);
+            }
+        );
+    } else {
+        // Fallback for non-admin users
         Swal.fire({
             title: "Admin Verification Required",
             input: "password",
@@ -136,7 +149,7 @@ function handleDelete(id, protectedMode) {
                 submitProtectedAction(`/youth/${id}/delete`, result.value);
             }
         });
-    });
+    }
 }
 
 /* =====================================================

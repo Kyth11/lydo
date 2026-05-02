@@ -70,5 +70,46 @@
             width: 100%;
             margin: auto;
         }
+
+        /* =========================
+           MOBILE RESPONSIVE
+        ========================= */
+        @media (max-width: 768px) {
+            .login-form {
+                max-width: 300px;
+                padding: 1.5rem;
+            }
+
+            .mb-4 {
+                font-size: 14px !important;
+                line-height: 1.5 !important;
+            }
+
+            input {
+                font-size: 14px !important;
+                padding: 0.5rem !important;
+            }
+
+            .flex.justify-end {
+                justify-content: stretch !important;
+            }
+
+            button {
+                width: 100% !important;
+                padding: 0.75rem 1rem !important;
+                font-size: 14px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-form {
+                max-width: 260px;
+                padding: 1.2rem;
+            }
+
+            .mb-4 {
+                font-size: 13px !important;
+            }
+        }
     </style>
 </x-guest-layout>

@@ -120,7 +120,7 @@
         @if ($youth->profile_photo)
             <img src="{{ asset('storage/' . $youth->profile_photo) }}" class="profile-photo">
         @else
-            <img src="{{ asset('images/avatar.png') }}" class="profile-photo">
+            <img src="{{ asset('images/Avatar.png') }}" class="profile-photo">
         @endif
     </div>
 
@@ -212,8 +212,8 @@
         </td>
         </tr>
         <tr>
-            <td class="label">Barangay:</td>
-            <td>{{ $youth->barangay }}</td>
+            <td class="label">BARANGAY:</td>
+            <td>{{ strtoupper($youth->barangay) }}</td>
         </tr>
     </table>
 

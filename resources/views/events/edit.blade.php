@@ -3,12 +3,12 @@
 @section('page-title', 'Edit Event')
 @section('page-desc', 'Update event details')
 
-@section('content')
-
+@push('styles')
     <link rel="stylesheet" href="{{ asset('css/event-forms.css') }}">
     <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
+@endpush
 
-
+@section('content')
     <div class="event-form-container">
 
 

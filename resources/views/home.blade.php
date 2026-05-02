@@ -125,8 +125,8 @@
                             <br>
 
                             <small>
-                                <strong>Barangay:</strong>
-                                {{ $a->for_all_barangays ? 'All Barangays' : implode(', ', (array) $a->barangay) }}
+                                <strong>BARANGAY:</strong>
+                                {{ $a->for_all_barangays ? 'ALL BARANGAYS' : implode(', ', array_map('strtoupper', (array) $a->barangay)) }}
                             </small>
 
                         </div>

@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function toggleOtherSkill() {
         if (!preferredSkillsSelect || !otherPreferredSkillInput) return;
 
-        if (preferredSkillsSelect.value === "Others") {
+        if (preferredSkillsSelect.value === "OTHERS") {
             otherPreferredSkillInput.style.display = "block";
             otherPreferredSkillInput.required = true;
         } else {

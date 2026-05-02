@@ -404,4 +404,58 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* Trigger when birthday changes */
     birthdayInput?.addEventListener("change", updateAge);
+
+    /* =====================================================
+       RELIGION (OTHERS) - EDIT MODAL
+    ===================================================== */
+
+    const editReligionSelect = document.getElementById("edit_religion");
+    const editReligionOther = document.getElementById("edit_religion_other");
+
+    function toggleEditOtherReligion() {
+        if (!editReligionSelect || !editReligionOther) return;
+
+        if (editReligionSelect.value === "OTHERS") {
+            editReligionOther.style.display = "block";
+            editReligionOther.required = true;
+        } else {
+            editReligionOther.style.display = "none";
+            editReligionOther.required = false;
+            editReligionOther.value = "";
+        }
+    }
+
+    editReligionSelect?.addEventListener("change", toggleEditOtherReligion);
+
+    /* =====================================================
+       PREFERRED SKILLS (OTHERS) - EDIT MODAL
+    ===================================================== */
+
+    const editPreferredSkillsSelect = document.getElementById("edit_preferred_skills");
+    const editPreferredSkillsOther = document.getElementById("edit_preferred_skills_other");
+
+    function toggleEditOtherSkill() {
+        if (!editPreferredSkillsSelect || !editPreferredSkillsOther) return;
+
+        if (editPreferredSkillsSelect.value === "OTHERS") {
+            editPreferredSkillsOther.style.display = "block";
+            editPreferredSkillsOther.required = true;
+        } else {
+            editPreferredSkillsOther.style.display = "none";
+            editPreferredSkillsOther.required = false;
+            editPreferredSkillsOther.value = "";
+        }
+    }
+
+    editPreferredSkillsSelect?.addEventListener("change", toggleEditOtherSkill);
+
+    /* Call toggle functions when modal opens to set initial state */
+    const originalOpenEditModal = window.openEditModal;
+    window.openEditModal = function(youth) {
+        originalOpenEditModal(youth);
+        setTimeout(() => {
+            toggleEditOtherReligion();
+            toggleEditOtherSkill();
+        }, 0);
+    };
 });

@@ -27,5 +27,8 @@ class DatabaseSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
+
+        // Create SK accounts for all barangays
+        $this->call(SKAccountsSeeder::class);
     }
 }

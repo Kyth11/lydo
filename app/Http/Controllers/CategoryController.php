@@ -104,6 +104,14 @@ public function store(Request $request)
         return back()->with('success', 'Category archived');
     }
 
+    public function toggle($id)
+    {
+        $cat = Category::findOrFail($id);
+        $cat->update(['is_active' => !$cat->is_active]);
+
+        return back()->with('success', 'Category status updated');
+    }
+
     public function destroy($id)
     {
         Category::findOrFail($id)->delete();

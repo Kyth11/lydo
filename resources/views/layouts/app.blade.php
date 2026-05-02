@@ -5,14 +5,16 @@
 
 
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="preload" href="{{ asset('images/LydoLoading.png') }}" as="image" type="image/png">
     <link rel="icon" href="{{ asset('images/LydoLogo.png') }}">
     <title>LYDO Opol KK Profiling System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @stack('styles')
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-100" @if(Auth::check() && Auth::user()->role === 'sk') data-nudges-url="{{ route('sk.nudges.get') }}" @endif>
     <!-- TOP PAGE LOADER -->
     <div id="topLoader">
         <div class="loader-bar"></div>
@@ -86,17 +88,43 @@
                 </div>
 
                 <!-- RIGHT -->
-                <div class="hidden sm:flex items-center">
+                <div class="hidden sm:flex items-center gap-4">
+                    <!-- NOTIFICATIONS (SK ONLY) -->
+                    @auth
+                        @if (Auth::user()->role === 'sk')
+                            <div class="relative" x-data="{ open: false }">
+                                <button @click="open = !open" class="notification-btn">
+                                    📬
+                                    <span id="notificationBadge" class="notification-badge"></span>
+                                </button>
+
+                                <div x-show="open" @click.away="open=false" @click.stop class="absolute right-0 mt-2 notification-dropdown bg-white rounded-xl shadow-lg z-50 border border-gray-200">
+                                    <div class="p-4 border-b border-gray-200">
+                                        <h3 class="font-semibold text-gray-800">Nudge Notifications</h3>
+                                    </div>
+                                    <div id="notificationList" class="max-h-96 overflow-y-auto">
+                                        <div class="p-4 text-center text-gray-500 text-sm">
+                                            Loading notifications...
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    @endauth
+
                     <x-dropdown align="right" width="56"
                         contentClasses="bg-transparent shadow-none ring-0 p-0 overflow-visible">
 
                         <x-slot name="trigger">
                             <button
-                                class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/15 backdrop-blur-md text-white font-semibold hover:bg-yellow-400 hover:text-black transition shadow-lg">
-                                @auth
-                                    {{ Auth::user()->name }}
-                                @endauth
-                                <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20">
+                                class="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/15 backdrop-blur-md text-white font-semibold hover:bg-yellow-400 hover:text-black transition shadow-lg">
+                                <div class="text-left">
+                                    @auth
+                                        <div>{{ Auth::user()->name }}</div>
+                                        <div class="text-xs font-normal opacity-80">{{ Auth::user()->email }}</div>
+                                    @endauth
+                                </div>
+                                <svg class="h-4 w-4 fill-current shrink-0" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
                                 </svg>
@@ -157,8 +185,15 @@
         <!-- MOBILE MENU -->
         <div x-show="open" x-transition @click.away="open=false" class="sm:hidden lydo-mobile-panel">
 
+            <!-- USER INFO -->
+            <div class="px-4 py-3 border-b border-gray-200/20 bg-white/10">
+                @auth
+                    <div class="font-semibold text-white">{{ Auth::user()->name }}</div>
+                    <div class="text-xs text-white" style="margin-bottom: 10px !important;">{{ Auth::user()->email }}</div>
+                @endauth
+            </div>
 
-
+            <div class="lydo-dropdown-divider"></div>
 
             @auth
                 @if (Auth::user()->isAdmin())
@@ -337,7 +372,6 @@
                                                                                                                                                                                 padding-right:42px;
                                                                                                                                                                                 font-size:${isMobile ? '16px' : '15px'};
                                                                                                                                                                                 height:42px;
-                                                                                                                                                                                border-radius:10px;
                                                                                                                                                                                 box-sizing:border-box;
                                                                                                                                                                             "
                                                                                                                                                                         />
@@ -567,6 +601,8 @@
     <link rel="stylesheet" href="{{ asset('css/app-layout.css') }}">
     <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('js/chart.js') }}"></script>
+    <script src="{{ asset('js/app-layout.js') }}"></script>
+    @stack('scripts')
 
     <script>
         window.addEventListener("load", () => {

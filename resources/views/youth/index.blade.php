@@ -9,16 +9,19 @@
     : 'Active Youth Profiles'))
 @section('page-desc', 'Manage and view registered youth profiles')
 
-@section('content')
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/jquery.dataTables.min.css') }}">
+@endpush
 
+@section('content')
     @php
         $user = auth()->user();
         $isAdmin = $user && $user->role === 'admin';
         $isSK = $user && $user->role === 'sk';
-        $protectionEnabled = $isSK && \App\Models\User::where('role', 'admin')->value('action_protection');
+        $adminProtectionEnabled = \App\Models\User::where('role', 'admin')->value('action_protection');
+        $protectionEnabled = ($isSK || $isAdmin) && $adminProtectionEnabled;
     @endphp
 
-    <link rel="stylesheet" href="{{ asset('css/jquery.dataTables.min.css') }}">
     <div class="max-w-6xl mx-auto px-4 space-y-6">
 
 
@@ -35,13 +38,13 @@
                             {{ $isSK ? 'disabled' : '' }}>
 
                             @if (!$isSK)
-                                <option value="">All Barangay</option>
+                                <option value="">All Barangays</option>
                             @endif
 
-                            @foreach (['Awang', 'Bagocboc', 'Barra', 'Bonbon', 'Cauyunan', 'Igpit', 'Limunda', 'Luyong Bonbon', 'Malanang', 'Nangcaon', 'Patag', 'Poblacion', 'Taboc', 'Tingalan'] as $b)
-                                @if (!$isSK || $user->barangay === $b)
+                            @foreach (['AWANG', 'BAGOCBOC', 'BARRA', 'BONBON', 'CAUYUNAN', 'IGPIT', 'LIMUNDA', 'LUYONG BONBON', 'MALANANG', 'NANGCAON', 'PATAG', 'POBLACION', 'TABOC', 'TINGALAN'] as $b)
+                                @if (!$isSK || strtoupper($user->barangay) === $b)
                                     <option value="{{ $b }}"
-                                        {{ request('barangay', $isSK ? $user->barangay : '') === $b ? 'selected' : '' }}>
+                                        {{ strtoupper(request('barangay', $isSK ? $user->barangay : '')) === $b ? 'selected' : '' }}>
                                         {{ $b }}
                                     </option>
                                 @endif
@@ -61,7 +64,7 @@
 
 
                     <div class="form-row">
-                        <a href="/youth/create" class="save-btn">+ Add Profile</a>
+
                         <a href="/youth"
                             class="active-btn border-btn {{ !request('archived') && !request('transferred') ? '' : 'opacity-50' }}">
                             Active
@@ -74,7 +77,7 @@
                             class="archive-btn border-btn {{ request('archived') ? '' : 'opacity-50' }}">
                             Archived
                         </a>
-
+                        <a href="/youth/create" class="save-btn add-profile-btn">+ Add Profile</a>
 
                     </div>
 
@@ -266,7 +269,7 @@ BARANGAY POPULATION CARD
 
                         @php
 
-                            $barangays = $isSK ? [$user->barangay] : $allBarangays;
+                            $barangays = $isSK ? [strtoupper($user->barangay)] : $allBarangays;
 
                         @endphp
 
@@ -375,22 +378,17 @@ BARANGAY POPULATION CARD
     {{-- ✅ EDIT MODAL IS NOW SEPARATED --}}
     @include('youth.partials.edit-modal')
 
-
-
+    @push('styles')
     <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
     <link rel="stylesheet" href="{{ asset('css/youth-index.css') }}">
-    <!-- ========================= -->
-    <!-- SCRIPTS -->
-    <!-- ========================= -->
+    @endpush
 
+    @push('scripts')
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
-
     <script>
         window.csrfToken = "{{ csrf_token() }}";
     </script>
-
     <script src="{{ asset('js/youth-index.js') }}"></script>
-
+    @endpush
 @endsection

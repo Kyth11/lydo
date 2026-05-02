@@ -3,6 +3,11 @@
 @section('page-title', 'Edit Announcement')
 @section('page-desc', 'Update announcement details')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/ann-edit.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
+@endpush
+
 @section('content')
 
     <div class="max-w-6xl mx-auto px-6">
@@ -162,7 +167,4 @@
             });
         }
     </script>
-    <link rel="stylesheet" href="{{ asset('css/ann-edit.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
-
 @endsection

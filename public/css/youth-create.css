@@ -16,6 +16,7 @@
     display: flex !important;
     gap: 1rem !important;
     flex-wrap: wrap !important;
+    align-items: flex-start !important;
 }
 
 .form-input {

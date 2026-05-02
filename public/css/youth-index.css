@@ -158,3 +158,29 @@ COVERAGE COLORS
 .coverage-green{
     background:linear-gradient(90deg,#22c55e,#16a34a);
 }
+
+/* =====================================
+MOBILE RESPONSIVE
+===================================== */
+
+@media (max-width: 640px) {
+    .form-row {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .form-row a {
+        width: 100%;
+        text-align: center;
+    }
+
+    .add-profile-btn {
+        margin-left: 0 !important;
+    }
+}
+
+@media (min-width: 641px) {
+    .add-profile-btn {
+        margin-left: 50px;
+    }
+}

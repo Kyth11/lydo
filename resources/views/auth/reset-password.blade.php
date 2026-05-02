@@ -169,6 +169,68 @@
             opacity: 1 !important;
             transform: translateY(0) !important;
         }
+
+        /* =========================
+           MOBILE RESPONSIVE
+        ========================= */
+        @media (max-width: 768px) {
+            .login-form {
+                max-width: 300px !important;
+                padding: 1.5rem !important;
+            }
+
+            .h1 {
+                font-size: 18px !important;
+            }
+
+            .h2 {
+                font-size: 16px !important;
+            }
+
+            input,
+            .password-input {
+                font-size: 14px !important;
+                padding: 0.5rem !important;
+            }
+
+            .password-eye {
+                right: 0.5rem !important;
+            }
+
+            .caps-toast {
+                font-size: 0.7rem !important;
+                top: -2rem !important;
+            }
+
+            .flex.justify-between {
+                flex-direction: column !important;
+                gap: 1rem !important;
+                align-items: stretch !important;
+            }
+
+            button,
+            a {
+                width: 100% !important;
+                text-align: center !important;
+                padding: 0.75rem 1rem !important;
+                font-size: 14px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-form {
+                max-width: 260px !important;
+                padding: 1.2rem !important;
+            }
+
+            .h1 {
+                font-size: 16px !important;
+            }
+
+            .h2 {
+                font-size: 14px !important;
+            }
+        }
     </style>
 
     <script>

@@ -3,7 +3,7 @@
     <div class="modal-box modern-modal">
         <h2 class="section-title">Report Details</h2>
         <div class="action-bar">
-            <button type="button" onclick="closeModal('editModal')" class="remove-btn">
+            <button type="button" onclick="closeEditModal()" class="remove-btn">
                 Cancel
             </button>
 
@@ -22,18 +22,32 @@
 
 
             <div class="form-grid">
-                <select name="category" id="editCategory" class="form-input">
-                    <option value="CBYDP (Comprehensive Barangay Youth Development Plan)">CBYDP (Comprehensive Barangay Youth Development Plan)</option>
-                    <option value="ABYIP (Annual Barangay Youth Improvement Plan)">ABYIP (Annual Barangay Youth Improvement Plan)</option>
-                    <option value="SK Annual Budget">SK Annual Budget</option>
-                    <option value="Statement of Receipts">Statement of Receipts</option>
-                    <option value="Katipunan ng Kabataan (KK) Assembly Reports">Katipunan ng Kabataan (KK) Assembly Reports</option>
-                    <option value="Linggo ng Kabataan Reports">Linggo ng Kabataan Reports</option>
-                    <option value="Accomplishment Reports">Accomplishment Reports</option>
-                    <option value="SK Resolution and Ordinances">SK Resolution and Ordinances</option>
-                    <option value="Attendance and Minutes of SK Meetings">Attendance and Minutes of SK Meetings</option>
-                    <option value="M & E">M & E</option>
-                    <option value="Special Reports">Special Reports</option>
+                <select name="category_id" id="editCategory" class="form-input">
+                    <option value="">Select Category</option>
+                    @foreach ($categories as $cat)
+                        @php
+                            $start = $cat->start_date ? \Carbon\Carbon::parse($cat->start_date) : null;
+                            $end = $cat->end_date ? \Carbon\Carbon::parse($cat->end_date) : null;
+                            $durationLabel = '';
+
+                            if ($start && $end) {
+                                if ($start->year === $end->year) {
+                                    if ($start->month === $end->month) {
+                                        $durationLabel = $start->format('F Y');
+                                    } else {
+                                        $durationLabel = $start->format('F Y') . ' - ' . $end->format('F Y');
+                                    }
+                                } else {
+                                    $durationLabel = $start->format('Y') . ' - ' . $end->format('Y');
+                                }
+                            }
+                        @endphp
+                        <option value="{{ $cat->id }}">
+                            {{ $cat->name }}@if ($durationLabel)
+                                ({{ $durationLabel }})
+                            @endif
+                        </option>
+                    @endforeach
                 </select>
 
                 <textarea name="description" id="editDescription" class="form-input"

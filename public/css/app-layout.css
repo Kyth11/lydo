@@ -145,6 +145,75 @@ NAVBAR BACKGROUND WITH BLUR
 }
 
 /* ================================
+   NOTIFICATION DROPDOWN
+================================ */
+
+.notification-dropdown {
+    width: 300px !important;
+    z-index: 9999 !important;
+    pointer-events: auto !important;
+}
+
+.notification-dropdown button {
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 10000 !important;
+}
+
+#notificationList {
+    pointer-events: auto !important;
+}
+
+#notificationList button {
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 10001 !important;
+}
+
+/* ================================
+   NOTIFICATION BUTTON
+================================ */
+
+.notification-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    color: white;
+    transition: all 0.25s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.notification-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.notification-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    color: white;
+    transform: translate(50%, -50%);
+    background: #dc2626;
+    border-radius: 9999px;
+    min-width: 18px;
+    min-height: 18px;
+}
+
+/* ================================
    MOBILE PANEL
 ================================ */
 

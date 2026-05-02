@@ -3,11 +3,11 @@
         <h2 class="section-title">Report Details</h2>
         <!-- ACTION BAR -->
         <div class="action-bar">
-            <button type="button" onclick="closeModal('reportModal')" class="remove-btn">
+          <button type="button" onclick="closeReportModal()" class="remove-btn">
                 Cancel
             </button>
 
-            <button form="reportForm" type="submit" class="save-btn">
+            <button form="reportForm" type="submit" class="save-btn" onclick="confirmReportSubmit(event)">
                 Submit
             </button>
         </div>
@@ -25,7 +25,24 @@
                 <select name="category_id" id="editCategory" class="form-input">
                     <option value="">Select Category</option>
                     @foreach($categories as $cat)
-                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                        @php
+                            $start = $cat->start_date ? \Carbon\Carbon::parse($cat->start_date) : null;
+                            $end = $cat->end_date ? \Carbon\Carbon::parse($cat->end_date) : null;
+                            $durationLabel = '';
+                            
+                            if ($start && $end) {
+                                if ($start->year === $end->year) {
+                                    if ($start->month === $end->month) {
+                                        $durationLabel = $start->format('F Y');
+                                    } else {
+                                        $durationLabel = $start->format('F Y') . ' - ' . $end->format('F Y');
+                                    }
+                                } else {
+                                    $durationLabel = $start->format('Y') . ' - ' . $end->format('Y');
+                                }
+                            }
+                        @endphp
+                        <option value="{{ $cat->id }}">{{ $cat->name }}@if($durationLabel) ({{ $durationLabel }})@endif</option>
                     @endforeach
                 </select>
 
